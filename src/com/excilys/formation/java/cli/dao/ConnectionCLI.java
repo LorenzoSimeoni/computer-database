@@ -58,6 +58,7 @@ public class ConnectionCLI {
 	    if (connection != null) {
 	        try {
 	            connection.close();
+	            System.out.println("Database disconnected !");
 	            connection = null;
 	        } catch (SQLException e) {
 	            e.printStackTrace();

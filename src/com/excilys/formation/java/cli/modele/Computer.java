@@ -3,7 +3,7 @@
  */
 package com.excilys.formation.java.cli.modele;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author excilys
@@ -12,9 +12,9 @@ import java.util.Date;
 public class Computer {
 	private int id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
-	private int company_id;
+	private LocalDateTime introduced;
+	private LocalDateTime discontinued;
+	private int companyId;
 	
 	public int getId() {
 		return id;
@@ -28,23 +28,23 @@ public class Computer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getIntroduced() {
+	public LocalDateTime getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(LocalDateTime introduced) {
 		this.introduced = introduced;
 	}
-	public Date getDiscontinued() {
+	public LocalDateTime getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(LocalDateTime discontinued) {
 		this.discontinued = discontinued;
 	}
-	public int getCompany_id() {
-		return company_id;
+	public int getCompanyId() {
+		return companyId;
 	}
-	public void setCompany_id(int company_id) {
-		this.company_id = company_id;
+	public void setCompanyId(int company_id) {
+		this.companyId = company_id;
 	}
 
 }

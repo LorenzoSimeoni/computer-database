@@ -3,11 +3,9 @@
  */
 package com.excilys.formation.java.cli;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.ParseException;
 
-import com.excilys.formation.java.cli.dao.ConnectionCLI;
 import com.excilys.formation.java.cli.service.FeaturesCLI;
 
 /**
@@ -19,40 +17,16 @@ public class Main {
 	/**
 	 * @param args
 	 * @throws SQLException 
+	 * @throws ParseException 
 	 */
-	public static void main(String[] args) throws SQLException {
-		
-		
-		ConnectionCLI cli = new ConnectionCLI();
-		String sql = "SELECT * FROM company;";
-		ResultSet results; 
-		
-		try {
-			Statement stmt = cli.connect().createStatement();
-			results  = stmt.executeQuery(sql);
-			
-			System.out.println("----------------------------------------");
-			System.out.println("Name");
-			System.out.println("----------------------------------------");
-			System.out.println(results);
-			while(results.next()) {
-				System.out.println(results);
-				System.out.println(results.getString(2));
-			}
-			System.out.println("----------------------------------------");
-
-		} catch (SQLException e) {
-			System.out.println("Exception due à la requète");
-			e.printStackTrace();
-		}
-		
-		
-		cli.disconnect();
-		
-		
+	public static void main(String[] args) throws SQLException, ParseException {
 		FeaturesCLI showComputer = new FeaturesCLI();
 		
-		String[] arguments = {"listcomputer"};
+		//String[] arguments = {"showcomputerdetailsbyid","545"};
+		//String[] arguments = {"deleteacomputer","578"};
+		//String[] arguments = {"createacomputer","zfzefzf","2018-10-10T00:00:00","2019-10-10T00:00:00","-1"};
+		//String[] arguments = {"createacomputer","zfzefzf",null,null,null};
+		String[] arguments = {"updateacomputer","580","azerty",null,null,null};
 		showComputer.features(arguments);
 	}
 

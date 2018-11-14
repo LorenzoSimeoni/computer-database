@@ -14,9 +14,8 @@ import com.excilys.formation.java.cli.modele.Company;
  */
 public class MapperCompany {
 	
-	private Company company;
-	
 	public Company mapperCompany(ResultSet results) throws SQLException {
+		Company company = new Company();
 		company.setId(results.getInt(1));
 		company.setName(results.getString(2));
 		
