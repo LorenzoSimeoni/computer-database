@@ -19,10 +19,6 @@ import java.util.Properties;
  */
 public class ConnectionCLI {
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
-	private static final String USER = "admincdb";
-	private static final String PASSWORD = "qwerty1234";
-	private static final String MAX_POOL = "250";
 	
 	private Connection connection;
 	private Properties properties;
@@ -57,7 +53,7 @@ public class ConnectionCLI {
 	            Class.forName(DB_DRIVER);
 	            System.out.println("Driver O.K.");
 	            System.out.println("Connecting database ...");
-	            connection = DriverManager.getConnection(URL, getProperties());
+	            connection = DriverManager.getConnection(properties.getProperty("url"), getProperties());
 	            System.out.println("Database connected !");
 	        } catch (ClassNotFoundException | SQLException e) {
 	            // Java 7+
