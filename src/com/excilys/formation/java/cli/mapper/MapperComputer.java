@@ -36,7 +36,6 @@ public class MapperComputer {
 		computer.setIntroduced(dateAndTime);
 		String discontinued = results.getString(3);
 		if( discontinued != null) {
-			System.out.println(discontinued);
 			discontinued = discontinued.replace(' ', 'T');
 			dateAndTime = LocalDateTime.parse(discontinued);
 		}
@@ -56,14 +55,14 @@ public class MapperComputer {
 			if(discontinued!=null) {
 				localDiscontinued = LocalDateTime.parse(discontinued);
 				if(localDiscontinued.isBefore(localIntroduced)) {
-					localDiscontinued=null;
+					localDiscontinued = null;
 				}
 			}
 		}
 		computer.setName(name);
 		computer.setIntroduced(localIntroduced);
 		computer.setDiscontinued(localDiscontinued);
-		if(companyId!=null) {
+		if(companyId != null) {
 			computer.setCompanyId(Integer.parseInt(companyId));			
 		}
 		else {

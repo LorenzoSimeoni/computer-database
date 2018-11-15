@@ -20,8 +20,8 @@ public class ComputerServices {
 	
 	public void showComputer() {
 		List<Computer> listResults = computerDao.listComputer();
-		for(Computer result : listResults){
-			System.out.println(result.getName());
+		for(Computer computer : listResults){
+			printComputerDetails(computer);
 		}
 	}
 	

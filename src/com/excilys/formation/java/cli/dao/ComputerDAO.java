@@ -110,6 +110,9 @@ public class ComputerDAO {
 				if (computer.getDiscontinued() != null) {
 					stmt.setString(3, computer.getDiscontinued().toString());
 				}
+				else {
+					stmt.setString(3, null);
+				}
 			}else {
 				stmt.setString(2, null);
 				stmt.setString(3, null);
@@ -143,6 +146,9 @@ public class ComputerDAO {
 				stmt.setString(2, computer.getIntroduced().toString());	
 				if (computer.getDiscontinued() != null) {
 					stmt.setString(3, computer.getDiscontinued().toString());				
+				}
+				else {
+					stmt.setString(3, null);
 				}
 			}else {
 				stmt.setString(2, null);

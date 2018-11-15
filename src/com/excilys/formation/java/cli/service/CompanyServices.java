@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.formation.java.cli.dao.CompanyDAO;
 import com.excilys.formation.java.cli.modele.Company;
+import com.excilys.formation.java.cli.modele.Computer;
 
 public class CompanyServices {
 	
@@ -19,8 +20,13 @@ public class CompanyServices {
 	
 	public void showCompany() {
 		List<Company> listResults = companyDao.listCompany();
-		for(Company result : listResults) {
-			System.out.println(result.getName());
+		for(Company company : listResults) {
+			printCompanyDetails(company);
 		}
+	}
+	
+	public void printCompanyDetails(Company company) {
+		System.out.print(company.getId() + ", ");
+		System.out.print(company.getName() + ", ");
 	}
 }
