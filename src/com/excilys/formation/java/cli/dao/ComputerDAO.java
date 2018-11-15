@@ -98,14 +98,13 @@ public class ComputerDAO {
 			stmt = cli.connect().prepareStatement(CREATECOMPUTER);
 			stmt.setString(1, computer.getName());
 			if (computer.getIntroduced() != null) {
-				stmt.setString(2, computer.getIntroduced().toString());				
+				stmt.setString(2, computer.getIntroduced().toString());		
+				if (computer.getDiscontinued() != null) {
+					stmt.setString(3, computer.getDiscontinued().toString());
+				}
 			}else {
-				stmt.setString(2, null);			
-			}
-			if (computer.getDiscontinued() != null) {
-				stmt.setString(3, computer.getDiscontinued().toString());				
-			}else {
-				stmt.setString(3, null);			
+				stmt.setString(2, null);
+				stmt.setString(3, null);
 			}
 			if (computer.getCompanyId() == 0) {
 				stmt.setString(4, null);
@@ -133,14 +132,13 @@ public class ComputerDAO {
 			stmt = cli.connect().prepareStatement(UPDATEACOMPUTER);
 			stmt.setString(1, computer.getName());
 			if (computer.getIntroduced() != null) {
-				stmt.setString(2, computer.getIntroduced().toString());				
+				stmt.setString(2, computer.getIntroduced().toString());	
+				if (computer.getDiscontinued() != null) {
+					stmt.setString(3, computer.getDiscontinued().toString());				
+				}
 			}else {
-				stmt.setString(2, null);			
-			}
-			if (computer.getDiscontinued() != null) {
-				stmt.setString(3, computer.getDiscontinued().toString());				
-			}else {
-				stmt.setString(3, null);			
+				stmt.setString(2, null);
+				stmt.setString(3, null);	
 			}
 			if (computer.getCompanyId() == 0) {
 				stmt.setString(4, null);
