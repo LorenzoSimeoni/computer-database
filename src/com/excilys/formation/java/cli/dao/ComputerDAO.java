@@ -20,13 +20,21 @@ public class ComputerDAO {
 	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = ?,introduced = ?,discontinued = ?,company_id = ? WHERE ID = ?";
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
 	
+	private ComputerDAO(){}
+	
+	private static ComputerDAO computerDAO = new ComputerDAO();
+	
+	public static ComputerDAO getInstance() {
+		return computerDAO;
+	}
+	
 	public List<Computer> listComputer() {
 		ConnectionCLI cli = new ConnectionCLI();
 		List<Computer> list = new ArrayList<Computer>();
 		try {
 			stmt = cli.connect().prepareStatement(LISTCOMPUTER);
 			results = stmt.executeQuery();
-			MapperComputer mapperComputer = new MapperComputer();
+			MapperComputer mapperComputer = MapperComputer.getInstance();
 			while(results.next()) {
 				Computer computer = mapperComputer.mapperComputer(results);
 				list.add(computer);
@@ -51,7 +59,7 @@ public class ComputerDAO {
 			stmt = cli.connect().prepareStatement(SHOWCOMPUTERDETAILS);
 			stmt.setString(1, name);
 			results = stmt.executeQuery();
-			MapperComputer mapperComputer = new MapperComputer();
+			MapperComputer mapperComputer = MapperComputer.getInstance();
 			while(results.next()) {
 				Computer computer = mapperComputer.mapperComputer(results);
 				list.add(computer);
@@ -75,7 +83,7 @@ public class ComputerDAO {
 			stmt = cli.connect().prepareStatement(SHOWCOMPUTERDETAILSBYID);
 			stmt.setInt(1, id);
 			results = stmt.executeQuery();
-			MapperComputer mapperComputer = new MapperComputer();
+			MapperComputer mapperComputer = MapperComputer.getInstance();
 			while(results.next()) {
 				Computer computer = mapperComputer.mapperComputer(results);
 				list.add(computer);

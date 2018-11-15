@@ -14,6 +14,14 @@ import com.excilys.formation.java.cli.modele.Computer;
  */
 public class MapperComputer {
 	
+	private MapperComputer(){}
+	
+	private static MapperComputer mapperComputer = new MapperComputer();
+	
+	public static MapperComputer getInstance() {
+		return mapperComputer;
+	}
+	
 	public Computer mapperComputer(ResultSet results) throws SQLException {		
 		Computer computer = new Computer();
 		

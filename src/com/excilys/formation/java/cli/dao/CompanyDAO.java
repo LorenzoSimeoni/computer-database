@@ -15,13 +15,21 @@ public class CompanyDAO {
 	private ResultSet results;
 	private static final String LISTCOMPANY = "SELECT * FROM company;";
 	
+	private CompanyDAO(){}
+	
+	private static CompanyDAO companyDAO = new CompanyDAO();
+	
+	public static CompanyDAO getInstance() {
+		return companyDAO;
+	}
+	
 	public List<Company> listCompany() {
 		ConnectionCLI cli = new ConnectionCLI();
 		List<Company> list = new ArrayList<Company>();
 		try {
 			stmt = cli.connect().prepareStatement(LISTCOMPANY);
 			results = stmt.executeQuery();
-			MapperCompany mapperCompany = new MapperCompany();
+			MapperCompany mapperCompany = MapperCompany.getInstance();
 			while(results.next()) {
 				Company company = mapperCompany.mapperCompany(results);
 				list.add(company);

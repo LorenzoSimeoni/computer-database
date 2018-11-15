@@ -14,6 +14,14 @@ import com.excilys.formation.java.cli.modele.Company;
  */
 public class MapperCompany {
 	
+	private MapperCompany(){}
+	
+	private static MapperCompany mapperCompany = new MapperCompany();
+	
+	public static MapperCompany getInstance() {
+		return mapperCompany;
+	}
+	
 	public Company mapperCompany(ResultSet results) throws SQLException {
 		Company company = new Company();
 		company.setId(results.getInt(1));
