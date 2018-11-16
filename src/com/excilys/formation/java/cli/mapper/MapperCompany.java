@@ -22,6 +22,12 @@ public class MapperCompany {
 		return mapperCompany;
 	}
 	
+	/**
+	 * Map a ResultSet in a Company object
+	 * @param results contains what we found in database
+	 * @return Constructed company object
+	 * @throws SQLException
+	 */
 	public Company mapperCompany(ResultSet results) throws SQLException {
 		Company company = new Company();
 		company.setId(results.getInt(1));

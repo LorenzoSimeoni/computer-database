@@ -17,6 +17,9 @@ public class FeaturesCLI {
 		return featuresCLI;
 	}
 	
+	/**
+	 * Parse informations give by the user
+	 */
 	public void features() {
 		Scanner sc = new Scanner(System.in);
 		String str;
@@ -120,22 +123,26 @@ public class FeaturesCLI {
 		return true;
 	}
 	
+	/**
+	 * Request template for helping user
+	 */
 	public void helper() {
 		System.out.println("Syntax : java computer-database sqlRequest [arguments]");
 		System.out.println("The sql request and their arguments are :");
 		System.out.println("	Show Computer");
 		System.out.println("	Show Company");
-		System.out.println("	Show Computer nbElements");
-		System.out.println("	Show Company nbElement");
-		System.out.println("	Show ComputerDetails ComputerName");
-		System.out.println("	Show ComputerDetails ComputerName number #if you want pagination");
-		System.out.println("	Show ComputerDetailsById ComputerID");
-		System.out.println("	Show ComputerDetailsById ComputerID      #if you want pagination");
-		System.out.println("	Delete Computer ComputerID");
-		System.out.println("	Insert Computer ComputerName IntroducedDate DiscontinuedDate CompanyID");
-		System.out.println("	Update Computer ComputerID ComputerName IntroducedDate DiscontinuedDate CompanyID");
+		System.out.println("	Show Computer [nbElements]");
+		System.out.println("	Show Company [nbElement]");
+		System.out.println("	Show ComputerDetails [ComputerName]");
+		System.out.println("	Show ComputerDetailsById [ComputerID]");
+		System.out.println("	Delete Computer [ComputerID]");
+		System.out.println("	Insert Computer [ComputerName] [IntroducedDate] [DiscontinuedDate] [CompanyID]");
+		System.out.println("	Update Computer [ComputerID] [ComputerName] [IntroducedDate] [DiscontinuedDate] [CompanyID]");
 	}
 	
+	/**
+	 * Call if there is a problem (number, type ...) with the argument the user give
+	 */
 	public void problemWithArgument() {
 		System.out.println("You put a wrong argument, please use --help for more details");
 	}

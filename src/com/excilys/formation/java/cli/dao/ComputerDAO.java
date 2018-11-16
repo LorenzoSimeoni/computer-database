@@ -11,6 +11,11 @@ import com.excilys.formation.java.cli.modele.Computer;
 
 import com.excilys.formation.java.cli.mapper.MapperComputer;
 
+/**
+ * 
+ * @author excilys
+ *
+ */
 public class ComputerDAO {
 
 	private PreparedStatement stmt;
@@ -30,6 +35,10 @@ public class ComputerDAO {
 		return computerDAO;
 	}
 	
+	/**
+	 * Function use to print Computer database
+	 * @return a list filled with all the Computer object found and map from database
+	 */
 	public List<Computer> listComputer() {
 		ConnectionCLI cli = new ConnectionCLI();
 		List<Computer> list = new ArrayList<Computer>();
@@ -53,7 +62,11 @@ public class ComputerDAO {
 		return list;
 	}
 	
-	
+	/**
+	 * Used to show the details of computer(s) using their name as key
+	 * @param name used as a key to search in Computer database
+	 * @return a list filled with the Computer object found with the key
+	 */
 	public List<Computer> showComputerDetailsByName(String name) {
 		ConnectionCLI cli = new ConnectionCLI();
 		List<Computer> list = new ArrayList<Computer>();
@@ -78,6 +91,11 @@ public class ComputerDAO {
 		return list;
 	}
 	
+	/**
+	 * Used to show the details of computer(s) using their ID as key
+	 * @param ID used as a key to search in Computer database
+	 * @return a list filled with the Computer object found with the key
+	 */
 	public List<Computer> showComputerDetailsByID(int id) {
 		ConnectionCLI cli = new ConnectionCLI();
 		List<Computer> list = new ArrayList<Computer>();
@@ -102,6 +120,10 @@ public class ComputerDAO {
 		return list;
 	}
 	
+	/**
+	 * Insert a new computer in the database
+	 * @param computer object created with the parameters give by the user
+	 */
 	public void createComputer(Computer computer) {
 		ConnectionCLI cli = new ConnectionCLI();
 		try {
@@ -140,6 +162,11 @@ public class ComputerDAO {
 		}
 	}
 	
+	/**
+	 * Check if CompanyID exist to avoid sql error
+	 * @param companyID the ID we will check if it exist in Company database
+	 * @return true if the ID exist false if not
+	 */
 	public boolean checkCompanyID(int companyID) {
 		List<Company> listCompany = CompanyDAO.getInstance().listCompany();
 		for(Company company: listCompany) {
@@ -150,6 +177,11 @@ public class ComputerDAO {
 		return false;
 	}
 	
+	/**
+	 * Update a computer using his ID
+	 * @param computer contains the new configuration of computer
+	 * @param id the ID of the computer we want to change
+	 */
 	public void updateComputer(Computer computer, int id) {
 		ConnectionCLI cli = new ConnectionCLI();
 		try {
@@ -189,6 +221,10 @@ public class ComputerDAO {
 		}
 	}
 	
+	/**
+	 * Delete a computer using his ID
+	 * @param id  the ID of the computer we want to delete
+	 */
 	public void deleteComputer(int id) {
 		ConnectionCLI cli = new ConnectionCLI();
 		try {

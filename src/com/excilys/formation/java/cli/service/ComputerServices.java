@@ -18,6 +18,9 @@ public class ComputerServices {
 		return computerServices;
 	}
 	
+	/**
+	 * Print all the Computer object found in the List<Computer> gived by our computerDao
+	 */
 	public void showComputer() {
 		List<Computer> listResults = computerDao.listComputer();
 		for(Computer computer : listResults){
@@ -25,6 +28,10 @@ public class ComputerServices {
 		}
 	}
 	
+	/**
+	 * Layout of computer object
+	 * @param computer
+	 */
 	public void printComputerDetails(Computer computer) {
 		System.out.print(computer.getId() + ", ");
 		System.out.print(computer.getName() + ", ");
@@ -33,6 +40,10 @@ public class ComputerServices {
 		System.out.println(computer.getCompanyId());
 	}
 	
+	/**
+	 * Print all the Computer object found with name key
+	 * @param name
+	 */
 	public void showComputerDetails(String name) {
 		List<Computer> listResults = computerDao.showComputerDetailsByName(name);
 		for(Computer computer : listResults){
@@ -40,6 +51,10 @@ public class ComputerServices {
 		}
 	}
 	
+	/**
+	 * Print all the Computer object found with id key
+	 * @param id
+	 */
 	public void showComputerDetailsByID(int id) {
 		List<Computer> listResults = computerDao.showComputerDetailsByID(id);
 		for(Computer computer : listResults){
@@ -47,16 +62,35 @@ public class ComputerServices {
 		}
 	}
 	
+	/**
+	 * Delete a computer with id key
+	 * @param id
+	 */
 	public void deleteComputer(int id) {
 		computerDao.deleteComputer(id);
 	}
 	
+	/**
+	 * Insert a computer
+	 * @param name
+	 * @param introduced
+	 * @param discontinued
+	 * @param companyID
+	 */
 	public void insertComputer(String name, String introduced, String discontinued, String companyID) {
 		MapperComputer mapperComputer = MapperComputer.getInstance();
 		Computer computer = mapperComputer.mapperComputer(name, introduced,discontinued,companyID);
 		computerDao.createComputer(computer);
 	}
 	
+	/**
+	 * Update a computer with id key
+	 * @param id
+	 * @param name
+	 * @param introduced
+	 * @param discontinued
+	 * @param companyID
+	 */
 	public void updateComputer(String id, String name, String introduced, String discontinued, String companyID) {
 		MapperComputer mapperComputer = MapperComputer.getInstance();
 		Computer computer = mapperComputer.mapperComputer(name,introduced,discontinued,companyID);

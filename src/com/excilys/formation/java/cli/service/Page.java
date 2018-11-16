@@ -23,6 +23,13 @@ public class Page {
 		return page;
 	}
 	
+	/**
+	 * Make element print nbElements by nbElements
+	 * @param nbElements the number max of Element the method print in one loop
+	 * @param nameOfTable Computer or Company
+	 * @param sc 
+	 * @return the string, if exit, all the program is closed
+	 */
 	public String pagination(int nbElements, String nameOfTable, Scanner sc) {
 		String str;
 

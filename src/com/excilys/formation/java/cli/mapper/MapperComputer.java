@@ -22,6 +22,12 @@ public class MapperComputer {
 		return mapperComputer;
 	}
 	
+	/**
+	 * Construct a computer object from a ResultSet (Select)
+	 * @param results contains what we found in database 
+	 * @return Computer object
+	 * @throws SQLException
+	 */
 	public Computer mapperComputer(ResultSet results) throws SQLException {		
 		Computer computer = new Computer();
 		
@@ -44,7 +50,15 @@ public class MapperComputer {
 			
 		return computer;
 	}
-
+	
+	/**
+	 * Construct a Computer object from arguments gived by user (update or user)
+	 * @param name 
+	 * @param introduced
+	 * @param discontinued
+	 * @param companyId
+	 * @return Computer object
+	 */
 	public Computer mapperComputer(String name, String introduced, String discontinued, String companyId) {
 		Computer computer = new Computer();
 		

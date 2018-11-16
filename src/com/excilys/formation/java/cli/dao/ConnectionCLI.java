@@ -22,7 +22,10 @@ public class ConnectionCLI {
 	private Connection connection;
 	private Properties properties;
 	
-	// create properties
+	/**
+	 * Get the properties of the database connection
+	 * @return an object Properties containing URL, user and mdp
+	 */
 	private Properties getProperties() {
 	    if (properties == null) {
 	        properties = new Properties();

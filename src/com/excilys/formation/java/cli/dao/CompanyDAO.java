@@ -9,6 +9,11 @@ import java.util.List;
 import com.excilys.formation.java.cli.mapper.MapperCompany;
 import com.excilys.formation.java.cli.modele.Company;
 
+/**
+ * 
+ * @author excilys
+ *
+ */
 public class CompanyDAO {
 	
 	private PreparedStatement stmt;
@@ -23,6 +28,10 @@ public class CompanyDAO {
 		return companyDAO;
 	}
 	
+	/**
+	 * Function use to print Company database
+	 * @return a list filled with all the Company object found in database
+	 */
 	public List<Company> listCompany() {
 		ConnectionCLI cli = new ConnectionCLI();
 		List<Company> list = new ArrayList<Company>();
