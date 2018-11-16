@@ -23,76 +23,76 @@ public class FeaturesCLI {
 		
 		do {
 			str = sc.nextLine();
-			String[] args = str.split(" ");
+			String[] userEntry = str.split(" ");
 			
-			if(args.length!=0) {
-				if(args[0].toLowerCase().equals("show")) {
-					if(args.length > 1) {
-						if (args[1].toLowerCase().equals("computer")) {
-							if(args.length==3) {
-								if (testStringIsAInt(args[2])) {
-									str = Page.getInstance().pagination(Integer.parseInt(args[2]), args[1], sc);
+			if(userEntry.length!=0) {
+				if(userEntry[0].toLowerCase().equals("show")) {
+					if(userEntry.length > 1) {
+						if (userEntry[1].toLowerCase().equals("computer")) {
+							if(userEntry.length==3) {
+								if (testStringIsAInt(userEntry[2])) {
+									str = Page.getInstance().pagination(Integer.parseInt(userEntry[2]), userEntry[1], sc);
 								}else problemWithArgument();
 							}
 							else ComputerServices.getInstance().showComputer();								
-						}else if (args[1].toLowerCase().equals("company")) {
-							if(args.length==3) {
-								if (testStringIsAInt(args[2])) {
-									str = Page.getInstance().pagination(Integer.parseInt(args[2]), args[1], sc);
+						}else if (userEntry[1].toLowerCase().equals("company")) {
+							if(userEntry.length==3) {
+								if (testStringIsAInt(userEntry[2])) {
+									str = Page.getInstance().pagination(Integer.parseInt(userEntry[2]), userEntry[1], sc);
 								}else problemWithArgument();
 							} else CompanyServices.getInstance().showCompany();
-						}else if(args[1].toLowerCase().equals("computerdetails")) {
-							if(args.length==3) {
-								ComputerServices.getInstance().showComputerDetails(args[2]);								
-							}else if(args.length==4) {
+						}else if(userEntry[1].toLowerCase().equals("computerdetails")) {
+							if(userEntry.length==3) {
+								ComputerServices.getInstance().showComputerDetails(userEntry[2]);								
+							}else if(userEntry.length==4) {
 								//TODO
 							}else problemWithArgument();
-						}else if(args[1].toLowerCase().equals("computerdetailsbyid")) {
-							if(args.length==3) {
-								if (testStringIsAInt(args[2])) {
-									ComputerServices.getInstance().showComputerDetailsByID(Integer.parseInt(args[2]));
+						}else if(userEntry[1].toLowerCase().equals("computerdetailsbyid")) {
+							if(userEntry.length==3) {
+								if (testStringIsAInt(userEntry[2])) {
+									ComputerServices.getInstance().showComputerDetailsByID(Integer.parseInt(userEntry[2]));
 								}else problemWithArgument();								
-							}else if(args.length==4) {
-								if (testStringIsAInt(args[3])) {
+							}else if(userEntry.length==4) {
+								if (testStringIsAInt(userEntry[3])) {
 									//TODO
 								}else problemWithArgument();
 							}else problemWithArgument();
 						}else problemWithArgument();				
 					}else problemWithArgument();
-				}else if(args[0].toLowerCase().equals("insert")) {
-					if(args.length > 1) {
-						if(args[1].toLowerCase().equals("computer")) {
-							if(args.length==6) {
-								if ((testStringIsADate(args[3]) || args[3]==null) && (testStringIsADate(args[4]) || args[4]==null)) {
-									ComputerServices.getInstance().insertComputer(args[2], args[3], args[4], args[5]);					
+				}else if(userEntry[0].toLowerCase().equals("insert")) {
+					if(userEntry.length > 1) {
+						if(userEntry[1].toLowerCase().equals("computer")) {
+							if(userEntry.length==6) {
+								if ((testStringIsADate(userEntry[3]) || userEntry[3]==null) && (testStringIsADate(userEntry[4]) || userEntry[4]==null)) {
+									ComputerServices.getInstance().insertComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5]);					
 								}else problemWithArgument();								
 							}else problemWithArgument();
 						}else problemWithArgument();						
 					}else problemWithArgument();
-				}else if (args[0].toLowerCase().equals("delete")) {
-					if(args.length > 1) {
-						if(args[1].toLowerCase().equals("computer")) {
-							if(args.length==3) {
-								if(testStringIsAInt(args[2])) {
-									ComputerServices.getInstance().deleteComputer(Integer.parseInt(args[2]));					
+				}else if (userEntry[0].toLowerCase().equals("delete")) {
+					if(userEntry.length > 1) {
+						if(userEntry[1].toLowerCase().equals("computer")) {
+							if(userEntry.length==3) {
+								if(testStringIsAInt(userEntry[2])) {
+									ComputerServices.getInstance().deleteComputer(Integer.parseInt(userEntry[2]));					
 								}else problemWithArgument();								
 							}else problemWithArgument();
 						}else problemWithArgument();						
 					}else problemWithArgument();
-				}else if (args[0].toLowerCase().equals("update")) {
-					if(args.length > 1) {
-						if(args[1].toLowerCase().equals("computer")) {
-							if(args.length==7) {
-								if ((testStringIsADate(args[3]) || args[3]==null) && (testStringIsADate(args[4]) || args[4]==null)) {
-									ComputerServices.getInstance().updateComputer(args[2], args[3], args[4], args[5],args[6]);					
+				}else if (userEntry[0].toLowerCase().equals("update")) {
+					if(userEntry.length > 1) {
+						if(userEntry[1].toLowerCase().equals("computer")) {
+							if(userEntry.length==7) {
+								if ((testStringIsADate(userEntry[3]) || userEntry[3]==null) && (testStringIsADate(userEntry[4]) || userEntry[4]==null)) {
+									ComputerServices.getInstance().updateComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5],userEntry[6]);					
 								}else problemWithArgument();								
 							}else problemWithArgument();
 						}else problemWithArgument();						
 					}else problemWithArgument();
-				}else if(args[0].toLowerCase().equals("--help")) {
+				}else if(userEntry[0].toLowerCase().equals("--help")) {
 					helper();
 				}else {
-					if(!args[0].toLowerCase().equals("exit")) {
+					if(!userEntry[0].toLowerCase().equals("exit")) {
 						problemWithArgument();
 					}
 				}

@@ -16,8 +16,6 @@ public class MapperCompany {
 	
 	private MapperCompany(){}
 	
-	
-	
 	private static MapperCompany mapperCompany = new MapperCompany();
 	
 	public static MapperCompany getInstance() {

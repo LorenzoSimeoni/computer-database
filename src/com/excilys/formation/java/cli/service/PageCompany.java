@@ -29,15 +29,17 @@ public class PageCompany {
 		List<Company> listResults = companyDao.listCompany();
 		return listResults;
 	}
-	public void showCompanyPage(int nbElement, List<Company> listResults) {
+	public boolean showCompanyPage(int nbElement, List<Company> listResults) {
 		for(int i = compteur, n = listResults.size(), j = i; i < n && i-j<nbElement; i++) { 
 	        printCompanyDetails(listResults.get(i));
 	        compteur = i;
 	    }
 		compteur++;
-		if(compteur == listResults.size()-1) {
+		if(compteur == listResults.size()) {
 			compteur = 0;
+			return true;
 		}
+		return false;
 	}
 	public void printCompanyDetails(Company company) {
 		System.out.print(company.getId() + ", ");

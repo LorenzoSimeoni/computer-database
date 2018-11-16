@@ -29,15 +29,17 @@ public class PageComputer {
 		return listResults;
 	}
 	
-	public void showComputerPage(int nbElement, List<Computer> listResults) {
+	public boolean showComputerPage(int nbElement, List<Computer> listResults) {
 		for(int i = compteur, n = listResults.size(), j = i; i < n && i-j<nbElement; i++) { 
 			printComputerDetails(listResults.get(i));
 	        compteur = i;
 	    }
 		compteur++;
-		if(compteur == listResults.size()-1) {
+		if(compteur == listResults.size()) {
 			compteur = 0;
+			return true;
 		}
+		return false;
 	}
 	public void printComputerDetails(Computer computer) {
 		System.out.print(computer.getId() + ", ");

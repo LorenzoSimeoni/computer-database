@@ -13,6 +13,7 @@ public class Page {
 	
 	private List<Company> listResultsCompany = null;
 	private List<Computer> listResultsComputer = null;
+	private boolean listEnd = false;
 	
 	private Page(){}
 	
@@ -37,19 +38,18 @@ public class Page {
 				callPrintFunctions(nameOfTable,nbElements);
 			}
 			else if(!str.equals("exit")) {
-				
 				System.out.println("Veuillez faire 'suivant' pour en afficher plus, ou quitter avec 'exit' ! ");
 			}
-		} while(!str.equals("exit"));
+		} while(!str.equals("exit") && !listEnd);
 		return str;
 	}
 	
 	public void callPrintFunctions(String nameOfTable, int nbElements) {
 		if(nameOfTable.toLowerCase().equals("company")) {
-			PageCompany.getInstance().showCompanyPage(nbElements,listResultsCompany);
+			listEnd = PageCompany.getInstance().showCompanyPage(nbElements,listResultsCompany);
 		}
 		else if(nameOfTable.toLowerCase().equals("computer")) {
-			PageComputer.getInstance().showComputerPage(nbElements,listResultsComputer);
+			listEnd = PageComputer.getInstance().showComputerPage(nbElements,listResultsComputer);
 		}
 	}
 

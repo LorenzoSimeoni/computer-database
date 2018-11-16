@@ -7,7 +7,7 @@ import com.excilys.formation.java.cli.modele.Company;
 
 public class CompanyServices {
 	
-	CompanyDAO companyDao = CompanyDAO.getInstance();
+	private CompanyDAO companyDao = CompanyDAO.getInstance();
 	
 	private CompanyServices(){}
 	

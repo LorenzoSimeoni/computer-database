@@ -8,7 +8,7 @@ import com.excilys.formation.java.cli.modele.Computer;
 
 public class ComputerServices {
 	
-	ComputerDAO computerDao = ComputerDAO.getInstance();
+	private ComputerDAO computerDao = ComputerDAO.getInstance();
 	
 	private ComputerServices(){}
 	
