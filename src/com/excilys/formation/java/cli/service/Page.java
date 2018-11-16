@@ -51,6 +51,11 @@ public class Page {
 		return str;
 	}
 	
+	/**
+	 * 
+	 * @param nameOfTable
+	 * @param nbElements
+	 */
 	public void callPrintFunctions(String nameOfTable, int nbElements) {
 		if(nameOfTable.toLowerCase().equals("company")) {
 			listEnd = PageCompany.getInstance().showCompanyPage(nbElements,listResultsCompany);

@@ -29,6 +29,7 @@ public class PageCompany {
 		List<Company> listResults = companyDao.listCompany();
 		return listResults;
 	}
+	
 	public boolean showCompanyPage(int nbElement, List<Company> listResults) {
 		for(int i = compteur, n = listResults.size(), j = i; i < n && i-j<nbElement; i++) { 
 	        printCompanyDetails(listResults.get(i));
@@ -41,6 +42,7 @@ public class PageCompany {
 		}
 		return false;
 	}
+	
 	public void printCompanyDetails(Company company) {
 		System.out.print(company.getId() + ", ");
 		System.out.println(company.getName() + ", ");
