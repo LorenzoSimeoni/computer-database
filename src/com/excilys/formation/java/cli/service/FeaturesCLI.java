@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import com.excilys.formation.java.cli.view.Page;
-
 public class FeaturesCLI {
 	
 	private FeaturesCLI(){}
@@ -33,17 +31,16 @@ public class FeaturesCLI {
 						if (args[1].toLowerCase().equals("computer")) {
 							if(args.length==3) {
 								if (testStringIsAInt(args[2])) {
-									Page.getInstance().callPrintFunctions(args[1], Integer.parseInt(args[2]));
+									str = Page.getInstance().pagination(Integer.parseInt(args[2]), args[1], sc);
 								}else problemWithArgument();
 							}
 							else ComputerServices.getInstance().showComputer();								
 						}else if (args[1].toLowerCase().equals("company")) {
 							if(args.length==3) {
 								if (testStringIsAInt(args[2])) {
-									Page.getInstance().callPrintFunctions(args[1], Integer.parseInt(args[2]));
+									str = Page.getInstance().pagination(Integer.parseInt(args[2]), args[1], sc);
 								}else problemWithArgument();
-							}
-							else CompanyServices.getInstance().showCompany();
+							} else CompanyServices.getInstance().showCompany();
 						}else if(args[1].toLowerCase().equals("computerdetails")) {
 							if(args.length==3) {
 								ComputerServices.getInstance().showComputerDetails(args[2]);								

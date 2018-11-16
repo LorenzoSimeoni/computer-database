@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.excilys.formation.java.cli.view;
+package com.excilys.formation.java.cli.service;
 
 import java.util.List;
 
@@ -24,12 +24,17 @@ public class PageComputer {
 		return pageComputer;
 	}
 	
-	public void showComputerPage(int nbElement) {
+	public List<Computer> initiateTable() {
 		List<Computer> listResults = computerDao.listComputer();
+		return listResults;
+	}
+	
+	public void showComputerPage(int nbElement, List<Computer> listResults) {
 		for(int i = compteur, n = listResults.size(), j = i; i < n && i-j<nbElement; i++) { 
 			printComputerDetails(listResults.get(i));
 	        compteur = i;
 	    }
+		compteur++;
 		if(compteur == listResults.size()-1) {
 			compteur = 0;
 		}
