@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+import com.excilys.formation.java.cli.view.Page;
+
 public class FeaturesCLI {
 	
 	private FeaturesCLI(){}
@@ -29,9 +31,19 @@ public class FeaturesCLI {
 				if(args[0].toLowerCase().equals("show")) {
 					if(args.length > 1) {
 						if (args[1].toLowerCase().equals("computer")) {
-							ComputerServices.getInstance().showComputer();
+							if(args.length==3) {
+								if (testStringIsAInt(args[2])) {
+									Page.getInstance().callPrintFunctions(args[1], Integer.parseInt(args[2]));
+								}else problemWithArgument();
+							}
+							else ComputerServices.getInstance().showComputer();								
 						}else if (args[1].toLowerCase().equals("company")) {
-							CompanyServices.getInstance().showCompany();
+							if(args.length==3) {
+								if (testStringIsAInt(args[2])) {
+									Page.getInstance().callPrintFunctions(args[1], Integer.parseInt(args[2]));
+								}else problemWithArgument();
+							}
+							else CompanyServices.getInstance().showCompany();
 						}else if(args[1].toLowerCase().equals("computerdetails")) {
 							if(args.length==3) {
 								ComputerServices.getInstance().showComputerDetails(args[2]);								
@@ -116,6 +128,8 @@ public class FeaturesCLI {
 		System.out.println("The sql request and their arguments are :");
 		System.out.println("	Show Computer");
 		System.out.println("	Show Company");
+		System.out.println("	Show Computer nbElements");
+		System.out.println("	Show Company nbElement");
 		System.out.println("	Show ComputerDetails ComputerName");
 		System.out.println("	Show ComputerDetails ComputerName number #if you want pagination");
 		System.out.println("	Show ComputerDetailsById ComputerID");

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.excilys.formation.java.cli.dao.CompanyDAO;
 import com.excilys.formation.java.cli.modele.Company;
-import com.excilys.formation.java.cli.modele.Computer;
 
 public class CompanyServices {
 	
