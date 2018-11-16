@@ -63,7 +63,7 @@ public class FeaturesCLI {
 					if(userEntry.length > 1) {
 						if(userEntry[1].toLowerCase().equals("computer")) {
 							if(userEntry.length==6) {
-								if ((testStringIsADate(userEntry[3]) || userEntry[3]==null) && (testStringIsADate(userEntry[4]) || userEntry[4]==null)) {
+								if ((testStringIsADate(userEntry[3]) || userEntry[3].toLowerCase().equals("null")) && (testStringIsADate(userEntry[4]) || userEntry[4].toLowerCase().equals("null"))) {
 									ComputerServices.getInstance().insertComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5]);					
 								}else problemWithArgument();								
 							}else problemWithArgument();
@@ -83,7 +83,7 @@ public class FeaturesCLI {
 					if(userEntry.length > 1) {
 						if(userEntry[1].toLowerCase().equals("computer")) {
 							if(userEntry.length==7) {
-								if ((testStringIsADate(userEntry[3]) || userEntry[3]==null) && (testStringIsADate(userEntry[4]) || userEntry[4]==null)) {
+								if ((testStringIsADate(userEntry[4]) || userEntry[4].toLowerCase().equals("null")) && (testStringIsADate(userEntry[5]) || userEntry[5].toLowerCase().equals("null"))) {
 									ComputerServices.getInstance().updateComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5],userEntry[6]);					
 								}else problemWithArgument();								
 							}else problemWithArgument();

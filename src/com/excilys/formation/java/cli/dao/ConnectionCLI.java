@@ -50,12 +50,8 @@ public class ConnectionCLI {
 	    if (connection == null) {
 	        try {
 	            Class.forName(DB_DRIVER);
-	            System.out.println("Driver O.K.");
-	            System.out.println("Connecting database ...");
 	            connection = DriverManager.getConnection(URL, getProperties());
-	            System.out.println("Database connected !");
 	        } catch (ClassNotFoundException | SQLException e) {
-	            // Java 7+
 	            e.printStackTrace();
 	        }
 	    }
@@ -67,7 +63,6 @@ public class ConnectionCLI {
 	    if (connection != null) {
 	        try {
 	            connection.close();
-	            System.out.println("Database disconnected !");
 	            connection = null;
 	        } catch (SQLException e) {
 	            e.printStackTrace();

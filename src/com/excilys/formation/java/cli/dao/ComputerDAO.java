@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.excilys.formation.java.cli.modele.Company;
 import com.excilys.formation.java.cli.modele.Computer;
+
 import com.excilys.formation.java.cli.mapper.MapperComputer;
 
 public class ComputerDAO {
@@ -119,14 +121,15 @@ public class ComputerDAO {
 			}
 			if (computer.getCompanyId() == 0) {
 				stmt.setString(4, null);
-			} else {
+			} else if(checkCompanyID(computer.getCompanyId())) {
 				stmt.setInt(4, computer.getCompanyId());				
+				if (stmt.executeUpdate() == 1) {
+					System.out.println("Computer Created");
+				} else {
+					System.out.println("Computer Not Created ! ");
+				}
 			}
-			if (stmt.executeUpdate() == 1) {
-				System.out.println("Computer Created");
-			} else {
-				System.out.println("Computer Not Created ! ");
-			}
+			else System.out.println("The company ID you give is wrong ... can't create the new computer");
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète CREATECOMPUTER");
 			e.printStackTrace();
@@ -135,6 +138,16 @@ public class ComputerDAO {
 			cli.disconnect();
 	        if (stmt != null) try { stmt.close(); } catch (SQLException ignore) {}
 		}
+	}
+	
+	public boolean checkCompanyID(int companyID) {
+		List<Company> listCompany = CompanyDAO.getInstance().listCompany();
+		for(Company company: listCompany) {
+			if(company.getId()==companyID) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void updateComputer(Computer computer, int id) {
@@ -156,15 +169,16 @@ public class ComputerDAO {
 			}
 			if (computer.getCompanyId() == 0) {
 				stmt.setString(4, null);
-			} else {
+			} else if(checkCompanyID(computer.getCompanyId())) {
 				stmt.setInt(4, computer.getCompanyId());				
+				stmt.setInt(5, id);
+				if (stmt.executeUpdate() == 1) {
+					System.out.println("Computer Updated");
+				} else {
+					System.out.println("Computer Not Updated ! ");
+				}
 			}
-			stmt.setInt(5, id);
-			if (stmt.executeUpdate() == 1) {
-				System.out.println("Computer Updated");
-			} else {
-				System.out.println("Computer Not Updated ! ");
-			}
+			else System.out.println("The company ID you give is wrong ... can't update the computer"); 
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète UPDATEACOMPUTER");
 			e.printStackTrace();

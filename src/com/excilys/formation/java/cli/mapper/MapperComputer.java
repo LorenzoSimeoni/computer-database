@@ -50,9 +50,9 @@ public class MapperComputer {
 		
 		LocalDateTime localIntroduced = null;
 		LocalDateTime localDiscontinued = null;
-		if(introduced!=null) {
+		if(!introduced.toLowerCase().equals("null")) {
 			localIntroduced = LocalDateTime.parse(introduced);
-			if(discontinued!=null) {
+			if(!discontinued.toLowerCase().equals("null")) {
 				localDiscontinued = LocalDateTime.parse(discontinued);
 				if(localDiscontinued.isBefore(localIntroduced)) {
 					localDiscontinued = null;
