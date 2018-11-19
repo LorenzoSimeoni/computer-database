@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.excilys.formation.java.cli.service;
+package com.excilys.formation.java.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -47,18 +47,12 @@ public class FeaturesCLI {
 						}else if(userEntry[1].toLowerCase().equals("computerdetails")) {
 							if(userEntry.length==3) {
 								ComputerServices.getInstance().showComputerDetails(userEntry[2]);								
-							}else if(userEntry.length==4) {
-								//TODO
-							}else problemWithArgument();
+							}
 						}else if(userEntry[1].toLowerCase().equals("computerdetailsbyid")) {
 							if(userEntry.length==3) {
 								if (testStringIsAInt(userEntry[2])) {
 									ComputerServices.getInstance().showComputerDetailsByID(Integer.parseInt(userEntry[2]));
 								}else problemWithArgument();								
-							}else if(userEntry.length==4) {
-								if (testStringIsAInt(userEntry[3])) {
-									//TODO
-								}else problemWithArgument();
 							}else problemWithArgument();
 						}else problemWithArgument();				
 					}else problemWithArgument();

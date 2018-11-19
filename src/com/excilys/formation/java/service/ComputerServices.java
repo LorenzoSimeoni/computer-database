@@ -1,10 +1,10 @@
-package com.excilys.formation.java.cli.service;
+package com.excilys.formation.java.service;
 
 import java.util.List;
 
-import com.excilys.formation.java.cli.dao.ComputerDAO;
-import com.excilys.formation.java.cli.mapper.MapperComputer;
-import com.excilys.formation.java.cli.modele.Computer;
+import com.excilys.formation.java.dao.ComputerDAO;
+import com.excilys.formation.java.mapper.MapperComputer;
+import com.excilys.formation.java.model.Computer;
 
 public class ComputerServices {
 	
@@ -22,32 +22,20 @@ public class ComputerServices {
 	 * Print all the Computer object found in the List<Computer> gived by our computerDao
 	 */
 	public void showComputer() {
-		List<Computer> listResults = computerDao.listComputer();
+		List<Computer> listResults = computerDao.getList();
 		for(Computer computer : listResults){
-			printComputerDetails(computer);
+			System.out.println(computer.toString());
 		}
 	}
-	
-	/**
-	 * Layout of computer object
-	 * @param computer
-	 */
-	public void printComputerDetails(Computer computer) {
-		System.out.print(computer.getId() + ", ");
-		System.out.print(computer.getName() + ", ");
-		System.out.print(computer.getIntroduced() + ", ");
-		System.out.print(computer.getDiscontinued() + ", ");
-		System.out.println(computer.getCompanyId());
-	}
-	
+
 	/**
 	 * Print all the Computer object found with name key
 	 * @param name
 	 */
 	public void showComputerDetails(String name) {
-		List<Computer> listResults = computerDao.showComputerDetailsByName(name);
+		List<Computer> listResults = computerDao.getDetailsByName(name);
 		for(Computer computer : listResults){
-			printComputerDetails(computer);
+			System.out.println(computer.toString());
 		}
 	}
 	
@@ -56,9 +44,9 @@ public class ComputerServices {
 	 * @param id
 	 */
 	public void showComputerDetailsByID(int id) {
-		List<Computer> listResults = computerDao.showComputerDetailsByID(id);
+		List<Computer> listResults = computerDao.getDetailsByID(id);
 		for(Computer computer : listResults){
-			printComputerDetails(computer);
+			System.out.println(computer.toString());
 		}
 	}
 	
@@ -67,7 +55,7 @@ public class ComputerServices {
 	 * @param id
 	 */
 	public void deleteComputer(int id) {
-		computerDao.deleteComputer(id);
+		computerDao.delete(id);
 	}
 	
 	/**
@@ -79,8 +67,8 @@ public class ComputerServices {
 	 */
 	public void insertComputer(String name, String introduced, String discontinued, String companyID) {
 		MapperComputer mapperComputer = MapperComputer.getInstance();
-		Computer computer = mapperComputer.mapperComputer(name, introduced,discontinued,companyID);
-		computerDao.createComputer(computer);
+		Computer computer = mapperComputer.mapper(name, introduced,discontinued,companyID);
+		computerDao.create(computer);
 	}
 	
 	/**
@@ -93,7 +81,7 @@ public class ComputerServices {
 	 */
 	public void updateComputer(String id, String name, String introduced, String discontinued, String companyID) {
 		MapperComputer mapperComputer = MapperComputer.getInstance();
-		Computer computer = mapperComputer.mapperComputer(name,introduced,discontinued,companyID);
-		computerDao.updateComputer(computer, Integer.parseInt(id));
+		Computer computer = mapperComputer.mapper(id, name,introduced,discontinued,companyID);
+		computerDao.update(computer);
 	}
 }

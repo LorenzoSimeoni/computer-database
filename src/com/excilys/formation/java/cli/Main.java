@@ -3,7 +3,7 @@
  */
 package com.excilys.formation.java.cli;
 
-import com.excilys.formation.java.cli.service.FeaturesCLI;
+import com.excilys.formation.java.service.FeaturesCLI;
 
 /**
  * @author excilys

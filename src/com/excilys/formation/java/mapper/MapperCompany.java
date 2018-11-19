@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.excilys.formation.java.cli.mapper;
+package com.excilys.formation.java.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.excilys.formation.java.cli.modele.Company;
+import com.excilys.formation.java.model.Company;
 
 /**
  * @author excilys
@@ -28,10 +28,8 @@ public class MapperCompany {
 	 * @return Constructed company object
 	 * @throws SQLException
 	 */
-	public Company mapperCompany(ResultSet results) throws SQLException {
-		Company company = new Company();
-		company.setId(results.getInt(1));
-		company.setName(results.getString(2));
+	public Company mapper(ResultSet results) throws SQLException {
+		Company company = new Company.CompanyBuilder(results.getLong(1)).setName(results.getString(2)).build();
 		
 		return company;
 	}

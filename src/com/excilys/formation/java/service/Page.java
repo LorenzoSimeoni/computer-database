@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.excilys.formation.java.cli.service;
+package com.excilys.formation.java.service;
 
 import java.util.List;
 import java.util.Scanner;
 
-import com.excilys.formation.java.cli.modele.Company;
-import com.excilys.formation.java.cli.modele.Computer;
+import com.excilys.formation.java.model.Company;
+import com.excilys.formation.java.model.Computer;
 
 public class Page {
 	

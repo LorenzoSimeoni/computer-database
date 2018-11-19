@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.excilys.formation.java.cli.service;
+package com.excilys.formation.java.service;
 
 import java.util.List;
 
-import com.excilys.formation.java.cli.dao.ComputerDAO;
-import com.excilys.formation.java.cli.modele.Computer;
+import com.excilys.formation.java.dao.ComputerDAO;
+import com.excilys.formation.java.model.Computer;
 
 /**
  * @author excilys
@@ -25,13 +25,13 @@ public class PageComputer {
 	}
 	
 	public List<Computer> initiateTable() {
-		List<Computer> listResults = computerDao.listComputer();
+		List<Computer> listResults = computerDao.getList();
 		return listResults;
 	}
 	
 	public boolean showComputerPage(int nbElement, List<Computer> listResults) {
 		for(int i = compteur, n = listResults.size(), j = i; i < n && i-j<nbElement; i++) { 
-			printComputerDetails(listResults.get(i));
+			System.out.println(listResults.get(i).toString());
 	        compteur = i;
 	    }
 		compteur++;
@@ -40,12 +40,5 @@ public class PageComputer {
 			return true;
 		}
 		return false;
-	}
-	public void printComputerDetails(Computer computer) {
-		System.out.print(computer.getId() + ", ");
-		System.out.print(computer.getName() + ", ");
-		System.out.print(computer.getIntroduced() + ", ");
-		System.out.print(computer.getDiscontinued() + ", ");
-		System.out.println(computer.getCompanyId());
 	}
 }

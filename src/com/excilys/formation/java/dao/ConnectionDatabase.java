@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.excilys.formation.java.cli.dao;
+package com.excilys.formation.java.dao;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,12 +15,20 @@ import java.util.Properties;
  * @author excilys
  *
  */
-public class ConnectionCLI {
+public class ConnectionDatabase {
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
 	
 	private Connection connection;
 	private Properties properties;
+	
+	private ConnectionDatabase(){}
+	
+	private static ConnectionDatabase connectionDatabase = new ConnectionDatabase();
+	
+	public static ConnectionDatabase getInstance() {
+		return connectionDatabase;
+	}
 	
 	/**
 	 * Get the properties of the database connection

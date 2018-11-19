@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.excilys.formation.java.cli.service;
+package com.excilys.formation.java.service;
 
 import java.util.List;
 
-import com.excilys.formation.java.cli.dao.CompanyDAO;
-import com.excilys.formation.java.cli.modele.Company;
+import com.excilys.formation.java.dao.CompanyDAO;
+import com.excilys.formation.java.model.Company;
 
 /**
  * @author excilys
@@ -26,13 +26,13 @@ public class PageCompany {
 	}
 	
 	public List<Company> initiateTable() {
-		List<Company> listResults = companyDao.listCompany();
+		List<Company> listResults = companyDao.getList();
 		return listResults;
 	}
 	
 	public boolean showCompanyPage(int nbElement, List<Company> listResults) {
 		for(int i = compteur, n = listResults.size(), j = i; i < n && i-j<nbElement; i++) { 
-	        printCompanyDetails(listResults.get(i));
+	        System.out.println(listResults.get(i).toString());
 	        compteur = i;
 	    }
 		compteur++;
@@ -41,10 +41,5 @@ public class PageCompany {
 			return true;
 		}
 		return false;
-	}
-	
-	public void printCompanyDetails(Company company) {
-		System.out.print(company.getId() + ", ");
-		System.out.println(company.getName() + ", ");
 	}
 }

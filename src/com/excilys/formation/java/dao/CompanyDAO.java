@@ -1,4 +1,4 @@
-package com.excilys.formation.java.cli.dao;
+package com.excilys.formation.java.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.formation.java.cli.mapper.MapperCompany;
-import com.excilys.formation.java.cli.modele.Company;
+import com.excilys.formation.java.mapper.MapperCompany;
+import com.excilys.formation.java.model.Company;
 
 /**
  * 
@@ -16,9 +16,9 @@ import com.excilys.formation.java.cli.modele.Company;
  */
 public class CompanyDAO {
 	
-	private PreparedStatement stmt;
-	private ResultSet results;
+	private MapperCompany mapperCompany = MapperCompany.getInstance();
 	private static final String LISTCOMPANY = "SELECT * FROM company;";
+	private static final String SHOWCOMPANYPAGE = "SELECT * FROM computer LIMIT ? OFFSET ?";
 	
 	private CompanyDAO(){}
 	
@@ -32,15 +32,16 @@ public class CompanyDAO {
 	 * Function use to print Company database
 	 * @return a list filled with all the Company object found in database
 	 */
-	public List<Company> listCompany() {
-		ConnectionCLI cli = new ConnectionCLI();
+	public List<Company> getList() {
+		PreparedStatement stmt;
+		ResultSet results;
+		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Company> list = new ArrayList<Company>();
 		try {
-			stmt = cli.connect().prepareStatement(LISTCOMPANY);
+			stmt = connectionDatabase.connect().prepareStatement(LISTCOMPANY);
 			results = stmt.executeQuery();
-			MapperCompany mapperCompany = MapperCompany.getInstance();
 			while(results.next()) {
-				Company company = mapperCompany.mapperCompany(results);
+				Company company = mapperCompany.mapper(results);
 				list.add(company);
 			}
 		} catch (SQLException e) {
@@ -48,9 +49,7 @@ public class CompanyDAO {
 			e.printStackTrace();
 		}
 		finally {
-			cli.disconnect();
-			if (results != null) try { results.close(); } catch (SQLException ignore) {}
-	        if (stmt != null) try { stmt.close(); } catch (SQLException ignore) {}
+			connectionDatabase.disconnect();
 		}
 		return list;
 	}
