@@ -23,7 +23,7 @@ public class ComputerDAO {
 	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
 	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = ?,introduced = ?,discontinued = ?,company_id = ? WHERE ID = ?";
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
-	private static final String SHOWCOMPUTERPAGE = "SELECT * FROM computer LIMIT ? OFFSET ?";
+	private static final String SHOWCOMPUTERPAGE = "SELECT * FROM computer LIMIT ?, ?";
 	
 	private ComputerDAO(){}
 	
@@ -42,6 +42,29 @@ public class ComputerDAO {
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPUTER)) {
+			results = stmt.executeQuery();
+			while(results.next()) {
+				Computer computer = mapperComputer.mapper(results);
+				list.add(computer);
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception due à la requète ListComputer");
+			e.printStackTrace();
+		}
+		finally {
+			if(results != null) try { results.close(); } catch (SQLException ignore) {}
+			connectionDatabase.disconnect();
+		}
+		return list;
+	}
+	
+	public List<Computer> getListPage(int limit, int offset) {
+		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
+		List<Computer> list = new ArrayList<Computer>();
+		ResultSet results = null;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERPAGE)) {
+			stmt.setInt(1, limit);
+			stmt.setInt(2, offset);
 			results = stmt.executeQuery();
 			while(results.next()) {
 				Computer computer = mapperComputer.mapper(results);

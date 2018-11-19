@@ -31,4 +31,11 @@ public class CompanyServices {
 			System.out.println(company.toString());
 		}
 	}
+	
+	public void showCompanyPage(int limit, int offset) {
+		List<Company> listResults = companyDao.getListPage(limit, offset);
+		for(Company company : listResults) {
+			System.out.println(company.toString());
+		}
+	}
 }

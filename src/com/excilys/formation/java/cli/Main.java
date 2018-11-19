@@ -10,7 +10,7 @@ import com.excilys.formation.java.service.FeaturesCLI;
  *
  */
 public class Main {
-	int b;
+
 	/**
 	 * @param args
 	 */

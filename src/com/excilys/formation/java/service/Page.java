@@ -3,17 +3,11 @@
  */
 package com.excilys.formation.java.service;
 
-import java.util.List;
 import java.util.Scanner;
 
-import com.excilys.formation.java.model.Company;
-import com.excilys.formation.java.model.Computer;
-
 public class Page {
-	
-	private List<Company> listResultsCompany = null;
-	private List<Computer> listResultsComputer = null;
-	private boolean listEnd = false;
+	public int limit = 0;
+	public int offset = 0;
 	
 	private Page(){}
 	
@@ -23,46 +17,33 @@ public class Page {
 		return page;
 	}
 	
-	/**
-	 * Make element print nbElements by nbElements
-	 * @param nbElements the number max of Element the method print in one loop
-	 * @param nameOfTable Computer or Company
-	 * @param sc 
-	 * @return the string, if exit, all the program is closed
-	 */
-	public String pagination(int nbElements, String nameOfTable, Scanner sc) {
+	public String page(int size, String comp, Scanner sc) {
 		String str;
-
-		if(nameOfTable.toLowerCase().equals("company")) {
-			listResultsCompany = PageCompany.getInstance().initiateTable();
-		} else if(nameOfTable.toLowerCase().equals("computer")) {
-			listResultsComputer = PageComputer.getInstance().initiateTable();
+		limit = size;
+		if(comp.toLowerCase().equals("company")) {
+			CompanyServices.getInstance().showCompanyPage(limit,offset);
+		} else if(comp.toLowerCase().equals("computer")) {
+			ComputerServices.getInstance().showComputerPage(limit,offset);
+		} else {
+			return "problem with arg";
 		}
-		callPrintFunctions(nameOfTable,nbElements);
 		do {
+			offset = limit;
+			limit = limit + size;
 			str = sc.nextLine();
 			if(str.toLowerCase().equals("suivant")) {
-				callPrintFunctions(nameOfTable,nbElements);
+				if(comp.toLowerCase().equals("company")) {
+					CompanyServices.getInstance().showCompanyPage(limit,offset);
+				} else if(comp.toLowerCase().equals("computer")) {
+					ComputerServices.getInstance().showComputerPage(limit,offset);
+				}
 			}
 			else if(!str.equals("exit")) {
 				System.out.println("Veuillez faire 'suivant' pour en afficher plus, ou quitter avec 'exit' ! ");
-			}
-		} while(!str.equals("exit") && !listEnd);
-		return str;
-	}
-	
-	/**
-	 * 
-	 * @param nameOfTable
-	 * @param nbElements
-	 */
-	public void callPrintFunctions(String nameOfTable, int nbElements) {
-		if(nameOfTable.toLowerCase().equals("company")) {
-			listEnd = PageCompany.getInstance().showCompanyPage(nbElements,listResultsCompany);
-		}
-		else if(nameOfTable.toLowerCase().equals("computer")) {
-			listEnd = PageComputer.getInstance().showComputerPage(nbElements,listResultsComputer);
-		}
+}
+		} while(!str.equals("exit"));
+
+		return "exit";
 	}
 
 }

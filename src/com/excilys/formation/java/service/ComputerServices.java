@@ -19,10 +19,22 @@ public class ComputerServices {
 	}
 	
 	/**
-	 * Print all the Computer object found in the List<Computer> gived by our computerDao
+	 * Print all the Computer object found in the List<Computer> give by our computerDao
 	 */
 	public void showComputer() {
 		List<Computer> listResults = computerDao.getList();
+		for(Computer computer : listResults){
+			System.out.println(computer.toString());
+		}
+	}
+	
+	/**
+	 * Print the number of computer give with limit and offset
+	 * @param limit
+	 * @param offset
+	 */
+	public void showComputerPage(int limit, int offset) {
+		List<Computer> listResults = computerDao.getListPage(limit, offset);
 		for(Computer computer : listResults){
 			System.out.println(computer.toString());
 		}

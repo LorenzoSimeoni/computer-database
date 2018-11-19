@@ -34,14 +34,14 @@ public class FeaturesCLI {
 						if (userEntry[1].toLowerCase().equals("computer")) {
 							if(userEntry.length==3) {
 								if (testStringIsAInt(userEntry[2])) {
-									str = Page.getInstance().pagination(Integer.parseInt(userEntry[2]), userEntry[1], sc);
+									str = Page.getInstance().page(Integer.parseInt(userEntry[2]), userEntry[1], sc);
 								}else problemWithArgument();
 							}
 							else ComputerServices.getInstance().showComputer();								
 						}else if (userEntry[1].toLowerCase().equals("company")) {
 							if(userEntry.length==3) {
 								if (testStringIsAInt(userEntry[2])) {
-									str = Page.getInstance().pagination(Integer.parseInt(userEntry[2]), userEntry[1], sc);
+									str = Page.getInstance().page(Integer.parseInt(userEntry[2]), userEntry[1], sc);
 								}else problemWithArgument();
 							} else CompanyServices.getInstance().showCompany();
 						}else if(userEntry[1].toLowerCase().equals("computerdetails")) {
