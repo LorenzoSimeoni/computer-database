@@ -113,12 +113,12 @@ public class ComputerDAO {
 	 * @param ID used as a key to search in Computer database
 	 * @return a list filled with the Computer object found with the key
 	 */
-	public List<Computer> getDetailsByID(int id) {
+	public List<Computer> getDetailsByID(long id) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERDETAILSBYID)) {
-			stmt.setInt(1, id);
+			stmt.setLong(1, id);
 			results = stmt.executeQuery();
 			while(results.next()) {
 				Computer computer = mapperComputer.mapper(results);
@@ -151,21 +151,20 @@ public class ComputerDAO {
 				else {
 					stmt.setString(3, null);
 				}
-			}else {
+			} else {
 				stmt.setString(2, null);
-				stmt.setString(3, null);
+				stmt.setString(3, null);	
 			}
 			if (computer.getCompany().getId() == 0) {
 				stmt.setString(4, null);
-			} else if(checkCompanyID(computer.getCompany().getId())) {
-				stmt.setLong(4, computer.getCompany().getId());				
-				if (stmt.executeUpdate() == 1) {
-					System.out.println("Computer Created");
-				} else {
-					System.out.println("Computer Not Created ! ");
-				}
+			} else {
+				stmt.setLong(4, computer.getCompany().getId());	
 			}
-			else System.out.println("The company ID you give is wrong ... can't create the new computer");
+			if (stmt.executeUpdate() == 1) {
+				System.out.println("Computer Created");
+			} else {
+				System.out.println("Computer Not Created ! ");
+			}
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète CREATECOMPUTER");
 			e.printStackTrace();
@@ -176,26 +175,11 @@ public class ComputerDAO {
 	}
 	
 	/**
-	 * Check if CompanyID exist to avoid sql error
-	 * @param companyID the ID we will check if it exist in Company database
-	 * @return true if the ID exist false if not
-	 */
-	public boolean checkCompanyID(long companyID) {
-//		List<Company> listCompany = CompanyDAO.getInstance().listCompany();
-//		for(Company company: listCompany) {
-//			if(company.getId()==companyID) {
-//				return true;
-//			}
-//		}
-		return false;
-	}
-	
-	/**
 	 * Update a computer using his ID
 	 * @param computer contains the new configuration of computer
 	 * @param id the ID of the computer we want to change
 	 */
-	public void update(Computer computer) {
+	public Computer update(Computer computer) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		try (PreparedStatement stmt = connectionDatabase.connect().prepareStatement(UPDATEACOMPUTER)){	
 			stmt.setString(1, computer.getName());
@@ -213,16 +197,15 @@ public class ComputerDAO {
 			}
 			if (computer.getCompany().getId() == 0) {
 				stmt.setString(4, null);
-			} else if(checkCompanyID(computer.getCompany().getId())) {
+			} else {
 				stmt.setLong(4, computer.getCompany().getId());				
 				stmt.setLong(5, computer.getId());
-				if (stmt.executeUpdate() == 1) {
-					System.out.println("Computer Updated");
-				} else {
-					System.out.println("Computer Not Updated ! ");
-				}
 			}
-			else System.out.println("The company ID you give is wrong ... can't update the computer"); 
+			if (stmt.executeUpdate() == 1) {
+				System.out.println("Computer Updated");
+			} else {
+				System.out.println("Computer Not Updated ! ");
+			}
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète UPDATEACOMPUTER");
 			e.printStackTrace();
@@ -230,17 +213,20 @@ public class ComputerDAO {
 		finally {
 			connectionDatabase.disconnect();
 		}
+		return computer;
 	}
 	
 	/**
 	 * Delete a computer using his ID
 	 * @param id  the ID of the computer we want to delete
 	 */
-	public void delete(int id) {
+	public int delete(long id) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
+		int numberOfDeletedElement = 0;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(DELETEACOMPUTER)) {
-			stmt.setInt(1, id);
-			if(stmt.executeUpdate() == 1) {
+			stmt.setLong(1, id);
+			numberOfDeletedElement = stmt.executeUpdate();
+			if(numberOfDeletedElement != 0) {
 				System.out.println("Computer Deleted");
 			}else {
 				System.out.println("ID unreachable");
@@ -252,5 +238,6 @@ public class ComputerDAO {
 		finally {
 			connectionDatabase.disconnect();
 		}
+		return numberOfDeletedElement;
 	}
 }

@@ -120,8 +120,7 @@ public class MapperComputer {
 				}
 			}
 		}
-
-		if(companyId != null) {
+		if(!companyId.equals("null")) {
 			company = new Company.CompanyBuilder(Long.parseLong(companyId)).build();		
 		}
 		else {

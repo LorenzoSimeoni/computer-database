@@ -13,7 +13,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		FeaturesCLI showComputer = FeaturesCLI.getInstance();
+		FeatureCLI showComputer = FeatureCLI.getInstance();
 
 		showComputer.features();		
 	}

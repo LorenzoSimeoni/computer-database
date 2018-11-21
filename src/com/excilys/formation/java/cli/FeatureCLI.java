@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-public class FeaturesCLI {
+public class FeatureCLI {
 	
-	private FeaturesCLI(){}
+	private FeatureCLI(){}
 	
-	private static FeaturesCLI featuresCLI = new FeaturesCLI();
+	private static FeatureCLI featuresCLI = new FeatureCLI();
 	
-	public static FeaturesCLI getInstance() {
+	public static FeatureCLI getInstance() {
 		return featuresCLI;
 	}
 	

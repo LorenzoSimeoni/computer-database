@@ -2,7 +2,7 @@ package com.excilys.formation.java.cli;
 
 import java.util.List;
 
-import com.excilys.formation.java.dao.CompanyDAO;
+import com.excilys.formation.java.service.CompanyService;
 import com.excilys.formation.java.model.Company;
 
 /**
@@ -11,29 +11,29 @@ import com.excilys.formation.java.model.Company;
  *
  */
 public class CompanyCLI {
-	
-	private CompanyDAO companyDao = CompanyDAO.getInstance();
+	private CompanyService companyServices = CompanyService.getInstance();
 	
 	private CompanyCLI(){}
 	
-	private static CompanyCLI companyServices = new CompanyCLI();
+	private static CompanyCLI companyCLI = new CompanyCLI();
 	
 	public static CompanyCLI getInstance() {
-		return companyServices;
+		return companyCLI;
 	}
 	
 	/**
 	 * Print all the Company object found in the List<Company> gived by our companyDao
 	 */
 	public void showCompany() {
-		List<Company> listResults = companyDao.getList();
+		
+		List<Company> listResults = companyServices.show();
 		for(Company company : listResults) {
 			System.out.println(company.toString());
 		}
 	}
 	
 	public void showCompanyPage(int limit, int offset) {
-		List<Company> listResults = companyDao.getListPage(limit, offset);
+		List<Company> listResults = companyServices.showPage(limit, offset);
 		for(Company company : listResults) {
 			System.out.println(company.toString());
 		}
