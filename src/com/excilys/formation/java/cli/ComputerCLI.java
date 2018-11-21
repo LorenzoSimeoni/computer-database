@@ -1,12 +1,10 @@
 package com.excilys.formation.java.cli;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.service.ComputerService;
-import com.excilys.formation.java.validator.validator;
 
 public class ComputerCLI {
 	MapperComputer mapperComputer = MapperComputer.getInstance();
@@ -50,10 +48,8 @@ public class ComputerCLI {
 	 * @param id
 	 */
 	public void showComputerDetailsByID(long id) {
-		List<Computer> listResults = computerServices.showComputerDetailsByID(id);
-		for(Computer computer : listResults){
-			System.out.println(computer.toString());
-		}
+		Computer computer = computerServices.showComputerDetailsByID(id);
+		System.out.println(computer.toString());
 	}
 	
 	/**

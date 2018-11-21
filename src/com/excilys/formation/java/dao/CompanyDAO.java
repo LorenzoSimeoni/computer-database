@@ -18,6 +18,7 @@ public class CompanyDAO {
 	
 	private MapperCompany mapperCompany = MapperCompany.getInstance();
 	private static final String LISTCOMPANY = "SELECT * FROM company;";
+	private static final String LISTCOMPANYDETAILSBYID = "SELECT * FROM company WHERE id = ?;";
 	private static final String SHOWCOMPANYPAGE = "SELECT * FROM computer LIMIT ?, ?";
 	
 	private CompanyDAO(){}
@@ -37,6 +38,31 @@ public class CompanyDAO {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Company> list = new ArrayList<Company>();
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPANY)) {
+			results = stmt.executeQuery();
+			while(results.next()) {
+				Company company = mapperCompany.mapper(results);
+				list.add(company);
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception due à la requète LISTCOMPANY");
+			e.printStackTrace();
+		} finally {
+			if(results != null) try { results.close(); } catch (SQLException ignore) {}
+			connectionDatabase.disconnect();
+		}
+		return list;
+	}
+	
+	/**
+	 * Function use to print Company database
+	 * @return a list filled with all the Company object found in database
+	 */
+	public List<Company> getDetailsById(long id) {
+		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
+		List<Company> list = new ArrayList<Company>();
+		ResultSet results = null;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPANYDETAILSBYID)) {
+			stmt.setLong(1, id);
 			results = stmt.executeQuery();
 			while(results.next()) {
 				Company company = mapperCompany.mapper(results);

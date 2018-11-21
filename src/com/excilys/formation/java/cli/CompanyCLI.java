@@ -12,12 +12,19 @@ import com.excilys.formation.java.model.Company;
  */
 public class CompanyCLI {
 	private CompanyService companyServices = CompanyService.getInstance();
-	
+
 	/**
 	 * Print all the Company object found in the List<Company> gived by our companyDao
 	 */
 	public void showCompany() {
 		List<Company> listResults = companyServices.show();
+		for(Company company : listResults) {
+			System.out.println(company.toString());
+		}
+	}
+	
+	public void showCompanyDetailsById(long id) {
+		List<Company> listResults = companyServices.showDetailsById(id);
 		for(Company company : listResults) {
 			System.out.println(company.toString());
 		}

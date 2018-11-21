@@ -62,6 +62,8 @@ public class Computer {
 		private LocalDateTime discontinued;
 		private Company company;
 		
+		public ComputerBuilder() {}
+		
 		public ComputerBuilder(String name) {
 			this.name = name;
 		}

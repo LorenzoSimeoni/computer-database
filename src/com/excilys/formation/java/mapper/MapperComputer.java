@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.service.ComputerService;
 import com.excilys.formation.java.validator.validator;
 
 /**
@@ -67,33 +68,62 @@ public class MapperComputer {
 	 */
 	public Computer mapper(long id, String name, String introduced, String discontinued, String companyId) {
 		Company company;
-		Computer computer;
+		Computer computerUpdated;
+		String nameComputer = name;
+		long companyID;
+		Computer computer = ComputerService.getInstance().showComputerDetailsByID(id);
 		
 		LocalDateTime localIntroduced = null;
 		LocalDateTime localDiscontinued = null;
-		if(introduced != null && validator.testStringIsADate(introduced)) {
-			localIntroduced = LocalDateTime.parse(introduced);
+		
+		if(name != null && name.equals("")) {
+			nameComputer = computer.getName();
+		}
+		if(introduced != null && introduced.equals("")) {
+			localIntroduced = computer.getIntroduced();
+		} else {
+			if(introduced != null && validator.testStringIsADate(introduced)) {
+				localIntroduced = LocalDateTime.parse(introduced);
+			}
+		}
+		if(discontinued != null && discontinued.equals("")) {
+			localDiscontinued = computer.getDiscontinued();
+		} else {
 			if(discontinued != null && validator.testStringIsADate(discontinued)) {
 				localDiscontinued = LocalDateTime.parse(discontinued);
-				if(localDiscontinued.isBefore(localIntroduced)) {
-					localDiscontinued = null;
+				if(localIntroduced != null && validator.testStringIsADate(introduced)) {
+					if(localDiscontinued.isBefore(localIntroduced)) {
+						localDiscontinued = null;
+					}					
 				}
 			}
 		}
-		if(companyId != null) {
-			company = new Company.CompanyBuilder(Long.parseLong(companyId)).build();		
+		if(companyId != null && companyId.equals("")) {
+			companyID = computer.getCompany().getId();
+			company = new Company.CompanyBuilder(companyID).build();
+		} else {
+			if(companyId != null && validator.testStringIsALong(companyId)) {
+				companyID = Long.parseLong(companyId);
+				if(validator.companyIdExist(companyID)) {
+					company = new Company.CompanyBuilder(companyID).build();						
+				} else {
+					//TODO PUT A LOGGER
+					company = new Company.CompanyBuilder().build();
+				}
+			} else {
+				//TODO PUT A LOGGER
+				company = new Company.CompanyBuilder().build();
+			}
 		}
-		else {
-			company = new Company.CompanyBuilder().build();
-		}
-		computer = new Computer.ComputerBuilder(name)
+
+		computerUpdated = new Computer.ComputerBuilder(nameComputer)
 				.setID(id)
 				.setIntroduced(localIntroduced)
 				.setDiscontinued(localDiscontinued)
 				.setCompanyId(company)
 				.build();			
 		
-		return computer;
+		return computerUpdated;
 	}
 	
 	/**
@@ -119,9 +149,16 @@ public class MapperComputer {
 				}
 			}
 		}
-		if(companyId != null) {
-			company = new Company.CompanyBuilder(Long.parseLong(companyId)).build();		
+		if(companyId != null && validator.testStringIsALong(companyId)) {
+			long companyIdTransform = Long.parseLong(companyId);
+			if(validator.companyIdExist(companyIdTransform)) {
+				company = new Company.CompanyBuilder(companyIdTransform).build();						
+			} else {
+				//TODO PUT A LOGGER
+				company = new Company.CompanyBuilder().build();
+			}
 		} else {
+			//TODO PUT A LOGGER
 			company = new Company.CompanyBuilder().build();
 		}
 		

@@ -110,16 +110,15 @@ public class ComputerDAO {
 	 * @param ID used as a key to search in Computer database
 	 * @return a list filled with the Computer object found with the key
 	 */
-	public List<Computer> getDetailsByID(long id) {
+	public Computer getDetailsByID(long id) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
-		List<Computer> list = new ArrayList<Computer>();
+		Computer computer = new Computer.ComputerBuilder().build();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERDETAILSBYID)) {
 			stmt.setLong(1, id);
 			results = stmt.executeQuery();
 			while(results.next()) {
-				Computer computer = mapperComputer.mapper(results);
-				list.add(computer);
+				computer = mapperComputer.mapper(results);
 			}
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète SHOWCOMPUTERDETAILSBYID");
@@ -128,7 +127,7 @@ public class ComputerDAO {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
-		return list;
+		return computer;
 	}
 	
 	/**

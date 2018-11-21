@@ -29,7 +29,7 @@ public class ComputerService {
 		return computerDao.getDetailsByName(name);
 	}
 	
-	public List<Computer> showComputerDetailsByID(long id) {
+	public Computer showComputerDetailsByID(long id) {
 		return computerDao.getDetailsByID(id);
 	}
 

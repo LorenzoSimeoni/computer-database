@@ -19,15 +19,19 @@ public class FeatureCLI {
 			switch (key) {
 			case 1:
 				parseShow(sc);
+				System.out.println("\n \n ********************************************************* \n \n");
 				break;
 			case 2:
 				parseCreate(sc);
+				System.out.println("\n \n ********************************************************* \n \n");
 				break;
 			case 3:
 				parseUpdate(sc);
+				System.out.println("\n \n ********************************************************* \n \n");
 				break;
 			case 4:
 				parseDelete(sc);
+				System.out.println("\n \n ********************************************************* \n \n");
 				break;
 			case 5:
 				quitter = false;
@@ -71,13 +75,11 @@ public class FeatureCLI {
 		sc.nextLine();
 		String name = sc.nextLine();
 		computerCLI.showComputerDetails(name);
-		System.out.println("\n \n ********************************************************* \n \n");
 	}
 	public void displayComputerDetailsID(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTER DETAILS BY ID, GIVE AN ID PLEASE");
 		long id = validator.userGiveALong(sc);
 		computerCLI.showComputerDetailsByID(id);
-		System.out.println("\n \n ********************************************************* \n \n");
 	}
 	public void displayComputerPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTERS WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
@@ -95,13 +97,13 @@ public class FeatureCLI {
 		System.out.println("Give a computer Name");
 		sc.nextLine();
 		String name = sc.nextLine();
-		System.out.println("Give an introduced Date (if you don't want to fill a date write null or do an enter)");
+		System.out.println("Give an introduced Date (if you don't want to fill a date do an enter)");
 		String introduced = sc.nextLine();
 		String discontinued = null;
 		if(introduced.equals("null") || introduced.equals("")) {
 			introduced = null;
 		} else {
-			System.out.println("Give a discontinued date (if you don't want to fill a date write null or do an enter)");
+			System.out.println("Give a discontinued date (if you don't want to fill a date do an enter)");
 			discontinued = sc.nextLine();
 			if(discontinued.equals("null") || discontinued.equals("")) {
 				discontinued = null;
@@ -126,28 +128,35 @@ public class FeatureCLI {
 		displayUpdateMenu();
 		System.out.println("Give a computer ID");
 		long id = validator.userGiveALong(sc);
-		System.out.println("Give a computer Name (if you don't want to change the name write null or do an enter)");
+		System.out.println("Give a computer Name (if you don't want to change the name do an enter)");
 		sc.nextLine();
 		String name = sc.nextLine();
-		if(name.equals("null")|| name.equals("")) {
+		if(name.equals("null")) {
 			name = null;
+		} else if(name.equals("")) {
+			name = "nochange";
 		}
-		System.out.println("Give an introduced Date (if you don't want to fill a date write null or do an enter)");
+		System.out.println("Give an introduced Date (if you don't want to fill a date do an enter)");
 		String introduced = sc.nextLine();
-		String discontinued = null;
-		if(introduced.equals("null") || introduced.equals("")) {
+		if(introduced.equals("null")) {
 			introduced = null;
-		} else {
-			System.out.println("Give a discontinued date (if you don't want to fill a date write null or do an enter)");
-			discontinued = sc.nextLine();
-			if(discontinued.equals("null") || discontinued.equals("")) {
-				discontinued = null;
-			} 
+		} else if(name.equals("")) {
+			introduced = "nochange";
 		}
+		System.out.println("Give a discontinued date (if you don't want to fill a date do an enter)");
+		String discontinued = sc.nextLine();
+		if(discontinued.equals("null")) {
+			discontinued = null;
+		} else if(name.equals("")) {
+			discontinued = "nochange";
+		}
+	
 		System.out.println("Give a Company ID (if you don't want, write null or do an enter)");
 		String companyId = sc.nextLine();
-		if(companyId.equals("null") || companyId.equals("")) {
+		if(companyId.equals("null")) {
 			companyId = null;
+		} else if(name.equals("")) {
+			companyId = "nochange";
 		}
 		computerCLI.updateComputer(id, name, introduced, discontinued, companyId);
 	}

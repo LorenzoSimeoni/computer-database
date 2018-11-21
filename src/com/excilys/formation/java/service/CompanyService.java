@@ -24,6 +24,10 @@ public class CompanyService {
 		return companyDao.getList();
 	}
 	
+	public List<Company> showDetailsById(long id) {
+		return companyDao.getDetailsById(id);
+	}
+	
 	public List<Company> showPage(int limit, int offset) {
 		return companyDao.getListPage(limit, offset);
 	}
