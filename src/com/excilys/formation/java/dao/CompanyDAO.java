@@ -19,7 +19,7 @@ public class CompanyDAO {
 	private MapperCompany mapperCompany = MapperCompany.getInstance();
 	private static final String LISTCOMPANY = "SELECT * FROM company;";
 	private static final String LISTCOMPANYDETAILSBYID = "SELECT * FROM company WHERE id = ?;";
-	private static final String SHOWCOMPANYPAGE = "SELECT * FROM computer LIMIT ?, ?";
+	private static final String SHOWCOMPANYPAGE = "SELECT * FROM company LIMIT ?, ?";
 	
 	private CompanyDAO(){}
 	

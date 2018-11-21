@@ -79,17 +79,25 @@ public class FeatureCLI {
 	public void displayComputerDetailsID(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTER DETAILS BY ID, GIVE AN ID PLEASE");
 		long id = validator.userGiveALong(sc);
-		computerCLI.showComputerDetailsByID(id);
+		if(id != -1) {
+			computerCLI.showComputerDetailsByID(id);
+		}
 	}
 	public void displayComputerPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTERS WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
 		int size = validator.userGiveAnInt(sc);
-		Page.getInstance().pageComputer(size, sc);
+		if(size != -1) {
+			Page page = new Page();
+			page.pageComputer(size, sc);	
+		}
 	}
 	public void displayCompanyPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPANIES WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
 		int size = validator.userGiveAnInt(sc);
-		Page.getInstance().pageCompany(size, sc);
+		if(size != -1) {
+			Page page = new Page();
+			page.pageCompany(size, sc);			
+		}
 	}
 	
 	public void parseCreate(Scanner sc) {
@@ -121,44 +129,49 @@ public class FeatureCLI {
 		System.out.println("YOU CHOOSE TO CREATE A NEW COMPUTER");
 		System.out.println("GIVE AND ID");
 		long id = validator.userGiveALong(sc);
-		computerCLI.deleteComputer(id);
+		if(id != -1) {
+			computerCLI.deleteComputer(id);
+		}
 	}
 	
 	public void parseUpdate(Scanner sc) {
 		displayUpdateMenu();
 		System.out.println("Give a computer ID");
 		long id = validator.userGiveALong(sc);
-		System.out.println("Give a computer Name (if you don't want to change the name do an enter)");
-		sc.nextLine();
-		String name = sc.nextLine();
-		if(name.equals("null")) {
-			name = null;
-		} else if(name.equals("")) {
-			name = "nochange";
+		if(id != -1) {
+			computerCLI.showComputerDetailsByID(id);
+			System.out.println("Give a computer Name (if you don't want to change the name do an enter)");
+			sc.nextLine();
+			String name = sc.nextLine();
+			if(name.equals("null")) {
+				name = null;
+			} else if(name.equals("")) {
+				name = "nochange";
+			}
+			System.out.println("Give an introduced Date (if you don't want to fill a date do an enter)");
+			String introduced = sc.nextLine();
+			if(introduced.equals("null")) {
+				introduced = null;
+			} else if(name.equals("")) {
+				introduced = "nochange";
+			}
+			System.out.println("Give a discontinued date (if you don't want to fill a date do an enter)");
+			String discontinued = sc.nextLine();
+			if(discontinued.equals("null")) {
+				discontinued = null;
+			} else if(name.equals("")) {
+				discontinued = "nochange";
+			}
+			
+			System.out.println("Give a Company ID (if you don't want, write null or do an enter)");
+			String companyId = sc.nextLine();
+			if(companyId.equals("null")) {
+				companyId = null;
+			} else if(name.equals("")) {
+				companyId = "nochange";
+			}
+			computerCLI.updateComputer(id, name, introduced, discontinued, companyId);
 		}
-		System.out.println("Give an introduced Date (if you don't want to fill a date do an enter)");
-		String introduced = sc.nextLine();
-		if(introduced.equals("null")) {
-			introduced = null;
-		} else if(name.equals("")) {
-			introduced = "nochange";
-		}
-		System.out.println("Give a discontinued date (if you don't want to fill a date do an enter)");
-		String discontinued = sc.nextLine();
-		if(discontinued.equals("null")) {
-			discontinued = null;
-		} else if(name.equals("")) {
-			discontinued = "nochange";
-		}
-	
-		System.out.println("Give a Company ID (if you don't want, write null or do an enter)");
-		String companyId = sc.nextLine();
-		if(companyId.equals("null")) {
-			companyId = null;
-		} else if(name.equals("")) {
-			companyId = "nochange";
-		}
-		computerCLI.updateComputer(id, name, introduced, discontinued, companyId);
 	}
 	
 	public void displayMenu() {
