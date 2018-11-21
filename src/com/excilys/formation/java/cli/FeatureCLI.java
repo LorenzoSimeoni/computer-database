@@ -1,145 +1,185 @@
-/**
- * 
- */
 package com.excilys.formation.java.cli;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import com.excilys.formation.java.validator.*;
 
 public class FeatureCLI {
 	
-	private FeatureCLI(){}
+	private static Scanner sc;
+	static CompanyCLI companyCLI = new CompanyCLI();
+	static ComputerCLI computerCLI = new ComputerCLI();
 	
-	private static FeatureCLI featuresCLI = new FeatureCLI();
-	
-	public static FeatureCLI getInstance() {
-		return featuresCLI;
-	}
-	
-	/**
-	 * Parse informations give by the user
-	 */
 	public void features() {
-		Scanner sc = new Scanner(System.in);
-		String str;
-		
-		do {
-			str = sc.nextLine();
-			String[] userEntry = str.split(" ");
-			
-			if(userEntry.length!=0) {
-				if(userEntry[0].toLowerCase().equals("show")) {
-					if(userEntry.length > 1) {
-						if (userEntry[1].toLowerCase().equals("computer")) {
-							if(userEntry.length==3) {
-								if (testStringIsAInt(userEntry[2])) {
-									str = Page.getInstance().page(Integer.parseInt(userEntry[2]), userEntry[1], sc);
-								}else problemWithArgument();
-							}
-							else ComputerCLI.getInstance().showComputer();								
-						}else if (userEntry[1].toLowerCase().equals("company")) {
-							if(userEntry.length==3) {
-								if (testStringIsAInt(userEntry[2])) {
-									str = Page.getInstance().page(Integer.parseInt(userEntry[2]), userEntry[1], sc);
-								}else problemWithArgument();
-							} else CompanyCLI.getInstance().showCompany();
-						}else if(userEntry[1].toLowerCase().equals("computerdetails")) {
-							if(userEntry.length==3) {
-								ComputerCLI.getInstance().showComputerDetails(userEntry[2]);								
-							}
-						}else if(userEntry[1].toLowerCase().equals("computerdetailsbyid")) {
-							if(userEntry.length==3) {
-								if (testStringIsAInt(userEntry[2])) {
-									ComputerCLI.getInstance().showComputerDetailsByID(Integer.parseInt(userEntry[2]));
-								}else problemWithArgument();								
-							}else problemWithArgument();
-						}else problemWithArgument();				
-					}else problemWithArgument();
-				}else if(userEntry[0].toLowerCase().equals("insert")) {
-					if(userEntry.length > 1) {
-						if(userEntry[1].toLowerCase().equals("computer")) {
-							if(userEntry.length==6) {
-								if ((testStringIsADate(userEntry[3]) || userEntry[3].toLowerCase().equals("null")) && (testStringIsADate(userEntry[4]) || userEntry[4].toLowerCase().equals("null"))) {
-									ComputerCLI.getInstance().insertComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5]);					
-								}else problemWithArgument();								
-							}else problemWithArgument();
-						}else problemWithArgument();						
-					}else problemWithArgument();
-				}else if (userEntry[0].toLowerCase().equals("delete")) {
-					if(userEntry.length > 1) {
-						if(userEntry[1].toLowerCase().equals("computer")) {
-							if(userEntry.length==3) {
-								if(testStringIsAInt(userEntry[2])) {
-									ComputerCLI.getInstance().deleteComputer(Integer.parseInt(userEntry[2]));					
-								}else problemWithArgument();								
-							}else problemWithArgument();
-						}else problemWithArgument();						
-					}else problemWithArgument();
-				}else if (userEntry[0].toLowerCase().equals("update")) {
-					if(userEntry.length > 1) {
-						if(userEntry[1].toLowerCase().equals("computer")) {
-							if(userEntry.length==7) {
-								if ((testStringIsADate(userEntry[4]) || userEntry[4].toLowerCase().equals("null")) && (testStringIsADate(userEntry[5]) || userEntry[5].toLowerCase().equals("null"))) {
-									ComputerCLI.getInstance().updateComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5],userEntry[6]);					
-								}else problemWithArgument();								
-							}else problemWithArgument();
-						}else problemWithArgument();						
-					}else problemWithArgument();
-				}else if(userEntry[0].toLowerCase().equals("--help")) {
-					helper();
-				}else {
-					if(!userEntry[0].toLowerCase().equals("exit")) {
-						problemWithArgument();
-					}
-				}
+		int key;
+		boolean quitter = true;
+		while(quitter) {
+			displayMenu();
+			sc = new Scanner(System.in);
+			key = validator.userGiveAnInt(sc);
+			switch (key) {
+			case 1:
+				parseShow(sc);
+				break;
+			case 2:
+				parseCreate(sc);
+				break;
+			case 3:
+				parseUpdate(sc);
+				break;
+			case 4:
+				parseDelete(sc);
+				break;
+			case 5:
+				quitter = false;
+				break;
+			default:
+				break;
 			}
-			else problemWithArgument();
-		} while(!str.equals("exit"));
-		sc.close();
-	}
-	
-	public boolean testStringIsAInt(String str) {
-		try {
-			Integer.parseInt(str);
-		} catch (NumberFormatException e) {
-			return false;
 		}
-		return true;
 	}
 	
-	public boolean testStringIsADate(String str) {
-		try {
-			LocalDateTime.parse(str);
-		} catch (DateTimeParseException e) {
-			return false;
+	public void parseShow(Scanner sc) {
+		int key = 0;
+		displayShowMenu();
+		key = validator.userGiveAnInt(sc);
+		switch (key) {
+			case 1:
+				computerCLI.showComputer();
+				break;
+			case 2:
+				companyCLI.showCompany();
+				break;
+			case 3:
+				displayComputerDetailsName(sc);
+				break;
+			case 4:
+				displayComputerDetailsID(sc);
+				break;
+			case 5:
+				displayComputerPage(sc);
+				break;
+			case 6:
+				displayCompanyPage(sc);
+				break;
+			default:
+				break;			
 		}
-		return true;
 	}
 	
-	/**
-	 * Request template for helping user
-	 */
-	public void helper() {
-		System.out.println("Syntax : java computer-database sqlRequest [arguments]");
-		System.out.println("The sql request and their arguments are :");
-		System.out.println("	Show Computer");
-		System.out.println("	Show Company");
-		System.out.println("	Show Computer [nbElements]");
-		System.out.println("	Show Company [nbElement]");
-		System.out.println("	Show ComputerDetails [ComputerName]");
-		System.out.println("	Show ComputerDetailsById [ComputerID]");
-		System.out.println("	Delete Computer [ComputerID]");
-		System.out.println("	Insert Computer [ComputerName] [IntroducedDate] [DiscontinuedDate] [CompanyID]");
-		System.out.println("	Update Computer [ComputerID] [ComputerName] [IntroducedDate] [DiscontinuedDate] [CompanyID]");
+	public void displayComputerDetailsName(Scanner sc) {
+		System.out.println("YOU CHOOSE TO PRINT COMPUTER DETAILS BY NAME, GIVE A NAME PLEASE");
+		sc.nextLine();
+		String name = sc.nextLine();
+		computerCLI.showComputerDetails(name);
+		System.out.println("\n \n ********************************************************* \n \n");
+	}
+	public void displayComputerDetailsID(Scanner sc) {
+		System.out.println("YOU CHOOSE TO PRINT COMPUTER DETAILS BY ID, GIVE AN ID PLEASE");
+		long id = validator.userGiveALong(sc);
+		computerCLI.showComputerDetailsByID(id);
+		System.out.println("\n \n ********************************************************* \n \n");
+	}
+	public void displayComputerPage(Scanner sc) {
+		System.out.println("YOU CHOOSE TO PRINT COMPUTERS WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
+		int size = validator.userGiveAnInt(sc);
+		Page.getInstance().pageComputer(size, sc);
+	}
+	public void displayCompanyPage(Scanner sc) {
+		System.out.println("YOU CHOOSE TO PRINT COMPANIES WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
+		int size = validator.userGiveAnInt(sc);
+		Page.getInstance().pageCompany(size, sc);
 	}
 	
-	/**
-	 * Call if there is a problem (number, type ...) with the argument the user give
-	 */
-	public void problemWithArgument() {
-		System.out.println("You put a wrong argument, please use --help for more details");
+	public void parseCreate(Scanner sc) {
+		displayCreateMenu();
+		System.out.println("Give a computer Name");
+		sc.nextLine();
+		String name = sc.nextLine();
+		System.out.println("Give an introduced Date (if you don't want to fill a date write null or do an enter)");
+		String introduced = sc.nextLine();
+		String discontinued = null;
+		if(introduced.equals("null") || introduced.equals("")) {
+			introduced = null;
+		} else {
+			System.out.println("Give a discontinued date (if you don't want to fill a date write null or do an enter)");
+			discontinued = sc.nextLine();
+			if(discontinued.equals("null") || discontinued.equals("")) {
+				discontinued = null;
+			} 
+		}
+		System.out.println("Give a Company ID (if you don't want, write null or do an enter)");
+		String companyId = sc.nextLine();
+		if(companyId.equals("null") || companyId.equals("")) {
+			companyId = null;
+		}
+		computerCLI.insertComputer(name, introduced, discontinued, companyId);
 	}
 	
-
+	public void parseDelete(Scanner sc) {
+		System.out.println("YOU CHOOSE TO CREATE A NEW COMPUTER");
+		System.out.println("GIVE AND ID");
+		long id = validator.userGiveALong(sc);
+		computerCLI.deleteComputer(id);
+	}
+	
+	public void parseUpdate(Scanner sc) {
+		displayUpdateMenu();
+		System.out.println("Give a computer ID");
+		long id = validator.userGiveALong(sc);
+		System.out.println("Give a computer Name (if you don't want to change the name write null or do an enter)");
+		sc.nextLine();
+		String name = sc.nextLine();
+		if(name.equals("null")|| name.equals("")) {
+			name = null;
+		}
+		System.out.println("Give an introduced Date (if you don't want to fill a date write null or do an enter)");
+		String introduced = sc.nextLine();
+		String discontinued = null;
+		if(introduced.equals("null") || introduced.equals("")) {
+			introduced = null;
+		} else {
+			System.out.println("Give a discontinued date (if you don't want to fill a date write null or do an enter)");
+			discontinued = sc.nextLine();
+			if(discontinued.equals("null") || discontinued.equals("")) {
+				discontinued = null;
+			} 
+		}
+		System.out.println("Give a Company ID (if you don't want, write null or do an enter)");
+		String companyId = sc.nextLine();
+		if(companyId.equals("null") || companyId.equals("")) {
+			companyId = null;
+		}
+		computerCLI.updateComputer(id, name, introduced, discontinued, companyId);
+	}
+	
+	public void displayMenu() {
+		System.out.println("WELCOME IN THE COMPUTER DATABASE APPLICATION");
+		System.out.println("MENU : ");
+		System.out.println("          1. SHOW");
+		System.out.println("          2. CREATE");
+		System.out.println("          3. UPDATE");
+		System.out.println("          4. DELETE");
+		System.out.println("          5. EXIT");
+	}
+	
+	public void displayShowMenu() {
+		System.out.println("WHAT DO YOU WANT TO SHOW ?");
+		System.out.println("CHOICES : ");
+		System.out.println("          1. COMPUTERS");
+		System.out.println("          2. COMPANIES");
+		System.out.println("          3. COMPUTER DETAILS BY NAME");
+		System.out.println("          4. COMPUTER DETAILS BY ID");
+		System.out.println("          5. COMPUTERS WITH PAGING");
+		System.out.println("          6. COMPANIES WITH PAGING");
+	}
+	
+	public void displayCreateMenu() {
+		System.out.println("YOU CHOOSE TO CREATE A NEW COMPUTER");
+		System.out.println("Give fields when asked, if you want to exit write 'exit'");
+	}
+	
+	public void displayUpdateMenu() {
+		System.out.println("YOU CHOOSE TO UPDATE A NEW COMPUTER");
+		System.out.println("Give fields when asked, if you want to exit write 'exit'");
+	}
 }

@@ -45,8 +45,7 @@ public class CompanyDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète LISTCOMPANY");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
@@ -74,8 +73,7 @@ public class CompanyDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète SHOWCOMPANYPAGE");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}

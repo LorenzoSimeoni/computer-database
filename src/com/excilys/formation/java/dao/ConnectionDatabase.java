@@ -43,7 +43,7 @@ public class ConnectionDatabase {
 	        	properties.load(input);
 			} catch (IOException e) {
 				// TODO: handle exception
-			}finally {
+			} finally {
 				if (input != null) {
 					try {
 						input.close();

@@ -50,8 +50,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète ListComputer");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
@@ -73,8 +72,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète ListComputer");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
@@ -100,8 +98,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète SHOWCOMPUTERDETAILS");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
@@ -127,8 +124,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète SHOWCOMPUTERDETAILSBYID");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
@@ -147,15 +143,14 @@ public class ComputerDAO {
 				stmt.setString(2, computer.getIntroduced().toString());		
 				if (computer.getDiscontinued() != null) {
 					stmt.setString(3, computer.getDiscontinued().toString());
-				}
-				else {
+				} else {
 					stmt.setString(3, null);
 				}
 			} else {
 				stmt.setString(2, null);
 				stmt.setString(3, null);	
 			}
-			if (computer.getCompany().getId() == 0) {
+			if(computer.getCompany().getId() == 0) {
 				stmt.setString(4, null);
 			} else {
 				stmt.setLong(4, computer.getCompany().getId());	
@@ -168,8 +163,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète CREATECOMPUTER");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			connectionDatabase.disconnect();
 		}
 	}
@@ -199,8 +193,8 @@ public class ComputerDAO {
 				stmt.setString(4, null);
 			} else {
 				stmt.setLong(4, computer.getCompany().getId());				
-				stmt.setLong(5, computer.getId());
 			}
+			stmt.setLong(5, computer.getId());
 			if (stmt.executeUpdate() == 1) {
 				System.out.println("Computer Updated");
 			} else {
@@ -209,8 +203,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète UPDATEACOMPUTER");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			connectionDatabase.disconnect();
 		}
 		return computer;
@@ -228,14 +221,13 @@ public class ComputerDAO {
 			numberOfDeletedElement = stmt.executeUpdate();
 			if(numberOfDeletedElement != 0) {
 				System.out.println("Computer Deleted");
-			}else {
+			} else {
 				System.out.println("ID unreachable");
 			}
 		} catch (SQLException e) {
 			System.out.println("Exception due à la requète DELETEACOMPUTER");
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			connectionDatabase.disconnect();
 		}
 		return numberOfDeletedElement;

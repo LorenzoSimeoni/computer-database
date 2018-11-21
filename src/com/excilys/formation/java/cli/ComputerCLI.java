@@ -1,22 +1,16 @@
 package com.excilys.formation.java.cli;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.service.ComputerService;
+import com.excilys.formation.java.validator.validator;
 
 public class ComputerCLI {
-	
+	MapperComputer mapperComputer = MapperComputer.getInstance();
 	private ComputerService computerServices = ComputerService.getInstance();
-	
-	private ComputerCLI(){}
-	
-	private static ComputerCLI computerCLI = new ComputerCLI();
-	
-	public static ComputerCLI getInstance() {
-		return computerCLI;
-	}
 	
 	/**
 	 * Print all the Computer object found in the List<Computer> give by our computerDao
@@ -78,8 +72,7 @@ public class ComputerCLI {
 	 * @param companyID
 	 */
 	public void insertComputer(String name, String introduced, String discontinued, String companyID) {
-		MapperComputer mapperComputer = MapperComputer.getInstance();
-		Computer computer = mapperComputer.mapper(name, introduced,discontinued,companyID);
+		Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyID);
 		computerServices.insertComputer(computer);
 	}
 	
@@ -91,8 +84,7 @@ public class ComputerCLI {
 	 * @param discontinued
 	 * @param companyID
 	 */
-	public void updateComputer(String id, String name, String introduced, String discontinued, String companyID) {
-		MapperComputer mapperComputer = MapperComputer.getInstance();
+	public void updateComputer(long id, String name, String introduced, String discontinued, String companyID) {
 		Computer computer = mapperComputer.mapper(id, name,introduced,discontinued,companyID);
 		 computerServices.updateComputer(computer);
 	}

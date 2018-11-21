@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.validator.validator;
 
 /**
  * @author excilys
@@ -64,31 +65,29 @@ public class MapperComputer {
 	 * @param companyId
 	 * @return Computer object
 	 */
-	public Computer mapper(String id, String name, String introduced, String discontinued, String companyId) {
+	public Computer mapper(long id, String name, String introduced, String discontinued, String companyId) {
 		Company company;
 		Computer computer;
 		
 		LocalDateTime localIntroduced = null;
 		LocalDateTime localDiscontinued = null;
-		if(!introduced.toLowerCase().equals("null")) {
+		if(introduced != null && validator.testStringIsADate(introduced)) {
 			localIntroduced = LocalDateTime.parse(introduced);
-			if(!discontinued.toLowerCase().equals("null")) {
+			if(discontinued != null && validator.testStringIsADate(discontinued)) {
 				localDiscontinued = LocalDateTime.parse(discontinued);
 				if(localDiscontinued.isBefore(localIntroduced)) {
 					localDiscontinued = null;
 				}
 			}
 		}
-
 		if(companyId != null) {
 			company = new Company.CompanyBuilder(Long.parseLong(companyId)).build();		
 		}
 		else {
 			company = new Company.CompanyBuilder().build();
 		}
-		
 		computer = new Computer.ComputerBuilder(name)
-				.setID(Long.parseLong(id))
+				.setID(id)
 				.setIntroduced(localIntroduced)
 				.setDiscontinued(localDiscontinued)
 				.setCompanyId(company)
@@ -111,19 +110,18 @@ public class MapperComputer {
 		
 		LocalDateTime localIntroduced = null;
 		LocalDateTime localDiscontinued = null;
-		if(!introduced.toLowerCase().equals("null")) {
+		if(introduced != null && validator.testStringIsADate(introduced)) {
 			localIntroduced = LocalDateTime.parse(introduced);
-			if(!discontinued.toLowerCase().equals("null")) {
+			if(discontinued != null && validator.testStringIsADate(discontinued)) {
 				localDiscontinued = LocalDateTime.parse(discontinued);
 				if(localDiscontinued.isBefore(localIntroduced)) {
 					localDiscontinued = null;
 				}
 			}
 		}
-		if(!companyId.equals("null")) {
+		if(companyId != null) {
 			company = new Company.CompanyBuilder(Long.parseLong(companyId)).build();		
-		}
-		else {
+		} else {
 			company = new Company.CompanyBuilder().build();
 		}
 		
@@ -132,7 +130,6 @@ public class MapperComputer {
 				.setDiscontinued(localDiscontinued)
 				.setCompanyId(company)
 				.build();			
-		
 		return computer;
 	}
 }

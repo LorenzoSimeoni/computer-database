@@ -46,8 +46,13 @@ public class Computer {
 	
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", companyId=" + company.getId() + "]";
+		if(company.getId() == 0) {
+			return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+					+ ", companyId=" + "null" + "]";
+		} else {			
+			return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+					+ ", companyId=" + company.getId() + "]";
+		}
 	}
 	
 	public static class ComputerBuilder {
