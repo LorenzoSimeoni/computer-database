@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.excilys.formation.java.service;
+package com.excilys.formation.java.cli;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -37,21 +37,21 @@ public class FeaturesCLI {
 									str = Page.getInstance().page(Integer.parseInt(userEntry[2]), userEntry[1], sc);
 								}else problemWithArgument();
 							}
-							else ComputerServices.getInstance().showComputer();								
+							else ComputerCLI.getInstance().showComputer();								
 						}else if (userEntry[1].toLowerCase().equals("company")) {
 							if(userEntry.length==3) {
 								if (testStringIsAInt(userEntry[2])) {
 									str = Page.getInstance().page(Integer.parseInt(userEntry[2]), userEntry[1], sc);
 								}else problemWithArgument();
-							} else CompanyServices.getInstance().showCompany();
+							} else CompanyCLI.getInstance().showCompany();
 						}else if(userEntry[1].toLowerCase().equals("computerdetails")) {
 							if(userEntry.length==3) {
-								ComputerServices.getInstance().showComputerDetails(userEntry[2]);								
+								ComputerCLI.getInstance().showComputerDetails(userEntry[2]);								
 							}
 						}else if(userEntry[1].toLowerCase().equals("computerdetailsbyid")) {
 							if(userEntry.length==3) {
 								if (testStringIsAInt(userEntry[2])) {
-									ComputerServices.getInstance().showComputerDetailsByID(Integer.parseInt(userEntry[2]));
+									ComputerCLI.getInstance().showComputerDetailsByID(Integer.parseInt(userEntry[2]));
 								}else problemWithArgument();								
 							}else problemWithArgument();
 						}else problemWithArgument();				
@@ -61,7 +61,7 @@ public class FeaturesCLI {
 						if(userEntry[1].toLowerCase().equals("computer")) {
 							if(userEntry.length==6) {
 								if ((testStringIsADate(userEntry[3]) || userEntry[3].toLowerCase().equals("null")) && (testStringIsADate(userEntry[4]) || userEntry[4].toLowerCase().equals("null"))) {
-									ComputerServices.getInstance().insertComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5]);					
+									ComputerCLI.getInstance().insertComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5]);					
 								}else problemWithArgument();								
 							}else problemWithArgument();
 						}else problemWithArgument();						
@@ -71,7 +71,7 @@ public class FeaturesCLI {
 						if(userEntry[1].toLowerCase().equals("computer")) {
 							if(userEntry.length==3) {
 								if(testStringIsAInt(userEntry[2])) {
-									ComputerServices.getInstance().deleteComputer(Integer.parseInt(userEntry[2]));					
+									ComputerCLI.getInstance().deleteComputer(Integer.parseInt(userEntry[2]));					
 								}else problemWithArgument();								
 							}else problemWithArgument();
 						}else problemWithArgument();						
@@ -81,7 +81,7 @@ public class FeaturesCLI {
 						if(userEntry[1].toLowerCase().equals("computer")) {
 							if(userEntry.length==7) {
 								if ((testStringIsADate(userEntry[4]) || userEntry[4].toLowerCase().equals("null")) && (testStringIsADate(userEntry[5]) || userEntry[5].toLowerCase().equals("null"))) {
-									ComputerServices.getInstance().updateComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5],userEntry[6]);					
+									ComputerCLI.getInstance().updateComputer(userEntry[2], userEntry[3], userEntry[4], userEntry[5],userEntry[6]);					
 								}else problemWithArgument();								
 							}else problemWithArgument();
 						}else problemWithArgument();						

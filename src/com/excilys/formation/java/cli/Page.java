@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.excilys.formation.java.service;
+package com.excilys.formation.java.cli;
 
 import java.util.Scanner;
 
@@ -21,9 +21,9 @@ public class Page {
 		String str;
 		limit = size;
 		if(comp.toLowerCase().equals("company")) {
-			CompanyServices.getInstance().showCompanyPage(limit,offset);
+			CompanyCLI.getInstance().showCompanyPage(limit,offset);
 		} else if(comp.toLowerCase().equals("computer")) {
-			ComputerServices.getInstance().showComputerPage(limit,offset);
+			ComputerCLI.getInstance().showComputerPage(limit,offset);
 		} else {
 			return "problem with arg";
 		}
@@ -33,9 +33,9 @@ public class Page {
 			str = sc.nextLine();
 			if(str.toLowerCase().equals("suivant")) {
 				if(comp.toLowerCase().equals("company")) {
-					CompanyServices.getInstance().showCompanyPage(limit,offset);
+					CompanyCLI.getInstance().showCompanyPage(limit,offset);
 				} else if(comp.toLowerCase().equals("computer")) {
-					ComputerServices.getInstance().showComputerPage(limit,offset);
+					ComputerCLI.getInstance().showComputerPage(limit,offset);
 				}
 			}
 			else if(!str.equals("exit")) {
