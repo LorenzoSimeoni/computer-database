@@ -3,7 +3,7 @@ package com.excilys.formation.java.model;
 public class Page {
 	private int limit;
 	private int offset;
-	private int pageNumber;
+	private int pageNumber = 1;
 	
 	public int getLimit() {
 		return limit;
@@ -25,25 +25,19 @@ public class Page {
 		else {
 			limit = 0;
 		}
-		if(pageNumber>0) {
+		if(pageNumber>1) {
 			pageNumber--;
 		}
 		else {
-			pageNumber = 0;
+			pageNumber = 1;
 		}
 	}
 	public void changePage(int newPage) {
-		int difference = newPage - pageNumber;
-		if(difference > 0) {
-			for(int k = 0; k<difference; k++) {
-				incrementLimit();
-			}			
-		} else {
-			difference = -difference;
-			for(int k = 0; k<difference; k++) {
-				decreaseLimit();
-			}		
+		if(newPage<1) {
+			newPage=1;
 		}
+		limit = newPage*offset;
+		pageNumber = newPage;
 	}
 	public void setOffset(int offset) {
 		this.offset = offset;
