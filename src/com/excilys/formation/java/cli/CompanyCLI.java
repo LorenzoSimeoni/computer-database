@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.formation.java.service.CompanyService;
 import com.excilys.formation.java.model.Company;
+import com.excilys.formation.java.model.Page;
 
 /**
  * 
@@ -28,10 +29,11 @@ public class CompanyCLI {
 		System.out.println(company.toString());
 	}
 	
-	public void showCompanyPage(int limit, int offset) {
-		List<Company> listResults = companyServices.showPage(limit, offset);
+	public void showCompanyPage(Page page) {
+		List<Company> listResults = companyServices.showPage(page.getLimit(), page.getOffset());
 		for(Company company : listResults) {
 			System.out.println(company.toString());
 		}
+		System.out.println("Page Number : " + page.getPageNumber());
 	}
 }

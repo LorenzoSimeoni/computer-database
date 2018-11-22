@@ -87,7 +87,7 @@ public class FeatureCLI {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTERS WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
 		int size = Validator.userGiveAnInt(sc);
 		if(size != -1) {
-			Page page = new Page();
+			Pagecli page = new Pagecli();
 			page.pageComputer(size, sc);	
 		}
 	}
@@ -95,7 +95,7 @@ public class FeatureCLI {
 		System.out.println("YOU CHOOSE TO PRINT COMPANIES WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
 		int size = Validator.userGiveAnInt(sc);
 		if(size != -1) {
-			Page page = new Page();
+			Pagecli page = new Pagecli();
 			page.pageCompany(size, sc);			
 		}
 	}

@@ -138,6 +138,7 @@ public class ComputerDAO {
 	 */
 	public void create(Computer computer) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
+		int numberOfCreatedElement;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(CREATECOMPUTER)) {
 			stmt.setString(1, computer.getName());
 			if (computer.getIntroduced() != null) {
@@ -156,11 +157,8 @@ public class ComputerDAO {
 			} else {
 				stmt.setLong(4, computer.getCompany().getId());	
 			}
-			if (stmt.executeUpdate() == 1) {
-				System.out.println("Computer Created");
-			} else {
-				System.out.println("Computer Not Created ! ");
-			}
+			numberOfCreatedElement = stmt.executeUpdate();
+			LOGGER.info(numberOfCreatedElement+" elements with ID : "+computer.getId()+ " are now created");
 		} catch (SQLException e) {
 			LOGGER.info("Can't execute the request create", e);
 		} finally {
@@ -175,6 +173,7 @@ public class ComputerDAO {
 	 */
 	public Computer update(Computer computer) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
+		int numberOfUpdatedElement = 0;
 		try (PreparedStatement stmt = connectionDatabase.connect().prepareStatement(UPDATEACOMPUTER)){	
 			stmt.setString(1, computer.getName());
 			if (computer.getIntroduced() != null) {
@@ -195,11 +194,8 @@ public class ComputerDAO {
 				stmt.setLong(4, computer.getCompany().getId());				
 			}
 			stmt.setLong(5, computer.getId());
-			if (stmt.executeUpdate() == 1) {
-				System.out.println("Computer Updated");
-			} else {
-				System.out.println("Computer Not Updated ! ");
-			}
+			numberOfUpdatedElement = stmt.executeUpdate();
+			LOGGER.info(numberOfUpdatedElement+" elements with ID : "+computer.getId()+ " are now updated");
 		} catch (SQLException e) {
 			LOGGER.info("Can't execute the request update", e);
 		} finally {
@@ -218,11 +214,7 @@ public class ComputerDAO {
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(DELETEACOMPUTER)) {
 			stmt.setLong(1, id);
 			numberOfDeletedElement = stmt.executeUpdate();
-			if(numberOfDeletedElement != 0) {
-				System.out.println("Computer Deleted");
-			} else {
-				System.out.println("ID unreachable");
-			}
+			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
 		} catch (SQLException e) {
 			LOGGER.info("Can't execute the request delete", e);
 		} finally {

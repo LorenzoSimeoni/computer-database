@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.model.Page;
 import com.excilys.formation.java.service.ComputerService;
 
 public class ComputerCLI {
@@ -25,11 +26,12 @@ public class ComputerCLI {
 	 * @param limit
 	 * @param offset
 	 */
-	public void showComputerPage(int limit, int offset) {
-		List<Computer> listResults = computerServices.showComputerPage(limit, offset);
+	public void showComputerPage(Page page) {
+		List<Computer> listResults = computerServices.showComputerPage(page.getLimit(), page.getOffset());
 		for(Computer computer : listResults){
 			System.out.println(computer.toString());
 		}
+		System.out.println("Page Number : " + page.getPageNumber());
 	}
 
 	/**
