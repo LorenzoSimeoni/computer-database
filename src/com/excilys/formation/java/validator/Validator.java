@@ -5,18 +5,21 @@ import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.service.CompanyService;
 
-public class validator {
+public class Validator {
+	private static final Logger LOGGER = Logger.getLogger( Validator.class.getName() );
 	
 	public static int userGiveAnInt(Scanner sc) {
 		int userInt = -1;
 		try {
 			userInt = sc.nextInt();
 		} catch (InputMismatchException e) {
-			//TODO LOGGER
+			LOGGER.log(Level.FINE, "You have to give an Integer but you put something else");
 		}			
 		return userInt;
 	}

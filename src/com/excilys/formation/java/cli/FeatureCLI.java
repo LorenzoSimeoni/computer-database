@@ -15,7 +15,7 @@ public class FeatureCLI {
 		while(quitter) {
 			displayMenu();
 			sc = new Scanner(System.in);
-			key = validator.userGiveAnInt(sc);
+			key = Validator.userGiveAnInt(sc);
 			switch (key) {
 			case 1:
 				parseShow(sc);
@@ -45,7 +45,7 @@ public class FeatureCLI {
 	public void parseShow(Scanner sc) {
 		int key = 0;
 		displayShowMenu();
-		key = validator.userGiveAnInt(sc);
+		key = Validator.userGiveAnInt(sc);
 		switch (key) {
 			case 1:
 				computerCLI.showComputer();
@@ -78,14 +78,14 @@ public class FeatureCLI {
 	}
 	public void displayComputerDetailsID(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTER DETAILS BY ID, GIVE AN ID PLEASE");
-		long id = validator.userGiveALong(sc);
+		long id = Validator.userGiveALong(sc);
 		if(id != -1) {
 			computerCLI.showComputerDetailsByID(id);
 		}
 	}
 	public void displayComputerPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTERS WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
-		int size = validator.userGiveAnInt(sc);
+		int size = Validator.userGiveAnInt(sc);
 		if(size != -1) {
 			Page page = new Page();
 			page.pageComputer(size, sc);	
@@ -93,7 +93,7 @@ public class FeatureCLI {
 	}
 	public void displayCompanyPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPANIES WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
-		int size = validator.userGiveAnInt(sc);
+		int size = Validator.userGiveAnInt(sc);
 		if(size != -1) {
 			Page page = new Page();
 			page.pageCompany(size, sc);			
@@ -128,7 +128,7 @@ public class FeatureCLI {
 	public void parseDelete(Scanner sc) {
 		System.out.println("YOU CHOOSE TO CREATE A NEW COMPUTER");
 		System.out.println("GIVE AND ID");
-		long id = validator.userGiveALong(sc);
+		long id = Validator.userGiveALong(sc);
 		if(id != -1) {
 			computerCLI.deleteComputer(id);
 		}
@@ -137,7 +137,7 @@ public class FeatureCLI {
 	public void parseUpdate(Scanner sc) {
 		displayUpdateMenu();
 		System.out.println("Give a computer ID");
-		long id = validator.userGiveALong(sc);
+		long id = Validator.userGiveALong(sc);
 		if(id != -1) {
 			computerCLI.showComputerDetailsByID(id);
 			System.out.println("Give a computer Name (if you don't want to change the name do an enter)");

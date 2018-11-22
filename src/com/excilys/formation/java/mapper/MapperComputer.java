@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.service.ComputerService;
-import com.excilys.formation.java.validator.validator;
+import com.excilys.formation.java.validator.Validator;
 
 /**
  * @author excilys
@@ -82,16 +82,16 @@ public class MapperComputer {
 		if(introduced != null && introduced.equals("")) {
 			localIntroduced = computer.getIntroduced();
 		} else {
-			if(introduced != null && validator.testStringIsADate(introduced)) {
+			if(introduced != null && Validator.testStringIsADate(introduced)) {
 				localIntroduced = LocalDateTime.parse(introduced);
 			}
 		}
 		if(discontinued != null && discontinued.equals("")) {
 			localDiscontinued = computer.getDiscontinued();
 		} else {
-			if(discontinued != null && validator.testStringIsADate(discontinued)) {
+			if(discontinued != null && Validator.testStringIsADate(discontinued)) {
 				localDiscontinued = LocalDateTime.parse(discontinued);
-				if(localIntroduced != null && validator.testStringIsADate(introduced)) {
+				if(localIntroduced != null && Validator.testStringIsADate(introduced)) {
 					if(localDiscontinued.isBefore(localIntroduced)) {
 						localDiscontinued = null;
 					}					
@@ -102,9 +102,9 @@ public class MapperComputer {
 			companyID = computer.getCompany().getId();
 			company = new Company.CompanyBuilder(companyID).build();
 		} else {
-			if(companyId != null && validator.testStringIsALong(companyId)) {
+			if(companyId != null && Validator.testStringIsALong(companyId)) {
 				companyID = Long.parseLong(companyId);
-				if(validator.companyIdExist(companyID)) {
+				if(Validator.companyIdExist(companyID)) {
 					company = new Company.CompanyBuilder(companyID).build();						
 				} else {
 					//TODO PUT A LOGGER
@@ -140,18 +140,18 @@ public class MapperComputer {
 		
 		LocalDateTime localIntroduced = null;
 		LocalDateTime localDiscontinued = null;
-		if(introduced != null && validator.testStringIsADate(introduced)) {
+		if(introduced != null && Validator.testStringIsADate(introduced)) {
 			localIntroduced = LocalDateTime.parse(introduced);
-			if(discontinued != null && validator.testStringIsADate(discontinued)) {
+			if(discontinued != null && Validator.testStringIsADate(discontinued)) {
 				localDiscontinued = LocalDateTime.parse(discontinued);
 				if(localDiscontinued.isBefore(localIntroduced)) {
 					localDiscontinued = null;
 				}
 			}
 		}
-		if(companyId != null && validator.testStringIsALong(companyId)) {
+		if(companyId != null && Validator.testStringIsALong(companyId)) {
 			long companyIdTransform = Long.parseLong(companyId);
-			if(validator.companyIdExist(companyIdTransform)) {
+			if(Validator.companyIdExist(companyIdTransform)) {
 				company = new Company.CompanyBuilder(companyIdTransform).build();						
 			} else {
 				//TODO PUT A LOGGER
