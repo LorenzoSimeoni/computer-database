@@ -24,7 +24,7 @@ public class CompanyService {
 		return companyDao.getList();
 	}
 	
-	public List<Company> showDetailsById(long id) {
+	public Company showDetailsById(long id) {
 		return companyDao.getDetailsById(id);
 	}
 	

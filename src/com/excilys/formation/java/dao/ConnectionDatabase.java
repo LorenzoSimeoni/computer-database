@@ -11,11 +11,17 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.excilys.formation.java.validator.Validator;
+
 /**
  * @author excilys
  *
  */
 public class ConnectionDatabase {
+	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
 	
@@ -48,7 +54,7 @@ public class ConnectionDatabase {
 					try {
 						input.close();
 					} catch (final IOException e) {
-						e.printStackTrace();
+						LOGGER.info("File db.properties fails to close", e);
 					}
 				}	
 			}
@@ -63,7 +69,7 @@ public class ConnectionDatabase {
 	            Class.forName(DB_DRIVER);
 	            connection = DriverManager.getConnection(URL, getProperties());
 	        } catch (ClassNotFoundException | SQLException e) {
-	            e.printStackTrace();
+	        	LOGGER.info("Connection to database failed", e);
 	        }
 	    }
 	    return connection;
@@ -76,7 +82,7 @@ public class ConnectionDatabase {
 	            connection.close();
 	            connection = null;
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	LOGGER.info("Disconnection to database failed", e);
 	        }
 	    }
 	}

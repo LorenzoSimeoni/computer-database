@@ -3,23 +3,22 @@ package com.excilys.formation.java.validator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.service.CompanyService;
 
 public class Validator {
-	private static final Logger LOGGER = Logger.getLogger( Validator.class.getName() );
+	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	
 	public static int userGiveAnInt(Scanner sc) {
 		int userInt = -1;
 		try {
 			userInt = sc.nextInt();
 		} catch (InputMismatchException e) {
-			LOGGER.log(Level.FINE, "You have to give an Integer but you put something else");
+			LOGGER.info("You have to give an Integer but you put something else", e);
 		}			
 		return userInt;
 	}
@@ -29,7 +28,7 @@ public class Validator {
 		try {
 			userLong = sc.nextInt();
 		} catch (InputMismatchException e) {
-			//TODO LOGGER
+			LOGGER.info("You have to give an Long but you put something else", e);
 		}			
 		return userLong;
 	}
@@ -38,6 +37,7 @@ public class Validator {
 		try {
 			Integer.parseInt(str);
 		} catch (NumberFormatException e) {
+			LOGGER.info("You have to give an Number but you put something else", e);
 			return false;
 		}
 		return true;
@@ -47,6 +47,7 @@ public class Validator {
 		try {
 			Long.parseLong(str);
 		} catch (NumberFormatException e) {
+			LOGGER.info("You have to give an Number but you put something else", e);
 			return false;
 		}
 		return true;
@@ -56,6 +57,7 @@ public class Validator {
 		try {
 			LocalDateTime.parse(str);
 		} catch (DateTimeParseException e) {
+			LOGGER.info("You have to give a Date but you put something else", e);
 			return false;
 		}
 		return true;
@@ -63,8 +65,9 @@ public class Validator {
 	
 	public static boolean companyIdExist(long id) {
 		CompanyService companyServices = CompanyService.getInstance();
-		List<Company> listResults = companyServices.showDetailsById(id);
-		if(listResults.isEmpty()) {
+		Company company = companyServices.showDetailsById(id);
+		if(company == null) {
+			LOGGER.info("You gived a wrong CompanyID, it doesn't exist !");
 			return false;
 		}
 		return true;

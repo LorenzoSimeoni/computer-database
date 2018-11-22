@@ -24,10 +24,8 @@ public class CompanyCLI {
 	}
 	
 	public void showCompanyDetailsById(long id) {
-		List<Company> listResults = companyServices.showDetailsById(id);
-		for(Company company : listResults) {
-			System.out.println(company.toString());
-		}
+		Company company = companyServices.showDetailsById(id);
+		System.out.println(company.toString());
 	}
 	
 	public void showCompanyPage(int limit, int offset) {

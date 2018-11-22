@@ -2,12 +2,17 @@ package com.excilys.formation.java.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.validator.Validator;
 
 /**
  * 
@@ -16,6 +21,7 @@ import com.excilys.formation.java.model.Computer;
  */
 public class ComputerDAO {
 
+	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
 	private static final String LISTCOMPUTER = "SELECT * FROM computer;";
 	private static final String SHOWCOMPUTERDETAILS = "SELECT * from computer WHERE name = ?;";
@@ -48,8 +54,7 @@ public class ComputerDAO {
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète ListComputer");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request getList", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -70,8 +75,7 @@ public class ComputerDAO {
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète ListComputer");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request getListPage", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -96,8 +100,7 @@ public class ComputerDAO {
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète SHOWCOMPUTERDETAILS");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request GetDetailsByName", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -121,8 +124,7 @@ public class ComputerDAO {
 				computer = mapperComputer.mapper(results);
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète SHOWCOMPUTERDETAILSBYID");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request GetDetailsByID", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -160,8 +162,7 @@ public class ComputerDAO {
 				System.out.println("Computer Not Created ! ");
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète CREATECOMPUTER");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request create", e);
 		} finally {
 			connectionDatabase.disconnect();
 		}
@@ -200,8 +201,7 @@ public class ComputerDAO {
 				System.out.println("Computer Not Updated ! ");
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète UPDATEACOMPUTER");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request update", e);
 		} finally {
 			connectionDatabase.disconnect();
 		}
@@ -224,8 +224,7 @@ public class ComputerDAO {
 				System.out.println("ID unreachable");
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète DELETEACOMPUTER");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request delete", e);
 		} finally {
 			connectionDatabase.disconnect();
 		}

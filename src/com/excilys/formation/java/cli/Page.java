@@ -20,8 +20,8 @@ public class Page {
 			str = sc.nextLine();
 			if(str.toLowerCase().equals("suivant")) {
 				companyCLI.showCompanyPage(limit,offset);
-			} else if(!str.equals("exit")) {
-				System.out.println("Veuillez faire 'suivant' pour en afficher plus, ou quitter avec 'exit' ! ");
+			} else if(!str.equals("exit") || str.equals("")) {
+				System.out.println("Veuillez faire 'enter' ou écrire 'suivant' pour en afficher plus, ou quitter avec 'exit' ! ");
 			}
 		} while(!str.equals("exit"));
 	}
@@ -35,10 +35,10 @@ public class Page {
 		do {
 			limit = limit + size;
 			str = sc.nextLine();
-			if(str.toLowerCase().equals("suivant")) {
+			if(str.toLowerCase().equals("suivant") || str.equals("")) {
 					computerCLI.showComputerPage(limit,offset);
 			} else if(!str.equals("exit")) {
-				System.out.println("Veuillez faire 'suivant' pour en afficher plus, ou quitter avec 'exit' ! ");
+				System.out.println("Veuillez faire 'enter' ou écrire 'suivant' pour en afficher plus, ou quitter avec 'exit' ! ");
 			}
 		} while(!str.equals("exit"));
 	}

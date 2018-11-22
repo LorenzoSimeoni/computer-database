@@ -6,8 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.excilys.formation.java.mapper.MapperCompany;
 import com.excilys.formation.java.model.Company;
+import com.excilys.formation.java.validator.Validator;
 
 /**
  * 
@@ -16,6 +20,7 @@ import com.excilys.formation.java.model.Company;
  */
 public class CompanyDAO {
 	
+	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	private MapperCompany mapperCompany = MapperCompany.getInstance();
 	private static final String LISTCOMPANY = "SELECT * FROM company;";
 	private static final String LISTCOMPANYDETAILSBYID = "SELECT * FROM company WHERE id = ?;";
@@ -44,8 +49,7 @@ public class CompanyDAO {
 				list.add(company);
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète LISTCOMPANY");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request LISTCOMPANY", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -57,25 +61,23 @@ public class CompanyDAO {
 	 * Function use to print Company database
 	 * @return a list filled with all the Company object found in database
 	 */
-	public List<Company> getDetailsById(long id) {
+	public Company getDetailsById(long id) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
-		List<Company> list = new ArrayList<Company>();
+		Company company = null;
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPANYDETAILSBYID)) {
 			stmt.setLong(1, id);
 			results = stmt.executeQuery();
 			while(results.next()) {
-				Company company = mapperCompany.mapper(results);
-				list.add(company);
+				company = mapperCompany.mapper(results);				
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète LISTCOMPANY");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request LISTCOMPANYDETAILSBYID", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
-		return list;
+		return company;
 	}
 	
 	/**
@@ -97,8 +99,7 @@ public class CompanyDAO {
 				list.add(company);
 			}
 		} catch (SQLException e) {
-			System.out.println("Exception due à la requète SHOWCOMPANYPAGE");
-			e.printStackTrace();
+			LOGGER.info("Can't execute the request SHOWCOMPANYPAGE", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
