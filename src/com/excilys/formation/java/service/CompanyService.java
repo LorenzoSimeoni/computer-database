@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.formation.java.dao.CompanyDAO;
 import com.excilys.formation.java.model.Company;
+import com.excilys.formation.java.model.Page;
 
 public class CompanyService {
 	
@@ -28,7 +29,7 @@ public class CompanyService {
 		return companyDao.getDetailsById(id);
 	}
 	
-	public List<Company> showPage(int limit, int offset) {
-		return companyDao.getListPage(limit, offset);
+	public List<Company> showPage(Page page) {
+		return companyDao.getListPage(page);
 	}
 }

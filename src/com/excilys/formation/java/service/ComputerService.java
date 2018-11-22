@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.formation.java.dao.ComputerDAO;
 import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.model.Page;
 
 public class ComputerService {
 	
@@ -21,8 +22,8 @@ public class ComputerService {
 		return computerDao.getList();
 	}
 	
-	public List<Computer> showComputerPage(int limit, int offset) {
-		return computerDao.getListPage(limit, offset);
+	public List<Computer> showComputerPage(Page page) {
+		return computerDao.getListPage(page);
 	}
 
 	public List<Computer> showComputerDetails(String name) {

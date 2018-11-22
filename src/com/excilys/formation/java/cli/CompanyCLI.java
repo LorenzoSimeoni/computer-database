@@ -30,7 +30,7 @@ public class CompanyCLI {
 	}
 	
 	public void showCompanyPage(Page page) {
-		List<Company> listResults = companyServices.showPage(page.getLimit(), page.getOffset());
+		List<Company> listResults = companyServices.showPage(page);
 		for(Company company : listResults) {
 			System.out.println(company.toString());
 		}

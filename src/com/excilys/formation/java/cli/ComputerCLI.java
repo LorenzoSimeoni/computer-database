@@ -27,7 +27,7 @@ public class ComputerCLI {
 	 * @param offset
 	 */
 	public void showComputerPage(Page page) {
-		List<Computer> listResults = computerServices.showComputerPage(page.getLimit(), page.getOffset());
+		List<Computer> listResults = computerServices.showComputerPage(page);
 		for(Computer computer : listResults){
 			System.out.println(computer.toString());
 		}

@@ -1,6 +1,8 @@
 package com.excilys.formation.java.cli;
 
 import java.util.Scanner;
+
+import com.excilys.formation.java.model.Page;
 import com.excilys.formation.java.validator.*;
 
 public class FeatureCLI {
@@ -87,16 +89,14 @@ public class FeatureCLI {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTERS WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
 		int size = Validator.userGiveAnInt(sc);
 		if(size != -1) {
-			Pagecli page = new Pagecli();
-			page.pageComputer(size, sc);	
+			pageComputer(size, sc);	
 		}
 	}
 	public void displayCompanyPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPANIES WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
 		int size = Validator.userGiveAnInt(sc);
 		if(size != -1) {
-			Pagecli page = new Pagecli();
-			page.pageCompany(size, sc);			
+			pageCompany(size, sc);			
 		}
 	}
 	
@@ -172,6 +172,55 @@ public class FeatureCLI {
 			}
 			computerCLI.updateComputer(id, name, introduced, discontinued, companyId);
 		}
+	}
+	
+	public void pageCompany(int size, Scanner sc) {
+		Page page = new Page();		
+		sc.nextLine();
+		CompanyCLI companyCLI = new CompanyCLI();
+		String str;
+		page.setOffset(size);
+		do {
+			displayPageMenu();
+			str = sc.nextLine();
+			if(str.toLowerCase().equals("next") || str.equals("")) {
+				companyCLI.showCompanyPage(page);
+				page.incrementLimit();
+			} else if(!str.equals("exit")) {
+				if(Validator.testStringIsAInt(str)) {
+					page.changePage(Integer.parseInt(str));
+					companyCLI.showCompanyPage(page);
+				}
+			}
+		} while(!str.equals("exit"));
+	}
+	
+	public void pageComputer(int size, Scanner sc) {
+		Page page = new Page();
+		sc.nextLine();
+		ComputerCLI computerCLI = new ComputerCLI();
+		String str;
+		page.setOffset(size);
+		do {
+			displayPageMenu();
+			str = sc.nextLine();
+			if(str.toLowerCase().equals("next") || str.equals("")) {
+				page.incrementLimit();
+				computerCLI.showComputerPage(page);
+			} else if(!str.equals("exit")) {
+				if(Validator.testStringIsAInt(str)) {
+					page.changePage(Integer.parseInt(str));
+					computerCLI.showComputerPage(page);
+				}
+			}
+		} while(!str.equals("exit"));
+	}
+	
+	public void displayPageMenu() {
+		System.out.println("\n\n\n\nMENU :");
+		System.out.println("           SHOW THE NEXT PAGE : enter , or write 'next' ");
+		System.out.println("                  CHANGE PAGE : write a number");
+		System.out.println("                      TO QUIT : write 'exit'");
 	}
 	
 	public void displayMenu() {

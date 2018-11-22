@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.java.mapper.MapperCompany;
 import com.excilys.formation.java.model.Company;
+import com.excilys.formation.java.model.Page;
 import com.excilys.formation.java.validator.Validator;
 
 /**
@@ -86,13 +87,13 @@ public class CompanyDAO {
 	 * @param offset
 	 * @return
 	 */
-	public List<Company> getListPage(int limit, int offset) {
+	public List<Company> getListPage(Page page) {
 		ResultSet results = null;
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Company> list = new ArrayList<Company>();
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPANYPAGE)) {
-			stmt.setInt(1, limit);
-			stmt.setInt(2, offset);
+			stmt.setInt(1, page.getLimit());
+			stmt.setInt(2, page.getOffset());
 			results = stmt.executeQuery();
 			while(results.next()) {
 				Company company = mapperCompany.mapper(results);

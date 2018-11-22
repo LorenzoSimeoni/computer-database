@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.model.Page;
 import com.excilys.formation.java.validator.Validator;
 
 /**
@@ -62,13 +63,13 @@ public class ComputerDAO {
 		return list;
 	}
 	
-	public List<Computer> getListPage(int limit, int offset) {
+	public List<Computer> getListPage(Page page) {
 		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERPAGE)) {
-			stmt.setInt(1, limit);
-			stmt.setInt(2, offset);
+			stmt.setInt(1, page.getLimit());
+			stmt.setInt(2, page.getOffset());
 			results = stmt.executeQuery();
 			while(results.next()) {
 				Computer computer = mapperComputer.mapper(results);
