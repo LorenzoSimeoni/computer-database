@@ -3,6 +3,8 @@
  */
 package com.excilys.formation.java.cli;
 
+import java.awt.Window.Type;
+
 /**
  * @author excilys
  *
