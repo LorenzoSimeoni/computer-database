@@ -13,14 +13,9 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		FeatureCLI showComputer = FeatureCLI.getInstance();
-//
-//		showComputer.features();
 		
 		FeatureCLI aCli = new FeatureCLI();
 		aCli.features();
-
-		
 	}
 }
 

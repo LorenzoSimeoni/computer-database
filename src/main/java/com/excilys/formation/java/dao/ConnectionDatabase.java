@@ -48,7 +48,7 @@ public class ConnectionDatabase {
 	        	input = new FileInputStream("db/db.properties");
 	        	properties.load(input);
 			} catch (IOException e) {
-				// TODO: handle exception
+				LOGGER.info("FILES NOT FOUND", e);
 			} finally {
 				if (input != null) {
 					try {
