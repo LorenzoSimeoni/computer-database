@@ -26,6 +26,7 @@ public class CompanyDAO {
 	private static final String LISTCOMPANY = "SELECT * FROM company;";
 	private static final String LISTCOMPANYDETAILSBYID = "SELECT * FROM company WHERE id = ?;";
 	private static final String SHOWCOMPANYPAGE = "SELECT * FROM company LIMIT ?, ?";
+	private ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 	
 	private CompanyDAO(){}
 	
@@ -41,7 +42,6 @@ public class CompanyDAO {
 	 */
 	public List<Company> getList() {
 		ResultSet results = null;
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Company> list = new ArrayList<Company>();
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPANY)) {
 			results = stmt.executeQuery();
@@ -63,7 +63,6 @@ public class CompanyDAO {
 	 * @return a list filled with all the Company object found in database
 	 */
 	public Company getDetailsById(long id) {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		Company company = null;
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPANYDETAILSBYID)) {
@@ -89,7 +88,6 @@ public class CompanyDAO {
 	 */
 	public List<Company> getListPage(Page page) {
 		ResultSet results = null;
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Company> list = new ArrayList<Company>();
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPANYPAGE)) {
 			stmt.setInt(1, page.getLimit());

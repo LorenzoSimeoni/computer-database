@@ -24,6 +24,7 @@ public class ComputerDAO {
 
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
+	ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 	private static final String LISTCOMPUTER = "SELECT * FROM computer;";
 	private static final String SHOWCOMPUTERDETAILS = "SELECT * from computer WHERE name = ?;";
 	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT * from computer WHERE id = ?;";
@@ -45,7 +46,6 @@ public class ComputerDAO {
 	 * @return a list filled with all the Computer object found and map from database
 	 */
 	public List<Computer> getList() {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPUTER)) {
@@ -64,7 +64,6 @@ public class ComputerDAO {
 	}
 	
 	public List<Computer> getListPage(Page page) {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERPAGE)) {
@@ -90,7 +89,6 @@ public class ComputerDAO {
 	 * @return a list filled with the Computer object found with the key
 	 */
 	public List<Computer> getDetailsByName(String name) {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERDETAILS)) {
@@ -115,7 +113,6 @@ public class ComputerDAO {
 	 * @return a list filled with the Computer object found with the key
 	 */
 	public Computer getDetailsByID(long id) {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		Computer computer = new Computer.ComputerBuilder().build();
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERDETAILSBYID)) {
@@ -138,7 +135,6 @@ public class ComputerDAO {
 	 * @param computer object created with the parameters give by the user
 	 */
 	public void create(Computer computer) {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		int numberOfCreatedElement;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(CREATECOMPUTER)) {
 			stmt.setString(1, computer.getName());
@@ -173,7 +169,6 @@ public class ComputerDAO {
 	 * @param id the ID of the computer we want to change
 	 */
 	public Computer update(Computer computer) {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		int numberOfUpdatedElement = 0;
 		try (PreparedStatement stmt = connectionDatabase.connect().prepareStatement(UPDATEACOMPUTER)){	
 			stmt.setString(1, computer.getName());
@@ -210,7 +205,6 @@ public class ComputerDAO {
 	 * @param id  the ID of the computer we want to delete
 	 */
 	public int delete(long id) {
-		ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 		int numberOfDeletedElement = 0;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(DELETEACOMPUTER)) {
 			stmt.setLong(1, id);
