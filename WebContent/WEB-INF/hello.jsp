@@ -6,6 +6,6 @@
         <title>Test</title>
     </head>
     <body>
-        <p>"Bonjour !"</p>
+        <p>yo</p>
     </body>
 </html>

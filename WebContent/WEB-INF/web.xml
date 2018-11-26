@@ -5,12 +5,12 @@
     version="3.0">
     <servlet>
         <servlet-name>Features</servlet-name>
-        <servlet-class>com.excilys.formation.java.webui.Features</servlet-class>
+        <servlet-class>com.excilys.formation.java.webui.ServletTest</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Features</servlet-name>
         <url-pattern>/hello</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> 
 
 <!--     <jsp-config>
         <jsp-property-group>
