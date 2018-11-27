@@ -26,7 +26,7 @@ public class ShowCompany extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Company> listCompany = companyService.show();
 		request.setAttribute("listCompany", listCompany);
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/showCompany.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/views/showCompany.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

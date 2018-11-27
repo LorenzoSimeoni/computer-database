@@ -22,7 +22,7 @@ public class Acceuil extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/acceuil.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/views/acceuil.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -31,7 +31,7 @@ public class AddComputer extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//TODO
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,7 +43,7 @@ public class AddComputer extends HttpServlet {
 		Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
 		computerService.insertComputer(computer);
 		
-        this.getServletContext().getRequestDispatcher("/WEB-INF/bonjour.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/views/addComputer").forward(request, response);
 	}
 
 }

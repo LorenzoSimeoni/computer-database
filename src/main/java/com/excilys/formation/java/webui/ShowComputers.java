@@ -26,7 +26,7 @@ public class ShowComputers extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Computer> listComputer = computerService.showComputer();
 		request.setAttribute("listComputer", listComputer);
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/showComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/views/showComputer.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
