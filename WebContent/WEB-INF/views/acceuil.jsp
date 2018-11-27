@@ -6,6 +6,9 @@
         <title>Test</title>
     </head>
     <body>
-        <p>yo</p>
+    	
+		<%@ include file="menu.jsp" %>
+		
+		<p><c:out value="${ pageContext.request.contextPath }" /></p>
     </body>
 </html>

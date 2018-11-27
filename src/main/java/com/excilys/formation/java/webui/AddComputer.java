@@ -1,27 +1,36 @@
 package com.excilys.formation.java.webui;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.service.ComputerService;
+
 /**
- * Servlet implementation class Features
+ * Servlet implementation class AddComputer
  */
-@WebServlet("/Features")
-public class ServletTest extends HttpServlet {
+@WebServlet("/AddComputer")
+public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public ServletTest() {
+	private ComputerService computerService = ComputerService.getInstance();
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AddComputer() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher("/WEB-INF/hello.jsp").forward(request, response);
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		//TODO
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

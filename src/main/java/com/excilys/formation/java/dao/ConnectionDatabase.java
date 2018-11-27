@@ -3,12 +3,11 @@
  */
 package com.excilys.formation.java.dao;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +44,7 @@ public class ConnectionDatabase {
 	        properties = new Properties();
 	        InputStream input = null;
 	        try {
-	        	input = new FileInputStream("db/db.properties");
+	        	input = ClassLoader.getSystemClassLoader().getResourceAsStream("db.properties");
 	        	properties.load(input);
 			} catch (IOException e) {
 				LOGGER.info("FILES NOT FOUND", e);

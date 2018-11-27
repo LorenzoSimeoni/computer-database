@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-    version="3.0">
-    <servlet>
-        <servlet-name>Features</servlet-name>
-        <servlet-class>com.excilys.formation.java.webui.ServletTest</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Features</servlet-name>
-        <url-pattern>/hello</url-pattern>
-    </servlet-mapping> 
-
-<!--     <jsp-config>
-        <jsp-property-group>
-            <url-pattern>*.jsp</url-pattern>
-            <include-prelude>/WEB-INF/taglibs.jsp</include-prelude>
-        </jsp-property-group>
-    </jsp-config> -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <servlet>
+    <servlet-name>ShowCompany</servlet-name>
+    <servlet-class>com.excilys.formation.java.webui.ShowCompany</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowCompany</servlet-name>
+    <url-pattern>/showCompany</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Acceuil</servlet-name>
+    <servlet-class>com.excilys.formation.java.webui.Acceuil</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Acceuil</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ShowComputer</servlet-name>
+    <servlet-class>com.excilys.formation.java.webui.ShowComputers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowComputer</servlet-name>
+    <url-pattern>/showComputer</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AddComputer</servlet-name>
+    <servlet-class>com.excilys.formation.java.webui.AddComputer</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddComputer</servlet-name>
+    <url-pattern>/addComputer</url-pattern>
+  </servlet-mapping>
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <include-prelude>/WEB-INF/taglibs.jsp</include-prelude>
+    </jsp-property-group>
+  </jsp-config>
 </web-app>
