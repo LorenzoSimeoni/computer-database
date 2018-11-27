@@ -8,7 +8,7 @@ import com.excilys.formation.java.model.Page;
 import com.excilys.formation.java.service.ComputerService;
 
 public class ComputerCLI {
-	MapperComputer mapperComputer = MapperComputer.getInstance();
+	private MapperComputer mapperComputer = MapperComputer.getInstance();
 	private ComputerService computerServices = ComputerService.getInstance();
 	
 	/**

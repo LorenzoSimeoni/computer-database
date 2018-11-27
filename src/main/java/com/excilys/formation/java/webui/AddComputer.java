@@ -1,14 +1,13 @@
 package com.excilys.formation.java.webui;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.service.ComputerService;
 
@@ -19,6 +18,8 @@ import com.excilys.formation.java.service.ComputerService;
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerService computerService = ComputerService.getInstance();
+	private MapperComputer mapperComputer = MapperComputer.getInstance();
+
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,8 +35,15 @@ public class AddComputer extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String name = request.getParameter("name");     
+		String introduced = request.getParameter("introduced");
+		String discontinued = request.getParameter("discontinued");
+		String companyId = request.getParameter("companyId");
+		
+		Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
+		computerService.insertComputer(computer);
+		
+        this.getServletContext().getRequestDispatcher("/WEB-INF/bonjour.jsp").forward(request, response);
 	}
 
 }

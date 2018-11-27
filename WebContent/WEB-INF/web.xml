@@ -32,10 +32,13 @@
     <servlet-name>AddComputer</servlet-name>
     <url-pattern>/addComputer</url-pattern>
   </servlet-mapping>
-  <jsp-config>
-    <jsp-property-group>
-      <url-pattern>*.jsp</url-pattern>
-      <include-prelude>/WEB-INF/taglibs.jsp</include-prelude>
-    </jsp-property-group>
-  </jsp-config>
+    <servlet>
+    <servlet-name>TestCss</servlet-name>
+    <servlet-class>com.excilys.formation.java.webui.TestCss</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TestCss</servlet-name>
+    <url-pattern>/testCss</url-pattern>
+  </servlet-mapping>
+
 </web-app>
