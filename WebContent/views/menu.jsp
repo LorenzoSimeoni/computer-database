@@ -7,5 +7,4 @@
     <li><a href="/computer-databases/showCompany">Show Company</a></li>
     <li><a href="/computer-databases/showComputer">Show Computer</a></li>
     <li><a href="/computer-databases/addComputer">Add Computer</a></li>
-    <li><a href="/computer-databases/testCss">TestCss</a></li>
 </ul>

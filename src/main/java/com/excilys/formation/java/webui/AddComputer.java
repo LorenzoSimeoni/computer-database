@@ -14,7 +14,7 @@ import com.excilys.formation.java.service.ComputerService;
 /**
  * Servlet implementation class AddComputer
  */
-@WebServlet("/AddComputer")
+@WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerService computerService = ComputerService.getInstance();
