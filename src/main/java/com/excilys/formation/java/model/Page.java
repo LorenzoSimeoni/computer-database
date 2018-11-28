@@ -19,7 +19,7 @@ public class Page {
 		pageNumber++;
 	}
 	public void decreaseLimit() {
-		if(this.limit - offset >= 0) {
+		if(limit - offset >= 0) {
 			limit = limit - offset;
 		}
 		else {
@@ -36,7 +36,7 @@ public class Page {
 		if(newPage<1) {
 			newPage=1;
 		}
-		limit = newPage*offset;
+		limit = newPage*offset-offset;
 		pageNumber = newPage;
 	}
 	public void setOffset(int offset) {

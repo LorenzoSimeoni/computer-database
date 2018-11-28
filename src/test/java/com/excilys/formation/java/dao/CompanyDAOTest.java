@@ -1,5 +1,7 @@
 package com.excilys.formation.java.dao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +20,6 @@ import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.model.Page;
 import com.mysql.jdbc.Connection;
 
-import junit.framework.Assert;
 
 public class CompanyDAOTest {
 	@Mock
@@ -59,8 +60,7 @@ public class CompanyDAOTest {
 		Mockito.when(results.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
 
 		List<Company> result = companyDAO.getList();
-
-		Assert.assertEquals("The returned list is different", companies, result);
+		assertEquals("The returned list is different", companies, result);
 	}
 
 	@Test
@@ -71,8 +71,7 @@ public class CompanyDAOTest {
 		Mockito.when(mapperCompany.mapper(results)).thenReturn(company);
 
 		Company result = companyDAO.getDetailsById(1);
-
-		Assert.assertEquals("The returned company is different", company, result);
+		assertEquals("The returned company is different", company, result);
 	}
 
 	@Test
@@ -89,7 +88,6 @@ public class CompanyDAOTest {
 		Mockito.when(mapperCompany.mapper(results)).thenReturn(company);
 
 		List<Company> result = companyDAO.getListPage(page);
-
-		Assert.assertEquals("The returned list is different", companies, result);
+		assertEquals("The returned list is different", companies, result);
 	}
 }

@@ -20,23 +20,62 @@ import com.excilys.formation.java.service.ComputerService;
 public class ShowComputers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerService computerService = ComputerService.getInstance();
+	private int maxListPage = 5;
+	private int minListPage = 1;
 	
     public ShowComputers() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int size = 10;
-		Page page = new Page();
-		page.setOffset(size);
-		List<Computer> listComputer = computerService.showComputerPage(page);
+		String nbElement = request.getParameter("nbElement");
+		String numPage = request.getParameter("page");
+		String name = request.getParameter("search");
+		List<Computer> listComputer;
+		if(name != null && !"".equals(name)) {
+			listComputer = computerService.showComputerDetails(name);
+		}
+		else {
+			Page page = new Page();
+			int size;
+			
+			if(nbElement == null) {
+				size = 10;
+			} else {
+				size = Integer.parseInt(nbElement);
+			}
+			page.setOffset(size);
+			if(numPage == null) {
+				page.changePage(1);
+			} else {
+				page.changePage(Integer.parseInt(numPage));
+			}
+			listComputer = computerService.showComputerPage(page);			
+			if(numPage != null) {
+				int numberPage = Integer.parseInt(numPage);			
+				if( numberPage == maxListPage && listComputer.size() == size) {
+					maxListPage++;
+					minListPage++;
+				} else if(numberPage == minListPage) {
+					if(minListPage != 1) {
+						maxListPage--;
+						minListPage--;				
+					}
+				}
+			} else {
+				maxListPage = 5;
+				minListPage = 1;
+			}
+			request.setAttribute("maxListPage", maxListPage);
+			request.setAttribute("minListPage", minListPage);
+		}
 		request.setAttribute("listComputer", listComputer);
+		request.setAttribute("sizeComputerFound", listComputer.size());
 		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		doGet(request, response);
 	}
 

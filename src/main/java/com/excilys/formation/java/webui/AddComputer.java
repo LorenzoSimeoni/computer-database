@@ -35,15 +35,31 @@ public class AddComputer extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name");     
+		String name = request.getParameter("computerName");     
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
 		
-		Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
-		computerService.insertComputer(computer);
+		if(!name.equals("")) {
+			if(introduced.equals("")) {
+				introduced = null;
+			}
+			if(discontinued.equals("")) {
+				discontinued = null;
+			}
+			if(companyId.equals("")) {
+				companyId = null;
+			}
+			System.out.println(name);
+			System.out.println(introduced);
+			System.out.println(discontinued);
+			System.out.println(companyId);
+			Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
+			System.out.println(computer.toString());
+			computerService.insertComputer(computer);			
+		}
 		
-        this.getServletContext().getRequestDispatcher("/views/addComputer").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 
 }
