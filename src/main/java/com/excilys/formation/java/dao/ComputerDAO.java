@@ -25,7 +25,7 @@ public class ComputerDAO {
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
 	ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
-	private static final String LISTCOMPUTER = "SELECT * FROM computer;";
+	private static final String LISTCOMPUTER = "SELECT id, name, introduced, discontinued, company_id FROM computer;";
 	private static final String SHOWCOMPUTERDETAILS = "SELECT * from computer WHERE name = ?;";
 	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT * from computer WHERE id = ?;";
 	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
