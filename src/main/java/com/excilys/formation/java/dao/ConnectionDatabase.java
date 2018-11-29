@@ -53,7 +53,7 @@ public class ConnectionDatabase {
 					try {
 						input.close();
 					} catch (final IOException e) {
-						LOGGER.info("File db.properties fails to close", e);
+						LOGGER.error("File db.properties fails to close", e);
 					}
 				}	
 			}
@@ -68,7 +68,7 @@ public class ConnectionDatabase {
 	            Class.forName(DB_DRIVER);
 	            connection = DriverManager.getConnection(URL, getProperties());
 	        } catch (ClassNotFoundException | SQLException e) {
-	        	LOGGER.info("Connection to database failed", e);
+	        	LOGGER.error("Connection to database failed", e);
 	        }
 	    }
 	    return connection;
@@ -81,7 +81,7 @@ public class ConnectionDatabase {
 	            connection.close();
 	            connection = null;
 	        } catch (SQLException e) {
-	        	LOGGER.info("Disconnection to database failed", e);
+	        	LOGGER.error("Disconnection to database failed", e);
 	        }
 	    }
 	}

@@ -55,7 +55,7 @@ public class ComputerDAO {
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request getList", e);
+			LOGGER.error("Can't execute the request getList", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -75,7 +75,7 @@ public class ComputerDAO {
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request getListPage", e);
+			LOGGER.error("Can't execute the request getListPage", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -99,7 +99,7 @@ public class ComputerDAO {
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request GetDetailsByName", e);
+			LOGGER.error("Can't execute the request GetDetailsByName", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -122,7 +122,7 @@ public class ComputerDAO {
 				computer = mapperComputer.mapper(results);
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request GetDetailsByID", e);
+			LOGGER.error("Can't execute the request GetDetailsByID", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -157,7 +157,7 @@ public class ComputerDAO {
 			numberOfCreatedElement = stmt.executeUpdate();
 			LOGGER.info(numberOfCreatedElement+" elements with ID : "+computer.getId()+ " are now created");
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request create", e);
+			LOGGER.error("Can't execute the request create", e);
 		} finally {
 			connectionDatabase.disconnect();
 		}
@@ -193,7 +193,7 @@ public class ComputerDAO {
 			numberOfUpdatedElement = stmt.executeUpdate();
 			LOGGER.info(numberOfUpdatedElement+" elements with ID : "+computer.getId()+ " are now updated");
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request update", e);
+			LOGGER.error("Can't execute the request update", e);
 		} finally {
 			connectionDatabase.disconnect();
 		}
@@ -211,7 +211,7 @@ public class ComputerDAO {
 			numberOfDeletedElement = stmt.executeUpdate();
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request delete", e);
+			LOGGER.error("Can't execute the request delete", e);
 		} finally {
 			connectionDatabase.disconnect();
 		}

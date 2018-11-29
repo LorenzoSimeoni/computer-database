@@ -50,7 +50,7 @@ public class CompanyDAO {
 				list.add(company);
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request LISTCOMPANY", e);
+			LOGGER.error("Can't execute the request LISTCOMPANY", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -72,7 +72,7 @@ public class CompanyDAO {
 				company = mapperCompany.mapper(results);				
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request LISTCOMPANYDETAILSBYID", e);
+			LOGGER.error("Can't execute the request LISTCOMPANYDETAILSBYID", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -98,7 +98,7 @@ public class CompanyDAO {
 				list.add(company);
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Can't execute the request SHOWCOMPANYPAGE", e);
+			LOGGER.error("Can't execute the request SHOWCOMPANYPAGE", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
