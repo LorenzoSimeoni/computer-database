@@ -1,6 +1,8 @@
 package com.excilys.formation.java.webui;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 import com.excilys.formation.java.cli.ComputerCLI;
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
+import com.excilys.formation.java.model.Company;
+import com.excilys.formation.java.service.CompanyService;
 import com.excilys.formation.java.service.ComputerService;
 import com.excilys.formation.java.validator.Validator;
 
@@ -23,6 +27,7 @@ import com.excilys.formation.java.validator.Validator;
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerService computerService = ComputerService.getInstance();
+	private CompanyService companyService = CompanyService.getInstance();
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
 	private final static Logger LOGGER = LogManager.getLogger(ComputerCLI.class.getName());
 
@@ -36,7 +41,8 @@ public class AddComputer extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO
+		List<Company> listCompany = companyService.show();
+		request.setAttribute("listCompany", listCompany);
 		this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 
@@ -67,7 +73,7 @@ public class AddComputer extends HttpServlet {
 				LOGGER.info("COMPUTER NOT CREATED");
 			}
 		}
-        this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
+		doGet(request, response);
 	}
 
 }

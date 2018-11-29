@@ -78,7 +78,7 @@
 							<td class="editMode">
 								<input type="checkbox" name="cb" class="cb" value="${ computer.id }">
 							</td>
-							<td><a href="editComputer"><c:out value="${ computer.name }" /></a></td>
+							<td><a href="updateComputer?id=${ computer.id }"><c:out value="${ computer.name }" /></a></td>
 							<td><c:out value="${ computer.introduced }" /></td>
 							<td><c:out value='${ computer.discontinued }' /></td>
 							<td><c:out value='${ computer.company.id == 0?"":computer.company.id }' /></td>

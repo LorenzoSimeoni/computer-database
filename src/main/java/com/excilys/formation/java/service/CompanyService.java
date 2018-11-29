@@ -20,7 +20,7 @@ public class CompanyService {
 	}
 	
 	/**
-	 * Print all the Company object found in the List<Company> gived by our companyDao
+	 * Fill a list with all the Company object found in the List<Company> gived by our companyDao
 	 */
 	public List<Company> show() {
 		return companyDao.getList();
