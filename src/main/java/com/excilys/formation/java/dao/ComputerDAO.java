@@ -26,12 +26,12 @@ public class ComputerDAO {
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
 	ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 	private static final String LISTCOMPUTER = "SELECT id, name, introduced, discontinued, company_id FROM computer;";
-	private static final String SHOWCOMPUTERDETAILS = "SELECT * from computer WHERE name = ?;";
-	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT * from computer WHERE id = ?;";
+	private static final String SHOWCOMPUTERDETAILS = "SELECT id, name, introduced, discontinued, company_id from computer WHERE name = ?;";
+	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT id, name, introduced, discontinued, company_id from computer WHERE id = ?;";
 	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
 	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = ?,introduced = ?,discontinued = ?,company_id = ? WHERE ID = ?";
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
-	private static final String SHOWCOMPUTERPAGE = "SELECT * FROM computer LIMIT ?, ?";
+	private static final String SHOWCOMPUTERPAGE = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ?, ?";
 	
 	private ComputerDAO(){}
 	

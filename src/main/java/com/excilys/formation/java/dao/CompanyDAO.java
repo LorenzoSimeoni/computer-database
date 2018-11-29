@@ -23,9 +23,9 @@ public class CompanyDAO {
 	
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	private MapperCompany mapperCompany = MapperCompany.getInstance();
-	private static final String LISTCOMPANY = "SELECT * FROM company;";
-	private static final String LISTCOMPANYDETAILSBYID = "SELECT * FROM company WHERE id = ?;";
-	private static final String SHOWCOMPANYPAGE = "SELECT * FROM company LIMIT ?, ?";
+	private static final String LISTCOMPANY = "SELECT id, name FROM company;";
+	private static final String LISTCOMPANYDETAILSBYID = "SELECT id, name FROM company WHERE id = ?;";
+	private static final String SHOWCOMPANYPAGE = "SELECT id, name FROM company LIMIT ?, ?";
 	private ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 	
 	private CompanyDAO(){}
