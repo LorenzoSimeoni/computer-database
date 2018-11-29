@@ -40,46 +40,53 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<log4j.core.version>2.11.1</log4j.core.version>
+		<junit.version>4.11</junit.version>
+		<mysql.connector.java.version>5.1.6</mysql.connector.java.version>
+		<mockito.core.version>2.22.0</mockito.core.version>
+		<javaee.api.version>8.0</javaee.api.version>
+		<javax.servlet.api.version>4.0.1</javax.servlet.api.version>
+		<jstl.version>1.2</jstl.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.11.1</version>
+			<version>${log4j.core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
-<!-- 			<scope>test</scope> -->
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
+			<version>${mysql.connector.java.version}</version>
 		</dependency>
  		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>2.22.0</version>
-<!-- 			<scope>test</scope> -->
+			<version>${mockito.core.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
-			<version>8.0</version>
+			<version>${javaee.api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version>
+			<version>${javax.servlet.api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${jstl.version}</version>
 		</dependency>
 	</dependencies>
 
