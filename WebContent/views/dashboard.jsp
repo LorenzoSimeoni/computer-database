@@ -46,7 +46,7 @@
 
 		<form id="deleteForm" action="#" method="POST">
 			<input type="hidden" name="selection" value="">
-		</form>
+		
 
 		<div class="container" style="margin-top: 10px;">
 			<table class="table table-striped table-bordered">
@@ -57,9 +57,9 @@
 
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
-							style="vertical-align: top;"> - <a href="#"
-								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
-									class="fa fa-trash-o fa-lg"></i>
+							style="vertical-align: top;"> - 
+							<a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+									class="fa fa-trash"></i>
 							</a>
 						</span></th>
 						<th>Computer name</th>
@@ -75,8 +75,10 @@
 				<tbody id="results">
 					<c:forEach items="${ listComputer }" var="computer">
 						<tr>
-							<td><c:out value="${ computer.id }" /></td>
-							<td><c:out value="${ computer.name }" /></td>
+							<td class="editMode">
+								<input type="checkbox" name="cb" class="cb" value="${ computer.id }">
+							</td>
+							<td><a href="editComputer"><c:out value="${ computer.name }" /></a></td>
 							<td><c:out value="${ computer.introduced }" /></td>
 							<td><c:out value='${ computer.discontinued }' /></td>
 							<td><c:out value='${ computer.company.id == 0?"":computer.company.id }' /></td>
@@ -86,6 +88,7 @@
 				</tbody>
 			</table>
 		</div>
+		</form>
 	</section>
 
 	<footer class="navbar-fixed-bottom">

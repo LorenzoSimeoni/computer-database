@@ -1,7 +1,9 @@
 package com.excilys.formation.java.webui;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -75,7 +77,9 @@ public class ShowComputers extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		List<String> deleted = Arrays.asList(request.getParameterValues("cb"));
+		Stream<String> sp = deleted.stream();
+		sp.forEach(id -> computerService.deleteComputer(Long.parseLong(id)));
 		doGet(request, response);
 	}
 
