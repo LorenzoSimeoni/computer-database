@@ -42,7 +42,7 @@ public class MapperComputer {
 			introducedDateAndTime = LocalDateTime.parse(introduced);
 		}
 		LocalDateTime discontinuedDateAndTime=null;
-		String discontinued = results.getString(3);
+		String discontinued = results.getString(4);
 		if( discontinued != null) {
 			discontinued = discontinued.replace(' ', 'T');
 			discontinuedDateAndTime = LocalDateTime.parse(discontinued);

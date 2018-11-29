@@ -78,8 +78,8 @@
 							<td><c:out value="${ computer.id }" /></td>
 							<td><c:out value="${ computer.name }" /></td>
 							<td><c:out value="${ computer.introduced }" /></td>
-							<td><c:out value="${ computer.discontinued }" /></td>
-							<td><c:out value="${ computer.company.id }" /></td>
+							<td><c:out value='${ computer.discontinued }' /></td>
+							<td><c:out value='${ computer.company.id == 0?"":computer.company.id }' /></td>
 						</tr>
 					</c:forEach>
 

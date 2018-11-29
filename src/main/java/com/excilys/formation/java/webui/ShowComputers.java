@@ -50,7 +50,7 @@ public class ShowComputers extends HttpServlet {
 			} else {
 				page.changePage(Integer.parseInt(numPage));
 			}
-			listComputer = computerService.showComputerPage(page);			
+			listComputer = computerService.showComputerPage(page);
 			if(numPage != null) {
 				int numberPage = Integer.parseInt(numPage);			
 				if( numberPage == maxListPage && listComputer.size() == size) {

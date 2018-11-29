@@ -43,17 +43,17 @@ public class AddComputer extends HttpServlet {
 		if(!name.equals("")) {
 			if(introduced.equals("")) {
 				introduced = null;
+			} else {
+				introduced = introduced+"T00:00:00";
 			}
 			if(discontinued.equals("")) {
 				discontinued = null;
+			} else {
+				discontinued = discontinued+"T00:00:00";
 			}
 			if(companyId.equals("")) {
 				companyId = null;
-			}
-			System.out.println(name);
-			System.out.println(introduced);
-			System.out.println(discontinued);
-			System.out.println(companyId);
+			} 
 			Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
 			System.out.println(computer.toString());
 			computerService.insertComputer(computer);			
