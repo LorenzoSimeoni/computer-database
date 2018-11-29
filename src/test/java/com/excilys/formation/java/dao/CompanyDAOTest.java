@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +71,7 @@ public class CompanyDAOTest {
 		Mockito.when(results.next()).thenReturn(true).thenReturn(false);
 		Mockito.when(mapperCompany.mapper(results)).thenReturn(company);
 
-		Company result = companyDAO.getDetailsById(1);
+		Optional<Company> result = companyDAO.getDetailsById(1);
 		assertEquals("The returned company is different", company, result);
 	}
 

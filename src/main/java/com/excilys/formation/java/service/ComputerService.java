@@ -1,6 +1,7 @@
 package com.excilys.formation.java.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.formation.java.dao.ComputerDAO;
 import com.excilys.formation.java.model.Computer;
@@ -30,7 +31,7 @@ public class ComputerService {
 		return computerDao.getDetailsByName(name);
 	}
 	
-	public Computer showComputerDetailsByID(long id) {
+	public Optional<Computer> showComputerDetailsByID(long id) {
 		return computerDao.getDetailsByID(id);
 	}
 

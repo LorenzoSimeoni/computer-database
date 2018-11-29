@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +63,7 @@ public class CompanyDAO {
 	 * Function use to print Company database
 	 * @return a list filled with all the Company object found in database
 	 */
-	public Company getDetailsById(long id) {
+	public Optional<Company> getDetailsById(long id) {
 		Company company = null;
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(LISTCOMPANYDETAILSBYID)) {
@@ -77,7 +78,7 @@ public class CompanyDAO {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
-		return company;
+		return Optional.ofNullable(company);
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package com.excilys.formation.java.cli;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.formation.java.service.CompanyService;
 import com.excilys.formation.java.model.Company;
@@ -25,8 +26,13 @@ public class CompanyCLI {
 	}
 	
 	public void showCompanyDetailsById(long id) {
-		Company company = companyServices.showDetailsById(id);
-		System.out.println(company.toString());
+		Optional<Company> optionalCompany = companyServices.showDetailsById(id);
+		if(optionalCompany.isPresent()) {
+			Company company = optionalCompany.get();
+			System.out.println(company.toString());
+		} else {
+			System.out.println("No companies found");
+		}
 	}
 	
 	public void showCompanyPage(Page page) {

@@ -3,6 +3,7 @@ package com.excilys.formation.java.validator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,10 +66,10 @@ public class Validator {
 	
 	public static boolean companyIdExist(long id) {
 		CompanyService companyServices = CompanyService.getInstance();
-		Company company = companyServices.showDetailsById(id);
-		if(company == null) {
+		Optional<Company> company = companyServices.showDetailsById(id);
+		if(!company.isPresent()) {
 			LOGGER.info("You gived a wrong CompanyID, it doesn't exist !");
-			return false;
+			return false;			
 		}
 		return true;
 	}

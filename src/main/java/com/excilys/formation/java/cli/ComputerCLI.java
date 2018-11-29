@@ -1,6 +1,7 @@
 package com.excilys.formation.java.cli;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
@@ -50,8 +51,13 @@ public class ComputerCLI {
 	 * @param id
 	 */
 	public void showComputerDetailsByID(long id) {
-		Computer computer = computerServices.showComputerDetailsByID(id);
-		System.out.println(computer.toString());
+		Optional<Computer> optionalComputer = computerServices.showComputerDetailsByID(id);
+		if(optionalComputer.isPresent()) {
+			Computer computer = optionalComputer.get();
+			System.out.println(computer.toString());
+		} else {
+			System.out.println("No computer found");
+		}
 	}
 	
 	/**

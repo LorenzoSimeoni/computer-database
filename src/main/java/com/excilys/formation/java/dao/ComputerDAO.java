@@ -2,6 +2,7 @@ package com.excilys.formation.java.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -112,8 +113,8 @@ public class ComputerDAO {
 	 * @param ID used as a key to search in Computer database
 	 * @return a list filled with the Computer object found with the key
 	 */
-	public Computer getDetailsByID(long id) {
-		Computer computer = new Computer.ComputerBuilder().build();
+	public Optional<Computer> getDetailsByID(long id) {
+		Computer computer = null;
 		ResultSet results = null;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERDETAILSBYID)) {
 			stmt.setLong(1, id);
@@ -127,7 +128,7 @@ public class ComputerDAO {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
 		}
-		return computer;
+		return Optional.ofNullable(computer);
 	}
 	
 	/**

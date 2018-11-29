@@ -1,6 +1,7 @@
 package com.excilys.formation.java.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.formation.java.dao.CompanyDAO;
 import com.excilys.formation.java.model.Company;
@@ -25,7 +26,7 @@ public class CompanyService {
 		return companyDao.getList();
 	}
 	
-	public Company showDetailsById(long id) {
+	public Optional<Company> showDetailsById(long id) {
 		return companyDao.getDetailsById(id);
 	}
 	

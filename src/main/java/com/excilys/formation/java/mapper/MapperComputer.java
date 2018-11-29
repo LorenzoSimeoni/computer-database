@@ -6,6 +6,7 @@ package com.excilys.formation.java.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.model.Computer;
@@ -68,60 +69,62 @@ public class MapperComputer {
 	 */
 	public Computer mapper(long id, String name, String introduced, String discontinued, String companyId) {
 		Company company;
-		Computer computerUpdated;
+		Computer computerUpdated = null;
 		String nameComputer = name;
 		long companyID;
-		Computer computer = ComputerService.getInstance().showComputerDetailsByID(id);
-		
-		LocalDateTime localIntroduced = null;
-		LocalDateTime localDiscontinued = null;
-		
-		if(name != null && name.equals("")) {
-			nameComputer = computer.getName();
-		}
-		if(introduced != null && introduced.equals("")) {
-			localIntroduced = computer.getIntroduced();
-		} else {
-			if(introduced != null && Validator.testStringIsADate(introduced)) {
-				localIntroduced = LocalDateTime.parse(introduced);
+		Optional<Computer> computerOptional = ComputerService.getInstance().showComputerDetailsByID(id);
+		if(computerOptional.isPresent()) {
+			Computer computer = computerOptional.get();
+			LocalDateTime localIntroduced = null;
+			LocalDateTime localDiscontinued = null;
+			
+			if(name != null && name.equals("")) {
+				nameComputer = computer.getName();
 			}
-		}
-		if(discontinued != null && discontinued.equals("")) {
-			localDiscontinued = computer.getDiscontinued();
-		} else {
-			if(discontinued != null && Validator.testStringIsADate(discontinued)) {
-				localDiscontinued = LocalDateTime.parse(discontinued);
-				if(localIntroduced != null && Validator.testStringIsADate(introduced)) {
-					if(localDiscontinued.isBefore(localIntroduced)) {
-						localDiscontinued = null;
-					}					
+			if(introduced != null && introduced.equals("")) {
+				localIntroduced = computer.getIntroduced();
+			} else {
+				if(introduced != null && Validator.testStringIsADate(introduced)) {
+					localIntroduced = LocalDateTime.parse(introduced);
 				}
 			}
-		}
-		if(companyId != null && companyId.equals("")) {
-			companyID = computer.getCompany().getId();
-			company = new Company.CompanyBuilder(companyID).build();
-		} else {
-			if(companyId != null && Validator.testStringIsALong(companyId)) {
-				companyID = Long.parseLong(companyId);
-				if(Validator.companyIdExist(companyID)) {
-					company = new Company.CompanyBuilder(companyID).build();						
+			if(discontinued != null && discontinued.equals("")) {
+				localDiscontinued = computer.getDiscontinued();
+			} else {
+				if(discontinued != null && Validator.testStringIsADate(discontinued)) {
+					localDiscontinued = LocalDateTime.parse(discontinued);
+					if(localIntroduced != null && Validator.testStringIsADate(introduced)) {
+						if(localDiscontinued.isBefore(localIntroduced)) {
+							localDiscontinued = null;
+						}					
+					}
+				}
+			}
+			if(companyId != null && companyId.equals("")) {
+				companyID = computer.getCompany().getId();
+				company = new Company.CompanyBuilder(companyID).build();
+			} else {
+				if(companyId != null && Validator.testStringIsALong(companyId)) {
+					companyID = Long.parseLong(companyId);
+					if(Validator.companyIdExist(companyID)) {
+						company = new Company.CompanyBuilder(companyID).build();						
+					} else {
+						//TODO PUT A LOGGER
+						company = new Company.CompanyBuilder().build();
+					}
 				} else {
 					//TODO PUT A LOGGER
 					company = new Company.CompanyBuilder().build();
 				}
-			} else {
-				//TODO PUT A LOGGER
-				company = new Company.CompanyBuilder().build();
 			}
-		}
-
-		computerUpdated = new Computer.ComputerBuilder(nameComputer)
-				.setID(id)
-				.setIntroduced(localIntroduced)
-				.setDiscontinued(localDiscontinued)
-				.setCompanyId(company)
-				.build();			
+			
+			computerUpdated = new Computer.ComputerBuilder(nameComputer)
+					.setID(id)
+					.setIntroduced(localIntroduced)
+					.setDiscontinued(localDiscontinued)
+					.setCompanyId(company)
+					.build();			
+		} 
 		
 		return computerUpdated;
 	}
