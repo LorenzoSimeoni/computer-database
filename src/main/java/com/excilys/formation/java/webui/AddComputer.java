@@ -7,9 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.excilys.formation.java.cli.ComputerCLI;
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.service.ComputerService;
+import com.excilys.formation.java.validator.Validator;
 
 /**
  * Servlet implementation class AddComputer
@@ -19,6 +24,7 @@ public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerService computerService = ComputerService.getInstance();
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
+	private final static Logger LOGGER = LogManager.getLogger(ComputerCLI.class.getName());
 
 
     /**
@@ -55,10 +61,12 @@ public class AddComputer extends HttpServlet {
 				companyId = null;
 			} 
 			Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
-			System.out.println(computer.toString());
-			computerService.insertComputer(computer);			
+			if(Validator.checkComputer(computer)) {
+				computerService.insertComputer(computer);							
+			} else {
+				LOGGER.info("COMPUTER NOT CREATED");
+			}
 		}
-		
         this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 

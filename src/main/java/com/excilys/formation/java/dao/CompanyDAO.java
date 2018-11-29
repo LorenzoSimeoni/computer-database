@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import com.excilys.formation.java.mapper.MapperCompany;
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.model.Page;
-import com.excilys.formation.java.validator.Validator;
 
 /**
  * 
@@ -22,7 +21,7 @@ import com.excilys.formation.java.validator.Validator;
  */
 public class CompanyDAO {
 	
-	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
+	private final static Logger LOGGER = LogManager.getLogger(CompanyDAO.class.getName());
 	private MapperCompany mapperCompany = MapperCompany.getInstance();
 	private static final String LISTCOMPANY = "SELECT id, name FROM company;";
 	private static final String LISTCOMPANYDETAILSBYID = "SELECT id, name FROM company WHERE id = ?;";

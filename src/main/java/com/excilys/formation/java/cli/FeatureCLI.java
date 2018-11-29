@@ -3,10 +3,9 @@ package com.excilys.formation.java.cli;
 import java.util.Scanner;
 
 import com.excilys.formation.java.model.Page;
-import com.excilys.formation.java.validator.*;
+import com.excilys.formation.java.validator.Validator;
 
 public class FeatureCLI {
-	
 	private static Scanner sc;
 	static CompanyCLI companyCLI = new CompanyCLI();
 	static ComputerCLI computerCLI = new ComputerCLI();
@@ -21,7 +20,7 @@ public class FeatureCLI {
 			switch (key) {
 			case 1:
 				parseShow(sc);
-				System.out.println("\n \n ************************************************************************************************************** \n \n");
+				System.out.println("\n   \n ************************************************************************************************************** \n \n");
 				break;
 			case 2:
 				parseCreate(sc);
@@ -105,6 +104,9 @@ public class FeatureCLI {
 		System.out.println("Give a computer Name");
 		sc.nextLine();
 		String name = sc.nextLine();
+		if(name.equals("null")|| name.equals("")) {
+			name = null;
+		}
 		System.out.println("Give an introduced Date (if you don't want to fill a date do an enter)");
 		String introduced = sc.nextLine();
 		String discontinued = null;
@@ -143,32 +145,20 @@ public class FeatureCLI {
 			System.out.println("Give a computer Name (if you don't want to change the name do an enter)");
 			sc.nextLine();
 			String name = sc.nextLine();
-			if(name.equals("null")) {
-				name = null;
-			} else if(name.equals("")) {
-				name = "nochange";
-			}
 			System.out.println("Give an introduced Date (if you don't want to fill a date do an enter)");
 			String introduced = sc.nextLine();
 			if(introduced.equals("null")) {
 				introduced = null;
-			} else if(name.equals("")) {
-				introduced = "nochange";
 			}
 			System.out.println("Give a discontinued date (if you don't want to fill a date do an enter)");
 			String discontinued = sc.nextLine();
 			if(discontinued.equals("null")) {
 				discontinued = null;
-			} else if(name.equals("")) {
-				discontinued = "nochange";
 			}
-			
 			System.out.println("Give a Company ID (if you don't want, write null or do an enter)");
 			String companyId = sc.nextLine();
 			if(companyId.equals("null")) {
 				companyId = null;
-			} else if(name.equals("")) {
-				companyId = "nochange";
 			}
 			computerCLI.updateComputer(id, name, introduced, discontinued, companyId);
 		}

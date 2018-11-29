@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.service.ComputerService;
@@ -18,7 +21,8 @@ import com.excilys.formation.java.validator.Validator;
  *
  */
 public class MapperComputer {
-	
+	private final static Logger LOGGER = LogManager.getLogger(MapperComputer.class.getName());
+
 	private MapperComputer(){}
 	
 	private static MapperComputer mapperComputer = new MapperComputer();
@@ -77,28 +81,18 @@ public class MapperComputer {
 			Computer computer = computerOptional.get();
 			LocalDateTime localIntroduced = null;
 			LocalDateTime localDiscontinued = null;
-			
-			if(name != null && name.equals("")) {
+			if(name.equals("")) {
 				nameComputer = computer.getName();
-			}
+			} 
 			if(introduced != null && introduced.equals("")) {
 				localIntroduced = computer.getIntroduced();
-			} else {
-				if(introduced != null && Validator.testStringIsADate(introduced)) {
+			} else if(introduced != null && Validator.testStringIsADate(introduced)) {
 					localIntroduced = LocalDateTime.parse(introduced);
-				}
 			}
 			if(discontinued != null && discontinued.equals("")) {
 				localDiscontinued = computer.getDiscontinued();
-			} else {
-				if(discontinued != null && Validator.testStringIsADate(discontinued)) {
+			} else if(discontinued != null && Validator.testStringIsADate(discontinued)) {
 					localDiscontinued = LocalDateTime.parse(discontinued);
-					if(localIntroduced != null && Validator.testStringIsADate(introduced)) {
-						if(localDiscontinued.isBefore(localIntroduced)) {
-							localDiscontinued = null;
-						}					
-					}
-				}
 			}
 			if(companyId != null && companyId.equals("")) {
 				companyID = computer.getCompany().getId();
@@ -106,18 +100,12 @@ public class MapperComputer {
 			} else {
 				if(companyId != null && Validator.testStringIsALong(companyId)) {
 					companyID = Long.parseLong(companyId);
-					if(Validator.companyIdExist(companyID)) {
-						company = new Company.CompanyBuilder(companyID).build();						
-					} else {
-						//TODO PUT A LOGGER
-						company = new Company.CompanyBuilder().build();
-					}
+					company = new Company.CompanyBuilder(companyID).build();						
 				} else {
-					//TODO PUT A LOGGER
+					LOGGER.info("You didn't give a Long for CompanyID, initiate to null");
 					company = new Company.CompanyBuilder().build();
 				}
 			}
-			
 			computerUpdated = new Computer.ComputerBuilder(nameComputer)
 					.setID(id)
 					.setIntroduced(localIntroduced)
@@ -125,7 +113,9 @@ public class MapperComputer {
 					.setCompanyId(company)
 					.build();			
 		} 
-		
+		else {
+			computerUpdated = new Computer.ComputerBuilder().build();			
+		}
 		return computerUpdated;
 	}
 	
@@ -138,30 +128,21 @@ public class MapperComputer {
 	 * @return
 	 */
 	public Computer mapper(String name, String introduced, String discontinued, String companyId) {
-		Company company;
 		Computer computer;
 		
+		Company company = null;
 		LocalDateTime localIntroduced = null;
 		LocalDateTime localDiscontinued = null;
 		if(introduced != null && Validator.testStringIsADate(introduced)) {
 			localIntroduced = LocalDateTime.parse(introduced);
-			if(discontinued != null && Validator.testStringIsADate(discontinued)) {
-				localDiscontinued = LocalDateTime.parse(discontinued);
-				if(localDiscontinued.isBefore(localIntroduced)) {
-					localDiscontinued = null;
-				}
-			}
+		}
+		if(discontinued != null && Validator.testStringIsADate(discontinued)) {
+			localDiscontinued = LocalDateTime.parse(discontinued);
 		}
 		if(companyId != null && Validator.testStringIsALong(companyId)) {
 			long companyIdTransform = Long.parseLong(companyId);
-			if(Validator.companyIdExist(companyIdTransform)) {
-				company = new Company.CompanyBuilder(companyIdTransform).build();						
-			} else {
-				//TODO PUT A LOGGER
-				company = new Company.CompanyBuilder().build();
-			}
+			company = new Company.CompanyBuilder(companyIdTransform).build();
 		} else {
-			//TODO PUT A LOGGER
 			company = new Company.CompanyBuilder().build();
 		}
 		

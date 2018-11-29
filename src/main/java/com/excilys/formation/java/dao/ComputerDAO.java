@@ -1,5 +1,8 @@
 package com.excilys.formation.java.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,14 +10,9 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import com.excilys.formation.java.mapper.MapperComputer;
 import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.model.Page;
-import com.excilys.formation.java.validator.Validator;
 
 /**
  * 
@@ -23,16 +21,16 @@ import com.excilys.formation.java.validator.Validator;
  */
 public class ComputerDAO {
 
-	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
+	private final static Logger LOGGER = LogManager.getLogger(ComputerDAO.class.getName());
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
 	ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
 	private static final String LISTCOMPUTER = "SELECT id, name, introduced, discontinued, company_id FROM computer;";
 	private static final String SHOWCOMPUTERDETAILS = "SELECT id, name, introduced, discontinued, company_id from computer WHERE name = ?;";
 	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT id, name, introduced, discontinued, company_id from computer WHERE id = ?;";
 	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
-	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = ?,introduced = ?,discontinued = ?,company_id = ? WHERE ID = ?";
+	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = ?,introduced = ?,discontinued = ?,company_id = ? WHERE ID = ?;";
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
-	private static final String SHOWCOMPUTERPAGE = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ?, ?";
+	private static final String SHOWCOMPUTERPAGE = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ?, ?;";
 	
 	private ComputerDAO(){}
 	

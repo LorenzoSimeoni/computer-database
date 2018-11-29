@@ -8,11 +8,35 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.excilys.formation.java.model.Computer;
 import com.excilys.formation.java.model.Company;
 import com.excilys.formation.java.service.CompanyService;
 
 public class Validator {
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
+	
+	public static boolean checkComputer(Computer computer) {
+		if(computer.getName()==null) {
+			LOGGER.info("You gived a computer with no name, can't achieve the creation or update");
+			return false;
+		}
+		if(!companyIdExist(computer.getCompany().getId())) {
+			LOGGER.info("You gived a wrong Company ID, can't achieve the creation or update of computer");
+			return false;
+		}
+		if(computer.getDiscontinued()!=null && computer.getIntroduced()==null) {
+			LOGGER.info("You can't have Discontinued date without introduced date, can't achieve the creation or update of this computer");
+			return false;
+		}
+		if(computer.getIntroduced()!=null && computer.getDiscontinued()!=null) {
+			if(!computer.getIntroduced().isBefore(computer.getIntroduced())) {
+				LOGGER.info("A discontinued date can't be before an Introduced date, can't achieve the creation or update of this computer");
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	
 	public static int userGiveAnInt(Scanner sc) {
 		int userInt = -1;
@@ -65,6 +89,9 @@ public class Validator {
 	}
 	
 	public static boolean companyIdExist(long id) {
+		if(id == 0) {
+			return true;
+		}
 		CompanyService companyServices = CompanyService.getInstance();
 		Optional<Company> company = companyServices.showDetailsById(id);
 		if(!company.isPresent()) {
@@ -73,4 +100,5 @@ public class Validator {
 		}
 		return true;
 	}
+
 }
