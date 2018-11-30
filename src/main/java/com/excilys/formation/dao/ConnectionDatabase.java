@@ -1,12 +1,8 @@
-/**
- * 
- */
 package com.excilys.formation.dao;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -14,38 +10,33 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.validator.Validator;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
-/**
- * @author excilys
- *
- */
 public class ConnectionDatabase {
-	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
-	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
-	
 	private Connection connection;
-	private Properties properties;
+	private HikariDataSource ds;
+	private HikariConfig config;
+	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
+
 	
 	private ConnectionDatabase(){}
 	
-	private static ConnectionDatabase connectionDatabase = new ConnectionDatabase();
+	private static ConnectionDatabase connectionHikariDatabase = new ConnectionDatabase();
 	
 	public static ConnectionDatabase getInstance() {
-		return connectionDatabase;
+		return connectionHikariDatabase;
 	}
 	
-	/**
-	 * Get the properties of the database connection
-	 * @return an object Properties containing URL, user and mdp
-	 */
-	private Properties getProperties() {
-	    if (properties == null) {
-	        properties = new Properties();
+	private HikariDataSource getDataSource() {
+	    if (config == null) {
+	        
 	        InputStream input = null;
 	        try {
-	        	input = ClassLoader.getSystemClassLoader().getResourceAsStream("db.properties");
+	        	input = ClassLoader.getSystemClassLoader().getResourceAsStream("hikari.properties");
+	        	Properties properties = new Properties();
 	        	properties.load(input);
+	        	config = new HikariConfig(properties);
 			} catch (IOException e) {
 				LOGGER.info("FILES NOT FOUND", e);
 			} finally {
@@ -57,24 +48,22 @@ public class ConnectionDatabase {
 					}
 				}	
 			}
+	        ds = new HikariDataSource(config);
 	    }
-	    return properties;
+	    return ds;
 	}
-	
-	// connect database
+
 	public Connection connect() {
 	    if (connection == null) {
 	        try {
-	            Class.forName(DB_DRIVER);
-	            connection = DriverManager.getConnection(URL, getProperties());
-	        } catch (ClassNotFoundException | SQLException e) {
+	            connection = getDataSource().getConnection();
+	        } catch ( SQLException e) {
 	        	LOGGER.error("Connection to database failed", e);
 	        }
 	    }
 	    return connection;
 	}
 	
-	// disconnect database
 	public void disconnect() {
 	    if (connection != null) {
 	        try {
@@ -85,5 +74,5 @@ public class ConnectionDatabase {
 	        }
 	    }
 	}
-
+	
 }
