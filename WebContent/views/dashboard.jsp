@@ -81,7 +81,7 @@
 							<td><a href="updateComputer?id=${ computer.id }"><c:out value="${ computer.name }" /></a></td>
 							<td><c:out value="${ computer.introduced }" /></td>
 							<td><c:out value='${ computer.discontinued }' /></td>
-							<td><c:out value='${ computer.company.id == 0?"":computer.company.id }' /></td>
+							<td><c:out value='${ computer.companyName }' /></td>
 						</tr>
 					</c:forEach>
 

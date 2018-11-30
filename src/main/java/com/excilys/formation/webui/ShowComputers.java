@@ -1,8 +1,10 @@
 package com.excilys.formation.webui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
@@ -11,8 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.formation.dto.ComputerDTO;
+import com.excilys.formation.mapper.MapperComputerDTO;
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
+import com.excilys.formation.service.CompanyService;
 import com.excilys.formation.service.ComputerService;
 
 /**
@@ -22,6 +28,8 @@ import com.excilys.formation.service.ComputerService;
 public class ShowComputers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerService computerService = ComputerService.getInstance();
+	private CompanyService companyService = CompanyService.getInstance();
+	private MapperComputerDTO mapperComputerDTO = MapperComputerDTO.getInstance();
 	private int maxListPage = 5;
 	private int minListPage = 1;
 	
@@ -33,9 +41,17 @@ public class ShowComputers extends HttpServlet {
 		String nbElement = request.getParameter("nbElement");
 		String numPage = request.getParameter("page");
 		String name = request.getParameter("search");
-		List<Computer> listComputer;
+		List<Computer> listComputer = new ArrayList<>();
+		List<ComputerDTO> listComputerDTO = new ArrayList<>();
 		if(name != null && !"".equals(name)) {
 			listComputer = computerService.showComputerDetails(name);
+			Stream<Computer> sp = listComputer.stream();
+			sp.forEach(i -> { 
+				Optional<Company> companyName = companyService.showDetailsById(i.getCompany().getId());
+				if(companyName.isPresent())
+					listComputerDTO.add(mapperComputerDTO.mapper(i,companyName.get().getName()));
+				else listComputerDTO.add(mapperComputerDTO.mapper(i,""));
+			});
 		}
 		else {
 			Page page = new Page();
@@ -53,9 +69,17 @@ public class ShowComputers extends HttpServlet {
 				page.changePage(Integer.parseInt(numPage));
 			}
 			listComputer = computerService.showComputerPage(page);
+			Stream<Computer> sp = listComputer.stream();
+			sp.forEach(i -> { 
+				Optional<Company> companyName = companyService.showDetailsById(i.getCompany().getId());
+				if(companyName.isPresent())
+					listComputerDTO.add(mapperComputerDTO.mapper(i,companyName.get().getName()));
+				else listComputerDTO.add(mapperComputerDTO.mapper(i,""));
+			});
+			
 			if(numPage != null) {
 				int numberPage = Integer.parseInt(numPage);			
-				if( numberPage == maxListPage && listComputer.size() == size) {
+				if( numberPage == maxListPage && listComputerDTO.size() == size) {
 					maxListPage++;
 					minListPage++;
 				} else if(numberPage == minListPage) {
@@ -71,8 +95,8 @@ public class ShowComputers extends HttpServlet {
 			request.setAttribute("maxListPage", maxListPage);
 			request.setAttribute("minListPage", minListPage);
 		}
-		request.setAttribute("listComputer", listComputer);
-		request.setAttribute("sizeComputerFound", listComputer.size());
+		request.setAttribute("listComputer", listComputerDTO);
+		request.setAttribute("sizeComputerFound", listComputerDTO.size());
 		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
 	}
 
