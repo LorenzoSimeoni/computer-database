@@ -1,3 +1,5 @@
+<%@ page pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +13,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
+            <a class="navbar-brand" href="showComputer"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -37,14 +39,17 @@
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select class="form-control" id="companyId" name="companyId" >
-                                    <option value="0">--</option>
+                                	<option value=""></option>
+                                	<c:forEach items="${listCompany}" var="company">
+                                		<option value="${company.id}">${company.id}</option>
+                                	</c:forEach>
                                 </select>
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="Add" class="btn btn-primary">
                             or
-                            <a href="dashboard.html" class="btn btn-default">Cancel</a>
+                            <a href="showComputer" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>
