@@ -43,7 +43,14 @@ public class ComputerService {
 		return computerDao.getDetailsByCompanyID(id);
 	}
 	
+	public List<Computer> getListOrderAsc(String column, Page page) {
+		return computerDao.getListOrderAsc(column,page);
+	}
 
+	public List<Computer> getListOrderDesc(String column, Page page) {
+		return computerDao.getListOrderDesc(column,page);
+	}
+	
 	public int deleteComputer(long id) {
 		return computerDao.delete(id);
 	}
