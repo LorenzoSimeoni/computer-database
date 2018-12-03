@@ -128,11 +128,28 @@ public class FeatureCLI {
 	}
 	
 	public void parseDelete(Scanner sc) {
-		System.out.println("YOU CHOOSE TO CREATE A NEW COMPUTER");
-		System.out.println("GIVE AND ID");
-		long id = Validator.userGiveALong(sc);
-		if(id != -1) {
-			computerCLI.deleteComputer(id);
+		long id = 0;
+		int key = 0;
+		displayDeleteMenu();
+		key = Validator.userGiveAnInt(sc);
+		switch (key) {
+			case 1:
+				System.out.println("YOU CHOOSE TO DELETE A COMPUTER");
+				System.out.println("GIVE AND ID");
+				
+				id = Validator.userGiveALong(sc);
+				if(id != -1) {
+					computerCLI.deleteComputer(id);
+				}
+				break;
+			case 2:
+				System.out.println("YOU CHOOSE TO DELETE A COMPANY");
+				System.out.println("GIVE AND ID");
+				id = Validator.userGiveALong(sc);
+				if(id != -1) {
+					companyCLI.deleteCompany(id);
+				}
+				break;
 		}
 	}
 	
@@ -242,5 +259,11 @@ public class FeatureCLI {
 	public void displayUpdateMenu() {
 		System.out.println("YOU CHOOSE TO UPDATE A NEW COMPUTER");
 		System.out.println("Give fields when asked, if you want to exit write 'exit'");
+	}
+	
+	public void displayDeleteMenu() {
+		System.out.println("WHAT DO YOU WANT TO DELETE ?");
+		System.out.println("          1. COMPUTER");
+		System.out.println("          2. COMPANY");
 	}
 }

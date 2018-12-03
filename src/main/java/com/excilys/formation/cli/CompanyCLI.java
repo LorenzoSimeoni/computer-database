@@ -42,4 +42,8 @@ public class CompanyCLI {
 		}
 		System.out.println("Page Number : " + page.getPageNumber());
 	}
+	
+	public void deleteCompany(long id) {
+		companyServices.delete(id);
+	}
 }

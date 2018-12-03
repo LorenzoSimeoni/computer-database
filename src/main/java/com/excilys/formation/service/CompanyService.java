@@ -33,4 +33,8 @@ public class CompanyService {
 	public List<Company> showPage(Page page) {
 		return companyDao.getListPage(page);
 	}
+	
+	public int delete(long id) {
+		return companyDao.delete(id);
+	}
 }

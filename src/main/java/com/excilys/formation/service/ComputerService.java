@@ -38,6 +38,11 @@ public class ComputerService {
 	public Optional<Computer> showComputerDetailsByID(long id) {
 		return computerDao.getDetailsByID(id);
 	}
+	
+	public List<Computer> showComputerDetailsByCompanyID(long id) {
+		return computerDao.getDetailsByCompanyID(id);
+	}
+	
 
 	public int deleteComputer(long id) {
 		return computerDao.delete(id);

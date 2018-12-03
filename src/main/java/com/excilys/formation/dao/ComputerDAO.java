@@ -34,6 +34,7 @@ public class ComputerDAO {
 	private static final String SEARCHCOMPUTERANDCOMPANY = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?) LIMIT ?, ?;";
 	private static final String COUNTCOMPUTER = "SELECT COUNT(name) FROM computer;";
 	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(name) FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?);";
+	private static final String SHOWCOMPUTERBYCOMPANYID = "SELECT id, name, introduced, discontinued, company_id from computer WHERE company_id = ?;";
 	
 	private ComputerDAO(){}
 	
@@ -189,6 +190,25 @@ public class ComputerDAO {
 			connectionDatabase.disconnect();
 		}
 		return Optional.ofNullable(computer);
+	}
+	
+	public List<Computer> getDetailsByCompanyID(long id) {
+		List<Computer> list = new ArrayList<Computer>();
+		ResultSet results = null;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWCOMPUTERBYCOMPANYID)) {
+			stmt.setLong(1, id);
+			results = stmt.executeQuery();
+			while(results.next()) {
+				Computer computer = mapperComputer.mapper(results);
+				list.add(computer);
+			}
+		} catch (SQLException e) {
+			LOGGER.error("Can't execute the request GetDetailsByID", e);
+		} finally {
+			if(results != null) try { results.close(); } catch (SQLException ignore) {}
+			connectionDatabase.disconnect();
+		}
+		return list;
 	}
 	
 	/**
