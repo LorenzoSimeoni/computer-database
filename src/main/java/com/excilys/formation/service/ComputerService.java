@@ -50,4 +50,8 @@ public class ComputerService {
 	public void updateComputer(Computer computer) {
 		computerDao.update(computer);
 	}
+	
+	public int countComputer() {
+		return computerDao.countComputer();
+	}
 }

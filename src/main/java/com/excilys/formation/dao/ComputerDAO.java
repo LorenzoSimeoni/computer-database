@@ -32,6 +32,7 @@ public class ComputerDAO {
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
 	private static final String SHOWCOMPUTERPAGE = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ?, ?;";
 	private static final String SEARCHCOMPUTERANDCOMPANY = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?) LIMIT ?, ?;";
+	private static final String COUNTCOMPUTER = "SELECT COUNT(name) FROM computer;";
 	
 	private ComputerDAO(){}
 	
@@ -61,6 +62,23 @@ public class ComputerDAO {
 			connectionDatabase.disconnect();
 		}
 		return list;
+	}
+	
+	public int countComputer() {
+		int count = 0;
+		ResultSet results = null;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(COUNTCOMPUTER)) {
+			results = stmt.executeQuery();
+			while(results.next()) {
+				count = results.getInt(1);
+			}
+		} catch (SQLException e) {
+			LOGGER.error("Can't execute the request getList", e);
+		} finally {
+			if(results != null) try { results.close(); } catch (SQLException ignore) {}
+			connectionDatabase.disconnect();
+		}
+		return count;
 	}
 	
 	public List<Computer> getListPage(Page page) {

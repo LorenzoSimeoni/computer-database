@@ -45,14 +45,15 @@ public class ShowComputers extends HttpServlet {
 		Page page = new Page();
 		List<Computer> listComputer = new ArrayList<>();
 		List<ComputerDTO> listComputerDTO = new ArrayList<>();
-		int size;
+		int offset;
+		int countComputer = computerService.countComputer();
 		if (nbElement == null) {
-			size = 10;
+			offset = 10;
 			nbElement = "10";
 		} else {
-			size = Integer.parseInt(nbElement);
+			offset = Integer.parseInt(nbElement);
 		}
-		page.setOffset(size);
+		page.setOffset(offset);
 		if (numPage == null) {
 			page.changePage(1);
 		} else {
@@ -74,7 +75,7 @@ public class ShowComputers extends HttpServlet {
 
 		if (numPage != null) {
 			int numberPage = Integer.parseInt(numPage);
-			if (numberPage == maxListPage && listComputerDTO.size() == size) {
+			if (numberPage == maxListPage && listComputerDTO.size() == offset) {
 				maxListPage++;
 				minListPage++;
 			} else if (numberPage == minListPage) {
@@ -94,7 +95,7 @@ public class ShowComputers extends HttpServlet {
 		request.setAttribute("maxListPage", maxListPage);
 		request.setAttribute("minListPage", minListPage);
 		request.setAttribute("listComputer", listComputerDTO);
-		request.setAttribute("sizeComputerFound", listComputerDTO.size());
+		request.setAttribute("sizeComputerFound", countComputer);
 		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
 	}
 
