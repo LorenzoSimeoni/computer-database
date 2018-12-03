@@ -31,6 +31,7 @@ public class ComputerDAO {
 	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = ?,introduced = ?,discontinued = ?,company_id = ? WHERE ID = ?;";
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
 	private static final String SHOWCOMPUTERPAGE = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ?, ?;";
+	private static final String SEARCHCOMPUTERANDCOMPANY = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?) LIMIT ?, ?;";
 	
 	private ComputerDAO(){}
 	
@@ -99,6 +100,28 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Can't execute the request GetDetailsByName", e);
+		} finally {
+			if(results != null) try { results.close(); } catch (SQLException ignore) {}
+			connectionDatabase.disconnect();
+		}
+		return list;
+	}
+	
+	public List<Computer> getComputerLike(String name, Page page) {
+		List<Computer> list = new ArrayList<Computer>();
+		ResultSet results = null;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SEARCHCOMPUTERANDCOMPANY)) {
+			stmt.setString(1, '%'+name+'%');
+			stmt.setString(2, '%'+name+'%');
+			stmt.setInt(3, page.getLimit());
+			stmt.setInt(4, page.getOffset());
+			results = stmt.executeQuery();
+			while(results.next()) {
+				Computer computer = mapperComputer.mapper(results);
+				list.add(computer);
+			}
+		} catch (SQLException e) {
+			LOGGER.error("Can't execute the request getComputerLike", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();

@@ -30,6 +30,10 @@ public class ComputerService {
 	public List<Computer> showComputerDetails(String name) {
 		return computerDao.getDetailsByName(name);
 	}
+
+	public List<Computer> getComputerLike(String name, Page page) {
+		return computerDao.getComputerLike(name,page);
+	}
 	
 	public Optional<Computer> showComputerDetailsByID(long id) {
 		return computerDao.getDetailsByID(id);

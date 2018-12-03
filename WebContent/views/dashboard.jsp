@@ -30,9 +30,11 @@
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" method="GET" class="form-inline">
-						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+						<input type="hidden" value="${nbElement}" id="nbElement"
+							name="nbElement" /> <input type="hidden" value="${numPage}"
+							id="page" name="page" /> <input type="search" id="searchbox"
+							name="search" class="form-control" placeholder="Search name" />
+						<input type="submit" id="searchsubmit" value="Filter by name"
 							class="btn btn-primary" />
 					</form>
 				</div>
@@ -46,48 +48,48 @@
 
 		<form id="deleteForm" action="#" method="POST">
 			<input type="hidden" name="selection" value="">
-		
 
-		<div class="container" style="margin-top: 10px;">
-			<table class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<!-- Variable declarations for passing labels as parameters -->
-						<!-- Table header for Computer Name -->
 
-						<th class="editMode" style="width: 60px; height: 22px;"><input
-							type="checkbox" id="selectall" /> <span
-							style="vertical-align: top;"> - 
-							<a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
-									class="fa fa-trash"></i>
-							</a>
-						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
-						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
-						<!-- Table header for Company -->
-						<th>Company</th>
-
-					</tr>
-				</thead>
-				<!-- Browse attribute computers -->
-				<tbody id="results">
-					<c:forEach items="${ listComputer }" var="computer">
+			<div class="container" style="margin-top: 10px;">
+				<table class="table table-striped table-bordered">
+					<thead>
 						<tr>
-							<td class="editMode">
-								<input type="checkbox" name="cb" class="cb" value="${ computer.id }">
-							</td>
-							<td><a href="updateComputer?id=${ computer.id }"><c:out value="${ computer.name }" /></a></td>
-							<td><c:out value="${ computer.introduced }" /></td>
-							<td><c:out value='${ computer.discontinued }' /></td>
-							<td><c:out value='${ computer.companyName }' /></td>
-						</tr>
-					</c:forEach>
+							<!-- Variable declarations for passing labels as parameters -->
+							<!-- Table header for Computer Name -->
 
-				</tbody>
-			</table>
-		</div>
+							<th class="editMode" style="width: 60px; height: 22px;"><input
+								type="checkbox" id="selectall" /> <span
+								style="vertical-align: top;"> - <a href="#"
+									id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+										class="fa fa-trash"></i>
+								</a>
+							</span></th>
+							<th>Computer name</th>
+							<th>Introduced date</th>
+							<!-- Table header for Discontinued Date -->
+							<th>Discontinued date</th>
+							<!-- Table header for Company -->
+							<th>Company</th>
+
+						</tr>
+					</thead>
+					<!-- Browse attribute computers -->
+					<tbody id="results">
+						<c:forEach items="${ listComputer }" var="computer">
+							<tr>
+								<td class="editMode"><input type="checkbox" name="cb"
+									class="cb" value="${ computer.id }"></td>
+								<td><a href="updateComputer?id=${ computer.id }"><c:out
+											value="${ computer.name }" /></a></td>
+								<td><c:out value="${ computer.introduced }" /></td>
+								<td><c:out value='${ computer.discontinued }' /></td>
+								<td><c:out value='${ computer.companyName }' /></td>
+							</tr>
+						</c:forEach>
+
+					</tbody>
+				</table>
+			</div>
 		</form>
 	</section>
 
@@ -95,17 +97,30 @@
 		<div class="container text-center">
 			<ul class="pagination">
 				<li><a
-					href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${param["page"]!=null?param["page"]-1>0?param["page"]-1:param["page"]:"1"}'
+					href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${param["page"]!=null?param["page"]-1>0?param["page"]-1:param["page"]:"1"}
+					<c:choose>
+						<c:when test="${search == null}"></c:when>
+						<c:otherwise>&search=<c:out value="${search}"/></c:otherwise>
+					</c:choose>'
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="i" begin="${minListPage}" end="${maxListPage}"
 					step="1">
 					<li><a
-						href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${i}'><c:out
-								value="${i}" /></a></li>
+						href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${i}
+					<c:choose>
+						<c:when test="${search == null}"></c:when>
+						<c:otherwise>&search=<c:out value="${search}"/></c:otherwise>
+					</c:choose>'>
+						<c:out value="${i}" />
+					</a></li>
 				</c:forEach>
 				<li><a
-					href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${param["page"]!=null?sizeComputerFound!=param["nbElement"]?param["page"]:param["page"]+1:"2"}'
+					href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${param["page"]!=null?sizeComputerFound!=param["nbElement"]?param["page"]:param["page"]+1:"2"}
+					<c:choose>
+						<c:when test="${search == null}"></c:when>
+						<c:otherwise>&search=<c:out value="${search}"/></c:otherwise>
+					</c:choose>'
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
