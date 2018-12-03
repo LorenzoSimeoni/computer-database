@@ -24,7 +24,7 @@
 					<div class="label label-default pull-right">id: ${ id }</div>
 					<h1>Edit Computer</h1>
 					<form action="updateComputer" method="POST">
-						<input type="hidden" value="${ id }" id="id" />
+						<input type="hidden" value="${ id }" id="id" name="id"/>
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> 
