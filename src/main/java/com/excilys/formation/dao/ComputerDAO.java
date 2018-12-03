@@ -33,6 +33,7 @@ public class ComputerDAO {
 	private static final String SHOWCOMPUTERPAGE = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ?, ?;";
 	private static final String SEARCHCOMPUTERANDCOMPANY = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?) LIMIT ?, ?;";
 	private static final String COUNTCOMPUTER = "SELECT COUNT(name) FROM computer;";
+	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(name) FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?);";
 	
 	private ComputerDAO(){}
 	
@@ -73,7 +74,26 @@ public class ComputerDAO {
 				count = results.getInt(1);
 			}
 		} catch (SQLException e) {
-			LOGGER.error("Can't execute the request getList", e);
+			LOGGER.error("Can't execute the request countComputer", e);
+		} finally {
+			if(results != null) try { results.close(); } catch (SQLException ignore) {}
+			connectionDatabase.disconnect();
+		}
+		return count;
+	}
+	
+	public int countComputerLike(String name) {
+		int count = 0;
+		ResultSet results = null;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(COUNTSEARCHCOMPUTER)) {
+			stmt.setString(1, '%'+name+'%');
+			stmt.setString(2, '%'+name+'%');
+			results = stmt.executeQuery();
+			while(results.next()) {
+				count = results.getInt(1);
+			}
+		} catch (SQLException e) {
+			LOGGER.error("Can't execute the request countComputerLike", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
@@ -100,6 +120,7 @@ public class ComputerDAO {
 		}
 		return list;
 	}
+	
 	
 	/**
 	 * Used to show the details of computer(s) using their name as key

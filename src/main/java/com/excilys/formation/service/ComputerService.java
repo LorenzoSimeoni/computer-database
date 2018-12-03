@@ -54,4 +54,8 @@ public class ComputerService {
 	public int countComputer() {
 		return computerDao.countComputer();
 	}
+	
+	public int countComputerLike(String name) {
+		return computerDao.countComputerLike(name);
+	}
 }

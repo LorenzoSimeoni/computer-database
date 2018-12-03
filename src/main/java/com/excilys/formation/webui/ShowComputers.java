@@ -46,7 +46,7 @@ public class ShowComputers extends HttpServlet {
 		List<Computer> listComputer = new ArrayList<>();
 		List<ComputerDTO> listComputerDTO = new ArrayList<>();
 		int offset;
-		int countComputer = computerService.countComputer();
+		int countComputer = 0;
 		if (nbElement == null) {
 			offset = 10;
 			nbElement = "10";
@@ -60,8 +60,10 @@ public class ShowComputers extends HttpServlet {
 			page.changePage(Integer.parseInt(numPage));
 		}
 		if (name != null) {
+			countComputer = computerService.countComputerLike(name);
 			listComputer = computerService.getComputerLike(name, page);
 		} else {
+			countComputer = computerService.countComputer();
 			listComputer = computerService.showComputerPage(page);
 		}
 		Stream<Computer> sp = listComputer.stream();
