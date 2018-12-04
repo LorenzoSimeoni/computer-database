@@ -2,6 +2,7 @@ package com.excilys.formation.webui;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,9 +39,14 @@ public class UpdateComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		request.setAttribute("id", id);
+		Optional<Computer> computer = computerService.showComputerDetailsByID(Long.parseLong(id));
 		List<Company> listCompany = companyService.show();
 		request.setAttribute("listCompany", listCompany);
-		this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
+		request.setAttribute("computerName", computer.get().getName());
+		request.setAttribute("introduced", computer.get().getIntroduced());
+		request.setAttribute("discontinued", computer.get().getDiscontinued());
+		request.setAttribute("companyId", computer.get().getCompany().getId());
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

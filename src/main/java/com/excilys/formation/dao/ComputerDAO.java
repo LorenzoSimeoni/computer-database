@@ -35,8 +35,8 @@ public class ComputerDAO {
 	private static final String COUNTCOMPUTER = "SELECT COUNT(name) FROM computer;";
 	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(name) FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?);";
 	private static final String SHOWCOMPUTERBYCOMPANYID = "SELECT id, name, introduced, discontinued, company_id from computer WHERE company_id = ?;";
-	private static final String SHOWORDERBYASC = "SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY ? ASC LIMIT ?, ?; ";
-	private static final String SHOWORDERBYDESC = "SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY ? DESC LIMIT ?, ?; ";
+	private static final String SHOWORDERBY = "SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY ";
+	private static final String LIMIT = " LIMIT ?, ?;";
 	
 	
 	private ComputerDAO(){}
@@ -125,41 +125,20 @@ public class ComputerDAO {
 		return list;
 	}
 	
-	public List<Computer> getListOrderAsc(String column,Page page) {
+	public List<Computer> getListOrderBy(OrderByComputer column, OrderByMode mode, Page page) {
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
-		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWORDERBYASC)) {
-			stmt.setString(1, column);
-			stmt.setInt(2, page.getLimit());
-			stmt.setInt(3, page.getOffset());
+		String orderAsc = SHOWORDERBY + column + " " +mode + LIMIT;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(orderAsc)) {
+			stmt.setInt(1, page.getLimit());
+			stmt.setInt(2, page.getOffset());
 			results = stmt.executeQuery();
 			while(results.next()) {
 				Computer computer = mapperComputer.mapper(results);
 				list.add(computer);
 			}
 		} catch (SQLException e) {
-			LOGGER.error("Can't execute the request getListOrderAsc", e);
-		} finally {
-			if(results != null) try { results.close(); } catch (SQLException ignore) {}
-			connectionDatabase.disconnect();
-		}
-		return list;
-	}
-	
-	public List<Computer> getListOrderDesc(String column,Page page) {
-		List<Computer> list = new ArrayList<Computer>();
-		ResultSet results = null;
-		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SHOWORDERBYDESC)) {
-			stmt.setString(1, column);
-			stmt.setInt(2, page.getLimit());
-			stmt.setInt(3, page.getOffset());
-			results = stmt.executeQuery();
-			while(results.next()) {
-				Computer computer = mapperComputer.mapper(results);
-				list.add(computer);
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Can't execute the request getListOrderAsc", e);
+			LOGGER.error("Can't execute the request getListOrderBy", e);
 		} finally {
 			if(results != null) try { results.close(); } catch (SQLException ignore) {}
 			connectionDatabase.disconnect();
