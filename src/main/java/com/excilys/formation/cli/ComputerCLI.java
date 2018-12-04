@@ -6,13 +6,13 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.excilys.formation.exception.CompanyIDException;
+import com.excilys.formation.exception.DateException;
+import com.excilys.formation.exception.NameException;
 import com.excilys.formation.mapper.MapperComputer;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 import com.excilys.formation.service.ComputerService;
-import com.excilys.formation.validator.CompanyIDException;
-import com.excilys.formation.validator.DateException;
-import com.excilys.formation.validator.NameException;
 import com.excilys.formation.validator.Validator;
 
 public class ComputerCLI {
