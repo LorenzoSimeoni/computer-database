@@ -19,6 +19,9 @@ import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.service.CompanyService;
 import com.excilys.formation.service.ComputerService;
+import com.excilys.formation.validator.CompanyIDException;
+import com.excilys.formation.validator.DateException;
+import com.excilys.formation.validator.NameException;
 import com.excilys.formation.validator.Validator;
 
 /**
@@ -69,12 +72,12 @@ public class UpdateComputer extends HttpServlet {
 			companyId = null;
 		}
 		Computer computer = mapperComputer.mapper(Long.parseLong(id), name, introduced, discontinued,companyId);
-		if(Validator.checkComputer(computer)) {
-			System.out.println(computer.toString());
+		try {
+			Validator.checkComputer(computer);
 			computerService.updateComputer(computer);							
-		} else {
+		} catch (DateException|NameException|CompanyIDException e) {
 			LOGGER.info("COMPUTER NOT CREATED");
-		}
+		}	
 		doGet(request, response);
 	}
 

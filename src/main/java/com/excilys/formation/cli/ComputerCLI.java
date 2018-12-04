@@ -10,18 +10,21 @@ import com.excilys.formation.mapper.MapperComputer;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 import com.excilys.formation.service.ComputerService;
+import com.excilys.formation.validator.CompanyIDException;
+import com.excilys.formation.validator.DateException;
+import com.excilys.formation.validator.NameException;
 import com.excilys.formation.validator.Validator;
 
 public class ComputerCLI {
 	private MapperComputer mapperComputer = MapperComputer.getInstance();
-	private ComputerService computerServices = ComputerService.getInstance();
+	private ComputerService computerService = ComputerService.getInstance();
 	private final static Logger LOGGER = LogManager.getLogger(ComputerCLI.class.getName());
 	
 	/**
 	 * Print all the Computer object found in the List<Computer> give by our computerDao
 	 */
 	public void showComputer() {
-		List<Computer> listResults = computerServices.showComputer();
+		List<Computer> listResults = computerService.showComputer();
 		for(Computer computer : listResults){
 			System.out.println(computer.toString());
 		}
@@ -33,7 +36,7 @@ public class ComputerCLI {
 	 * @param offset
 	 */
 	public void showComputerPage(Page page) {
-		List<Computer> listResults = computerServices.showComputerPage(page);
+		List<Computer> listResults = computerService.showComputerPage(page);
 		for(Computer computer : listResults){
 			System.out.println(computer.toString());
 		}
@@ -45,7 +48,7 @@ public class ComputerCLI {
 	 * @param name
 	 */
 	public void showComputerDetails(String name) {
-		List<Computer> listResults = computerServices.showComputerDetails(name);
+		List<Computer> listResults = computerService.showComputerDetails(name);
 		for(Computer computer : listResults){
 			System.out.println(computer.toString());
 		}
@@ -56,7 +59,7 @@ public class ComputerCLI {
 	 * @param id
 	 */
 	public void showComputerDetailsByID(long id) {
-		Optional<Computer> optionalComputer = computerServices.showComputerDetailsByID(id);
+		Optional<Computer> optionalComputer = computerService.showComputerDetailsByID(id);
 		if(optionalComputer.isPresent()) {
 			Computer computer = optionalComputer.get();
 			System.out.println(computer.toString());
@@ -70,7 +73,7 @@ public class ComputerCLI {
 	 * @param id
 	 */
 	public void deleteComputer(long id) {
-		computerServices.deleteComputer(id);
+		computerService.deleteComputer(id);
 	}
 	
 	/**
@@ -82,9 +85,10 @@ public class ComputerCLI {
 	 */
 	public void insertComputer(String name, String introduced, String discontinued, String companyID) {
 		Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyID);
-		if(Validator.checkComputer(computer)) {
-			computerServices.insertComputer(computer);			
-		} else {
+		try {
+			Validator.checkComputer(computer);
+			computerService.insertComputer(computer);
+		} catch (DateException|NameException|CompanyIDException e) {
 			LOGGER.info("COMPUTER NOT CREATED");
 		}
 	}
@@ -99,10 +103,11 @@ public class ComputerCLI {
 	 */
 	public void updateComputer(long id, String name, String introduced, String discontinued, String companyID) {
 		Computer computer = mapperComputer.mapper(id, name,introduced,discontinued,companyID);
-		if(Validator.checkComputer(computer)) {
-			computerServices.updateComputer(computer);
-		} else {
+		try {
+			Validator.checkComputer(computer);
+			computerService.updateComputer(computer);							
+		} catch (DateException|NameException|CompanyIDException e) {
 			LOGGER.info("COMPUTER NOT UPDATED");
-		}
+		}	
 	}
 }

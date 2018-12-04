@@ -14,10 +14,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.cli.ComputerCLI;
 import com.excilys.formation.mapper.MapperComputer;
-import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Company;
+import com.excilys.formation.model.Computer;
 import com.excilys.formation.service.CompanyService;
 import com.excilys.formation.service.ComputerService;
+import com.excilys.formation.validator.CompanyIDException;
+import com.excilys.formation.validator.DateException;
+import com.excilys.formation.validator.NameException;
 import com.excilys.formation.validator.Validator;
 
 /**
@@ -67,11 +70,12 @@ public class AddComputer extends HttpServlet {
 				companyId = null;
 			} 
 			Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
-			if(Validator.checkComputer(computer)) {
-				computerService.insertComputer(computer);							
-			} else {
+			try {
+				Validator.checkComputer(computer);
+				computerService.insertComputer(computer);
+			} catch (DateException|NameException|CompanyIDException e) {
 				LOGGER.info("COMPUTER NOT CREATED");
-			}
+			}											
 		}
 		doGet(request, response);
 	}

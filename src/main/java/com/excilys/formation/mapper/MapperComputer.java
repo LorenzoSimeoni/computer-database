@@ -11,10 +11,10 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.excilys.formation.controller.Controller;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.service.ComputerService;
-import com.excilys.formation.validator.Validator;
 
 /**
  * @author excilys
@@ -86,19 +86,19 @@ public class MapperComputer {
 			} 
 			if(introduced != null && introduced.equals("")) {
 				localIntroduced = computer.getIntroduced();
-			} else if(introduced != null && Validator.testStringIsADate(introduced)) {
+			} else if(introduced != null && Controller.testStringIsADate(introduced)) {
 					localIntroduced = LocalDateTime.parse(introduced);
 			}
 			if(discontinued != null && discontinued.equals("")) {
 				localDiscontinued = computer.getDiscontinued();
-			} else if(discontinued != null && Validator.testStringIsADate(discontinued)) {
+			} else if(discontinued != null && Controller.testStringIsADate(discontinued)) {
 					localDiscontinued = LocalDateTime.parse(discontinued);
 			}
 			if(companyId != null && companyId.equals("")) {
 				companyID = computer.getCompany().getId();
 				company = new Company.CompanyBuilder(companyID).build();
 			} else {
-				if(companyId != null && Validator.testStringIsALong(companyId)) {
+				if(companyId != null && Controller.testStringIsALong(companyId)) {
 					companyID = Long.parseLong(companyId);
 					company = new Company.CompanyBuilder(companyID).build();						
 				} else {
@@ -133,13 +133,13 @@ public class MapperComputer {
 		Company company = null;
 		LocalDateTime localIntroduced = null;
 		LocalDateTime localDiscontinued = null;
-		if(introduced != null && Validator.testStringIsADate(introduced)) {
+		if(introduced != null && Controller.testStringIsADate(introduced)) {
 			localIntroduced = LocalDateTime.parse(introduced);
 		}
-		if(discontinued != null && Validator.testStringIsADate(discontinued)) {
+		if(discontinued != null && Controller.testStringIsADate(discontinued)) {
 			localDiscontinued = LocalDateTime.parse(discontinued);
 		}
-		if(companyId != null && Validator.testStringIsALong(companyId)) {
+		if(companyId != null && Controller.testStringIsALong(companyId)) {
 			long companyIdTransform = Long.parseLong(companyId);
 			company = new Company.CompanyBuilder(companyIdTransform).build();
 		} else {

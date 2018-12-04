@@ -2,8 +2,8 @@ package com.excilys.formation.cli;
 
 import java.util.Scanner;
 
+import com.excilys.formation.controller.Controller;
 import com.excilys.formation.model.Page;
-import com.excilys.formation.validator.Validator;
 
 public class FeatureCLI {
 	private static Scanner sc;
@@ -16,7 +16,7 @@ public class FeatureCLI {
 		while(quitter) {
 			displayMenu();
 			sc = new Scanner(System.in);
-			key = Validator.userGiveAnInt(sc);
+			key = Controller.userGiveAnInt(sc);
 			switch (key) {
 			case 1:
 				parseShow(sc);
@@ -46,7 +46,7 @@ public class FeatureCLI {
 	public void parseShow(Scanner sc) {
 		int key = 0;
 		displayShowMenu();
-		key = Validator.userGiveAnInt(sc);
+		key = Controller.userGiveAnInt(sc);
 		switch (key) {
 			case 1:
 				computerCLI.showComputer();
@@ -79,21 +79,21 @@ public class FeatureCLI {
 	}
 	public void displayComputerDetailsID(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTER DETAILS BY ID, GIVE AN ID PLEASE");
-		long id = Validator.userGiveALong(sc);
+		long id = Controller.userGiveALong(sc);
 		if(id != -1) {
 			computerCLI.showComputerDetailsByID(id);
 		}
 	}
 	public void displayComputerPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPUTERS WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
-		int size = Validator.userGiveAnInt(sc);
+		int size = Controller.userGiveAnInt(sc);
 		if(size != -1) {
 			pageComputer(size, sc);	
 		}
 	}
 	public void displayCompanyPage(Scanner sc) {
 		System.out.println("YOU CHOOSE TO PRINT COMPANIES WITH PAGING, GIVE THE NUMBER OF ELEMENT ON A PAGE PLEASE");
-		int size = Validator.userGiveAnInt(sc);
+		int size = Controller.userGiveAnInt(sc);
 		if(size != -1) {
 			pageCompany(size, sc);			
 		}
@@ -131,13 +131,13 @@ public class FeatureCLI {
 		long id = 0;
 		int key = 0;
 		displayDeleteMenu();
-		key = Validator.userGiveAnInt(sc);
+		key = Controller.userGiveAnInt(sc);
 		switch (key) {
 			case 1:
 				System.out.println("YOU CHOOSE TO DELETE A COMPUTER");
 				System.out.println("GIVE AND ID");
 				
-				id = Validator.userGiveALong(sc);
+				id = Controller.userGiveALong(sc);
 				if(id != -1) {
 					computerCLI.deleteComputer(id);
 				}
@@ -145,7 +145,7 @@ public class FeatureCLI {
 			case 2:
 				System.out.println("YOU CHOOSE TO DELETE A COMPANY");
 				System.out.println("GIVE AND ID");
-				id = Validator.userGiveALong(sc);
+				id = Controller.userGiveALong(sc);
 				if(id != -1) {
 					companyCLI.deleteCompany(id);
 				}
@@ -156,7 +156,7 @@ public class FeatureCLI {
 	public void parseUpdate(Scanner sc) {
 		displayUpdateMenu();
 		System.out.println("Give a computer ID");
-		long id = Validator.userGiveALong(sc);
+		long id = Controller.userGiveALong(sc);
 		if(id != -1) {
 			computerCLI.showComputerDetailsByID(id);
 			System.out.println("Give a computer Name (if you don't want to change the name do an enter)");
@@ -194,7 +194,7 @@ public class FeatureCLI {
 				companyCLI.showCompanyPage(page);
 				page.incrementLimit();
 			} else if(!str.equals("exit")) {
-				if(Validator.testStringIsAInt(str)) {
+				if(Controller.testStringIsAInt(str)) {
 					page.changePage(Integer.parseInt(str));
 					companyCLI.showCompanyPage(page);
 				}
@@ -215,7 +215,7 @@ public class FeatureCLI {
 				page.incrementLimit();
 				computerCLI.showComputerPage(page);
 			} else if(!str.equals("exit")) {
-				if(Validator.testStringIsAInt(str)) {
+				if(Controller.testStringIsAInt(str)) {
 					page.changePage(Integer.parseInt(str));
 					computerCLI.showComputerPage(page);
 				}
