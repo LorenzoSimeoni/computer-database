@@ -70,4 +70,21 @@
 		</div>
 	</section>
 </body>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$('form').submit(function (event) {
+    var name = $.trim($('#computerName').val());
+    if (name  === '') {
+        alert('Text-field is empty.');
+        event.preventDefault(); 
+    }
+    
+    var introduced = $.trim($('#introduced').val());
+    var discontinued = $.trim($('#discontinued').val());
+});
+</script>
+
+
 </html>
+
+
