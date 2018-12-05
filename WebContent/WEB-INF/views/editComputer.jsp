@@ -75,15 +75,13 @@
 <script type="text/javascript" charset="utf-8">
 $('form').submit(function (event) {
     var name = $.trim($('#computerName').val());
-    if (name  === '') {
-        alert('Text-field is empty.');
+    if (!name) {
+        alert('You have to put a name on this computer');
         event.preventDefault(); 
     }
     
     var introduced = $.trim($('#introduced').val());
     var discontinued = $.trim($('#discontinued').val());
-    alert(introduced);
-    alert(discontinued);
     
 	if ((new Date(introduced).getTime()) > (new Date(discontinued).getTime())) {
 		alert('The introduced Date must be before the discontinued Date.');
