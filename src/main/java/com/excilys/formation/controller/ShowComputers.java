@@ -1,4 +1,4 @@
-package com.excilys.formation.webui;
+package com.excilys.formation.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;

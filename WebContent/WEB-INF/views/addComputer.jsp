@@ -81,9 +81,4 @@ $('form').submit(function (event) {
 	}
 });
 </script>
-
-
-
-
-
 </html>

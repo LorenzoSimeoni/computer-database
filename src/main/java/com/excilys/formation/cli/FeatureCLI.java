@@ -2,7 +2,7 @@ package com.excilys.formation.cli;
 
 import java.util.Scanner;
 
-import com.excilys.formation.controller.Controller;
+import com.excilys.formation.checker.Controller;
 import com.excilys.formation.model.Page;
 
 public class FeatureCLI {

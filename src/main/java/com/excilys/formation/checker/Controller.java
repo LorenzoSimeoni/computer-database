@@ -1,4 +1,4 @@
-package com.excilys.formation.controller;
+package com.excilys.formation.checker;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
