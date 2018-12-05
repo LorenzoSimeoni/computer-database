@@ -13,8 +13,8 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="/computer-databases/"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="/computer-databases/"> Application
+				- Computer Database </a>
 		</div>
 	</header>
 	<section id="main">
@@ -24,39 +24,40 @@
 					<div class="label label-default pull-right">id: ${ id }</div>
 					<h1>Edit Computer</h1>
 					<form action="updateComputer" method="POST">
-						<input type="hidden" value="${ id }" id="id" name="id"/>
+						<input type="hidden" value="${ id }" id="id" name="id" />
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> 
-								<input type="text" class="form-control" id="computerName" name="computerName"
-									placeholder="${computerName}">
+								<label for="computerName">Computer name</label> <input
+									type="text" class="form-control" id="computerName"
+									name="computerName" placeholder="${computerName}">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" id="introduced" name="introduced"
-									placeholder="Introduced date" value="${introduced}">
+									type="date" class="form-control" id="introduced"
+									name="introduced" placeholder="Introduced date"
+									value="${introduced}">
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> 
-								<input
-									type="date" class="form-control" id="discontinued" name="discontinued"
-									placeholder="Discontinued date" value="${discontinued}">
+								<label for="discontinued">Discontinued date</label> <input
+									type="date" class="form-control" id="discontinued"
+									name="discontinued" placeholder="Discontinued date"
+									value="${discontinued}">
 							</div>
 							<div class="form-group">
-								<label for="companyId">Company</label> 
-								<select class="form-control" id="companyId" name="companyId">
-									
-                                	<option value=""></option>
-                                	<c:forEach items="${listCompany}" var="company">
-                                		<c:choose>
-                                			<c:when test="${company.id == companyId}">
-                                				<option selected="${companyId}">${companyId}</option>
-                                			</c:when>
-                                			<c:otherwise>
-                                				<option value="${company.id}">${company.id}</option>
-                                			</c:otherwise>
-                                		</c:choose>
-                                	</c:forEach>
+								<label for="companyId">Company</label> <select
+									class="form-control" id="companyId" name="companyId">
+
+									<option value=""></option>
+									<c:forEach items="${listCompany}" var="company">
+										<c:choose>
+											<c:when test="${company.id == companyId}">
+												<option selected="${companyId}">${companyId}</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${company.id}">${company.id}</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
 								</select>
 							</div>
 						</fieldset>
@@ -81,6 +82,16 @@ $('form').submit(function (event) {
     
     var introduced = $.trim($('#introduced').val());
     var discontinued = $.trim($('#discontinued').val());
+    alert(introduced);
+    alert(discontinued);
+    
+	if ((new Date(introduced).getTime()) > (new Date(discontinued).getTime())) {
+		alert('The introduced Date must be before the discontinued Date.');
+		e.preventDefault();
+	} else if (discontinued && !introduced) {
+		alert('Cannot input a discontinued Date without an introduced Date.');
+		e.preventDefault();
+	}
 });
 </script>
 

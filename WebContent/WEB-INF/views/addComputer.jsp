@@ -68,6 +68,19 @@ $('form').submit(function (event) {
         alert('Text-field is empty.');
         event.preventDefault(); 
     }
+    
+    var introduced = $.trim($('#introduced').val());
+    var discontinued = $.trim($('#discontinued').val());
+    alert(introduced);
+    alert(discontinued);
+    
+	if ((new Date(introduced).getTime()) > (new Date(discontinued).getTime())) {
+		alert('The introduced Date must be before the discontinued Date.');
+		e.preventDefault();
+	} else if (discontinued && !introduced) {
+		alert('Cannot create a computer with a discontinued date and without an introduced date');
+		e.preventDefault();
+	}
 });
 </script>
 
