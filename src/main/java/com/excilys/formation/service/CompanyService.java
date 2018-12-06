@@ -2,14 +2,18 @@ package com.excilys.formation.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.model.Company;
+import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 
 public class CompanyService {
 	
 	private CompanyDAO companyDao = CompanyDAO.getInstance();
+	private ComputerService computerService = ComputerService.getInstance();
+
 	
 	private CompanyService(){}
 	
@@ -35,6 +39,9 @@ public class CompanyService {
 	}
 	
 	public int delete(long id) {
+		List<Computer> list = computerService.showComputerDetailsByCompanyID(id);
+		Stream<Computer> sp = list.stream();
+		sp.forEach(i -> computerService.deleteComputer(i.getId()));
 		return companyDao.delete(id);
 	}
 }
