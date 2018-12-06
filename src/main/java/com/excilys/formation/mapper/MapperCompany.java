@@ -6,12 +6,15 @@ package com.excilys.formation.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.formation.model.Company;
 
 /**
  * @author excilys
  *
  */
+@Component
 public class MapperCompany {
 	
 	private MapperCompany(){}

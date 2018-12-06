@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.formation.mapper.MapperCompany;
 import com.excilys.formation.model.Company;
@@ -25,7 +26,8 @@ import com.excilys.formation.service.ComputerService;
 public class CompanyDAO {
 	
 	private final static Logger LOGGER = LogManager.getLogger(CompanyDAO.class.getName());
-	private MapperCompany mapperCompany = MapperCompany.getInstance();
+	@Autowired
+	private MapperCompany mapperCompany;
 	private static final String LISTCOMPANY = "SELECT id, name FROM company;";
 	private static final String LISTCOMPANYDETAILSBYID = "SELECT id, name FROM company WHERE id = ?;";
 	private static final String SHOWCOMPANYPAGE = "SELECT id, name FROM company LIMIT ?, ?";
