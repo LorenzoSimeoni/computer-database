@@ -40,7 +40,8 @@ public class ComputerDAO {
 	private static final String COUNTCOMPUTER = "SELECT COUNT(name) FROM computer;";
 	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(name) FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?);";
 	private static final String SHOWCOMPUTERBYCOMPANYID = "SELECT id, name, introduced, discontinued, company_id from computer WHERE company_id = ?;";
-	private static final String SHOWORDERBY = "SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY ";
+	private static final String SHOWORDERBY = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
+			+ "FROM computer INNER JOIN company ON computer.company_id = company.id ORDER BY ";
 	private static final String LIMIT = " LIMIT ?, ?;";
 	
 	

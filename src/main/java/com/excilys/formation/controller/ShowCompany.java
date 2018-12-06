@@ -32,11 +32,6 @@ public class ShowCompany extends HttpServlet {
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
-    public ShowCompany() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Company> listCompany = companyService.show();
 		request.setAttribute("listCompany", listCompany);

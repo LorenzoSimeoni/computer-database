@@ -48,10 +48,10 @@ public class Computer {
 	public String toString() {
 		if(company.getId() == 0) {
 			return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-					+ ", companyId=" + "null" + "]";
+					+ ", companyId=" + "null" + ", companyName=" + "null" +"]";
 		} else {			
 			return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-					+ ", companyId=" + company.getId() + "]";
+					+ ", companyId=" + company.getId() + ", companyName="+ company.getName()+"]";
 		}
 	}
 	

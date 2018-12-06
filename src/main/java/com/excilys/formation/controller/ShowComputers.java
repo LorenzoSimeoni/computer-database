@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.servlet.ServletConfig;
@@ -17,14 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.dao.OrderByComputer;
 import com.excilys.formation.dao.OrderByMode;
-import com.excilys.formation.mapper.MapperComputerDTO;
-import com.excilys.formation.model.Company;
+import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
-import com.excilys.formation.service.CompanyService;
 import com.excilys.formation.service.ComputerService;
 
 /**
@@ -38,10 +34,6 @@ public class ShowComputers extends HttpServlet {
 	
 	@Autowired
 	private ComputerService computerService;
-	@Autowired
-	private CompanyService companyService;
-	@Autowired
-	private MapperComputerDTO mapperComputerDTO;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -82,13 +74,9 @@ public class ShowComputers extends HttpServlet {
 			countComputer = computerService.countComputer();
 			listComputer = computerService.getListOrderBy(ordercolumn, orderByMode,page);
 		}
-		Stream<Computer> sp = listComputer.stream();
-		sp.forEach(i -> {
-			Optional<Company> companyName = companyService.showDetailsById(i.getCompany().getId());
-			if (companyName.isPresent())
-				listComputerDTO.add(mapperComputerDTO.mapper(i, companyName.get().getName()));
-			else
-				listComputerDTO.add(mapperComputerDTO.mapper(i, ""));
+		listComputer.stream().forEach(i -> {
+			System.out.println(i.toString());
+			listComputerDTO.add(new ComputerDTO(i));
 		});
 
 		if (numPage != null) {

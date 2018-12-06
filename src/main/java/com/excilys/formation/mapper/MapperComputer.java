@@ -40,7 +40,7 @@ public class MapperComputer {
 	 * @throws SQLException
 	 */
 	public Computer mapper(ResultSet results) throws SQLException {
-		Company company = new Company.CompanyBuilder(results.getLong(5)).build();
+		Company company = new Company.CompanyBuilder(results.getLong(5)).setName(results.getString(6)).build();
 		
 		String introduced = results.getString(3);
 		LocalDateTime introducedDateAndTime=null;
