@@ -21,7 +21,7 @@ import com.excilys.formation.model.Page;
  *
  */
 public class CompanyDAO {
-	
+		
 	private final static Logger LOGGER = LogManager.getLogger(CompanyDAO.class.getName());
 	@Autowired
 	private MapperCompany mapperCompany;

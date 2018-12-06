@@ -4,7 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(value = {"com.excilys.formation.mapper","com.excilys.formation.dao"})
+@ComponentScan(basePackages = {"com.excilys.formation.mapper","com.excilys.formation.dao"})
 public class Config {
 	
 }
