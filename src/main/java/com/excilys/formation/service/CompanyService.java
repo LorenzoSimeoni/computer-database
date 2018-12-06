@@ -4,15 +4,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 
+@Service
 public class CompanyService {
 	
-	private CompanyDAO companyDao = CompanyDAO.getInstance();
-	private ComputerService computerService = ComputerService.getInstance();
+	@Autowired
+	private CompanyDAO companyDao;
+	@Autowired
+	private ComputerService computerService;
 
 	
 	private CompanyService(){}

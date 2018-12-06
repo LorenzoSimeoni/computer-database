@@ -8,11 +8,13 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.validator.Validator;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+@Component
 public class ConnectionDatabase {
 	private Connection connection;
 	private HikariDataSource ds;

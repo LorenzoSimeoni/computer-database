@@ -14,6 +14,7 @@ import com.excilys.formation.model.Company;
  * @author excilys
  *
  */
+
 @Component
 public class MapperCompany {
 	

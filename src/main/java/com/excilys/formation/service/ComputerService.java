@@ -3,15 +3,20 @@ package com.excilys.formation.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.dao.ComputerDAO;
 import com.excilys.formation.dao.OrderByComputer;
 import com.excilys.formation.dao.OrderByMode;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 
+@Service
 public class ComputerService {
 	
-	private ComputerDAO computerDao = ComputerDAO.getInstance();
+	@Autowired
+	private ComputerDAO computerDao;
 	
 	private ComputerService(){}
 	

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.exception.CompanyIDException;
 import com.excilys.formation.exception.DateException;
@@ -15,9 +17,12 @@ import com.excilys.formation.model.Page;
 import com.excilys.formation.service.ComputerService;
 import com.excilys.formation.validator.Validator;
 
+@Component
 public class ComputerCLI {
-	private MapperComputer mapperComputer = MapperComputer.getInstance();
-	private ComputerService computerService = ComputerService.getInstance();
+	@Autowired
+	private MapperComputer mapperComputer;
+	@Autowired
+	private ComputerService computerService;
 	private final static Logger LOGGER = LogManager.getLogger(ComputerCLI.class.getName());
 	
 	/**

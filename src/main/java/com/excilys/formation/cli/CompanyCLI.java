@@ -3,6 +3,9 @@ package com.excilys.formation.cli;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.formation.service.CompanyService;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Page;
@@ -12,8 +15,11 @@ import com.excilys.formation.model.Page;
  * @author excilys
  *
  */
+@Component
 public class CompanyCLI {
-	private CompanyService companyServices = CompanyService.getInstance();
+	
+	@Autowired
+	private CompanyService companyServices;
 
 	/**
 	 * Print all the Company object found in the List<Company> gived by our companyDao

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.checker.Controller;
 import com.excilys.formation.model.Company;
@@ -20,6 +21,7 @@ import com.excilys.formation.service.ComputerService;
  * @author excilys
  *
  */
+@Component
 public class MapperComputer {
 	private final static Logger LOGGER = LogManager.getLogger(MapperComputer.class.getName());
 
