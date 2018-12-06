@@ -6,16 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.mapper.MapperCompany;
 import com.excilys.formation.model.Company;
-import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
-import com.excilys.formation.service.ComputerService;
 
 /**
  * 
@@ -32,7 +29,6 @@ public class CompanyDAO {
 	private static final String DELETEACOMPANY = "DELETE FROM company WHERE id = ?;";
 
 	private ConnectionDatabase connectionDatabase = ConnectionDatabase.getInstance();
-	private ComputerService computerService = ComputerService.getInstance();
 	
 	private CompanyDAO(){}
 	
@@ -113,9 +109,6 @@ public class CompanyDAO {
 	}
 	
 	public int delete(long id) {
-		List<Computer> list = computerService.showComputerDetailsByCompanyID(id);
-		Stream<Computer> sp = list.stream();
-		sp.forEach(i -> computerService.deleteComputer(i.getId()));
 		
 		int numberOfDeletedElement = 0;
 		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(DELETEACOMPANY)) {
