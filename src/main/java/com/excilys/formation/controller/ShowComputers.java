@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.dao.OrderByComputer;
@@ -29,14 +33,20 @@ import com.excilys.formation.service.ComputerService;
 @WebServlet("/")
 public class ShowComputers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ComputerService computerService = ComputerService.getInstance();
-	private CompanyService companyService = CompanyService.getInstance();
-	private MapperComputerDTO mapperComputerDTO = MapperComputerDTO.getInstance();
 	private int maxListPage = 5;
 	private int minListPage = 1;
+	
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private MapperComputerDTO mapperComputerDTO;
 
-	public ShowComputers() {
-		super();
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

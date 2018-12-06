@@ -3,6 +3,7 @@ package com.excilys.formation.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cli.ComputerCLI;
 import com.excilys.formation.exception.CompanyIDException;
@@ -29,19 +32,20 @@ import com.excilys.formation.validator.Validator;
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ComputerService computerService = ComputerService.getInstance();
-	private CompanyService companyService = CompanyService.getInstance();
-	private MapperComputer mapperComputer = MapperComputer.getInstance();
 	private final static Logger LOGGER = LogManager.getLogger(ComputerCLI.class.getName());
 
-
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddComputer() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private MapperComputer mapperComputer;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Company> listCompany = companyService.show();

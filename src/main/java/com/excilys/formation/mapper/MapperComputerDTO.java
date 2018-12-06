@@ -1,8 +1,11 @@
 package com.excilys.formation.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.model.Computer;
 
+@Component
 public class MapperComputerDTO {
 
 	private MapperComputerDTO(){}
