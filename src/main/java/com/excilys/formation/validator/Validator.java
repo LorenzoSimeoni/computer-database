@@ -18,23 +18,44 @@ public class Validator {
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 
 	public static void checkComputer(Computer computer) throws NotPermittedComputerException {
-		if (computer.getName() == null) {
+		if (nameIsNull(computer)) {
 			throw new NameException();
 		}
 		if (!companyIdExist(computer.getCompany().getId())) {
 			throw new CompanyIDException();
 		}
-		if (computer.getDiscontinued() != null && computer.getIntroduced() == null) {
+		if (discontinuedNotNullWhileIntroducedIs(computer)) {
 			throw new DateDiscontinuedWithoutIntroduced();
 		}
-		if (computer.getIntroduced() != null && computer.getDiscontinued() != null) {
-			if (!computer.getDiscontinued().isBefore(computer.getIntroduced())) {
-				throw new DateDiscontinuedIsBeforIntroducedException();
-			}
+		if(discontinuedNotAfterIntroduced(computer)) {
+			throw new DateDiscontinuedIsBeforIntroducedException();
 		}
 	}
 	
-	public static boolean companyIdExist(long id) {
+	private static boolean nameIsNull(Computer computer) {
+		if (computer.getName() == null) {
+			return true;			
+		}
+		return false;
+	}
+	
+	private static boolean discontinuedNotNullWhileIntroducedIs(Computer computer) {
+		if (computer.getDiscontinued() != null && computer.getIntroduced() == null) {
+			return true;
+		}
+		return false;
+	}
+	
+	private static boolean discontinuedNotAfterIntroduced(Computer computer) {
+		if (computer.getIntroduced() != null && computer.getDiscontinued() != null) {
+			if (!computer.getDiscontinued().isBefore(computer.getIntroduced())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static boolean companyIdExist(long id) {
 		if(id == 0) {
 			return true;
 		}

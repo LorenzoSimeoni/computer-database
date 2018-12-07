@@ -65,14 +65,14 @@ public class ShowComputers extends HttpServlet {
 		} else {
 			page.changePage(Integer.parseInt(numPage));
 		}
-		OrderByComputer ordercolumn = chooseOrder(order);
-		OrderByMode orderByMode = chooseMode(mode);
+		OrderByComputer orderColumn = OrderByComputer.myValueOf(order);
+		OrderByMode orderByMode = OrderByMode.myValueOf(mode);
 		if (name != null) {
 			countComputer = computerService.countComputerLike(name);
-			listComputer = computerService.getComputerLike(ordercolumn,orderByMode,name, page);
+			listComputer = computerService.getComputerLike(orderColumn, orderByMode, name, page);
 		} else {
 			countComputer = computerService.countComputer();
-			listComputer = computerService.getListOrderBy(ordercolumn, orderByMode,page);
+			listComputer = computerService.getListOrderBy(orderColumn, orderByMode, page);
 		}
 		listComputer.stream().forEach(i -> {
 			listComputerDTO.add(new ComputerDTO(i));
@@ -113,38 +113,5 @@ public class ShowComputers extends HttpServlet {
 		Stream<String> sp = deleted.stream();
 		sp.forEach(id -> computerService.deleteComputer(Long.parseLong(id)));
 		doGet(request, response);
-	}
-	
-	public OrderByComputer chooseOrder(String order) {
-	    if (order == null) {
-	        return OrderByComputer.ID;
-	      }
-	    
-	      switch (order) {
-	      case "name" :
-	        return OrderByComputer.NAME;
-	      case "introduced" :
-	        return OrderByComputer.INTRODUCED;
-	      case "discontinued" :
-	        return OrderByComputer.DISCONTINUED;
-	      case "company" :
-	        return OrderByComputer.COMPANY;
-	      default:
-	        return OrderByComputer.ID;
-	  }
-	}
-	public OrderByMode chooseMode(String mode) {
-	    if (mode == null) {
-	        return OrderByMode.ASCENDING;
-	      }
-	    
-	      switch (mode) {
-	      case "asc" :
-	        return OrderByMode.ASCENDING;
-	      case "desc" :
-	        return OrderByMode.DESCENDING;
-	      default:
-	        return OrderByMode.ASCENDING;
-	  }
 	}
 }
