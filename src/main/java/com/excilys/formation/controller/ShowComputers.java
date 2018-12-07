@@ -65,17 +65,16 @@ public class ShowComputers extends HttpServlet {
 		} else {
 			page.changePage(Integer.parseInt(numPage));
 		}
+		OrderByComputer ordercolumn = chooseOrder(order);
+		OrderByMode orderByMode = chooseMode(mode);
 		if (name != null) {
 			countComputer = computerService.countComputerLike(name);
-			listComputer = computerService.getComputerLike(name, page);
+			listComputer = computerService.getComputerLike(ordercolumn,orderByMode,name, page);
 		} else {
-			OrderByComputer ordercolumn = chooseOrder(order);
-			OrderByMode orderByMode = chooseMode(mode);
 			countComputer = computerService.countComputer();
 			listComputer = computerService.getListOrderBy(ordercolumn, orderByMode,page);
 		}
 		listComputer.stream().forEach(i -> {
-			System.out.println(i.toString());
 			listComputerDTO.add(new ComputerDTO(i));
 		});
 

@@ -29,17 +29,23 @@ public class ComputerDAO {
 	private MapperComputer mapperComputer;
 	@Autowired
 	ConnectionDatabase connectionDatabase;
-	private static final String LISTCOMPUTER = "SELECT id, name, introduced, discontinued, company_id FROM computer;";
-	private static final String SHOWCOMPUTERDETAILS = "SELECT id, name, introduced, discontinued, company_id from computer WHERE name = ?;";
-	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT id, name, introduced, discontinued, company_id from computer WHERE id = ?;";
+	private static final String LISTCOMPUTER = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
+			+ "FROM computer INNER JOIN company ON computer.company_id = company.id;";
+	private static final String SHOWCOMPUTERDETAILS = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
+			+ " FROM computer INNER JOIN company ON computer.company_id = company.id WHERE name = ?;";
+	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
+			+ " FROM computer INNER JOIN company ON computer.company_id = company.id WHERE id = ?;";
 	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
 	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = ?,introduced = ?,discontinued = ?,company_id = ? WHERE id = ?;";
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
-	private static final String SHOWCOMPUTERPAGE = "SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ?, ?;";
-	private static final String SEARCHCOMPUTERANDCOMPANY = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?) LIMIT ?, ?;";
+	private static final String SHOWCOMPUTERPAGE = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
+			+ " FROM computer INNER JOIN company ON computer.company_id = company.id LIMIT ?, ?;";
+	private static final String SEARCHCOMPUTERANDCOMPANY = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
+			+ "FROM computer INNER JOIN company ON computer.company_id = company.id WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY ";
 	private static final String COUNTCOMPUTER = "SELECT COUNT(name) FROM computer;";
 	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(name) FROM computer WHERE name LIKE ? OR company_id IN (SELECT id FROM company WHERE name LIKE ?);";
-	private static final String SHOWCOMPUTERBYCOMPANYID = "SELECT id, name, introduced, discontinued, company_id from computer WHERE company_id = ?;";
+	private static final String SHOWCOMPUTERBYCOMPANYID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
+			+ " FROM computer INNER JOIN company ON computer.company_id = company.id WHERE company_id = ?;";
 	private static final String SHOWORDERBY = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
 			+ "FROM computer INNER JOIN company ON computer.company_id = company.id ORDER BY ";
 	private static final String LIMIT = " LIMIT ?, ?;";
@@ -134,8 +140,8 @@ public class ComputerDAO {
 	public List<Computer> getListOrderBy(OrderByComputer column, OrderByMode mode, Page page) {
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
-		String orderAsc = SHOWORDERBY + column + " " +mode + LIMIT;
-		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(orderAsc)) {
+		String order = SHOWORDERBY + column + " " +mode + LIMIT;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(order)) {
 			stmt.setInt(1, page.getLimit());
 			stmt.setInt(2, page.getOffset());
 			results = stmt.executeQuery();
@@ -176,10 +182,11 @@ public class ComputerDAO {
 		return list;
 	}
 	
-	public List<Computer> getComputerLike(String name, Page page) {
+	public List<Computer> getComputerLike(OrderByComputer column, OrderByMode mode, String name, Page page) {
 		List<Computer> list = new ArrayList<Computer>();
 		ResultSet results = null;
-		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(SEARCHCOMPUTERANDCOMPANY)) {
+		String order = SEARCHCOMPUTERANDCOMPANY + column + " " +mode + LIMIT;
+		try(PreparedStatement stmt = connectionDatabase.connect().prepareStatement(order)) {
 			stmt.setString(1, '%'+name+'%');
 			stmt.setString(2, '%'+name+'%');
 			stmt.setInt(3, page.getLimit());

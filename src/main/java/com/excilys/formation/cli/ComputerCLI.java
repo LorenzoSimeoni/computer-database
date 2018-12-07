@@ -8,9 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.excilys.formation.exception.CompanyIDException;
-import com.excilys.formation.exception.DateException;
-import com.excilys.formation.exception.NameException;
+import com.excilys.formation.exception.NotPermittedComputerException;
 import com.excilys.formation.mapper.MapperComputer;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
@@ -93,8 +91,8 @@ public class ComputerCLI {
 		try {
 			Validator.checkComputer(computer);
 			computerService.insertComputer(computer);
-		} catch (DateException|NameException|CompanyIDException e) {
-			LOGGER.info("COMPUTER NOT CREATED");
+		} catch (NotPermittedComputerException e) {
+			LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
 		}
 	}
 	
@@ -111,8 +109,8 @@ public class ComputerCLI {
 		try {
 			Validator.checkComputer(computer);
 			computerService.updateComputer(computer);							
-		} catch (DateException|NameException|CompanyIDException e) {
-			LOGGER.info("COMPUTER NOT UPDATED");
+		} catch (NotPermittedComputerException e) {
+			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
 		}	
 	}
 }

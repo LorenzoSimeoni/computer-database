@@ -6,8 +6,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.exception.CompanyIDException;
-import com.excilys.formation.exception.DateException;
+import com.excilys.formation.exception.DateDiscontinuedIsBeforIntroducedException;
+import com.excilys.formation.exception.DateDiscontinuedWithoutIntroduced;
 import com.excilys.formation.exception.NameException;
+import com.excilys.formation.exception.NotPermittedComputerException;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.service.CompanyService;
@@ -15,7 +17,7 @@ import com.excilys.formation.service.CompanyService;
 public class Validator {
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 
-	public static void checkComputer(Computer computer) throws DateException,NameException,CompanyIDException {
+	public static void checkComputer(Computer computer) throws NotPermittedComputerException {
 		if (computer.getName() == null) {
 			throw new NameException();
 		}
@@ -23,15 +25,11 @@ public class Validator {
 			throw new CompanyIDException();
 		}
 		if (computer.getDiscontinued() != null && computer.getIntroduced() == null) {
-			LOGGER.info(
-					"You can't have Discontinued date without introduced date, can't achieve the creation or update of this computer");
-			throw new DateException();
+			throw new DateDiscontinuedWithoutIntroduced();
 		}
 		if (computer.getIntroduced() != null && computer.getDiscontinued() != null) {
-			if (!computer.getIntroduced().isBefore(computer.getIntroduced())) {
-				LOGGER.info(
-						"A discontinued date can't be before an Introduced date, can't achieve the creation or update of this computer");
-				throw new DateException();
+			if (!computer.getDiscontinued().isBefore(computer.getIntroduced())) {
+				throw new DateDiscontinuedIsBeforIntroducedException();
 			}
 		}
 	}

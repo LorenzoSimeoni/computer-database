@@ -38,8 +38,8 @@ public class ComputerService {
 		return computerDao.getDetailsByName(name);
 	}
 
-	public List<Computer> getComputerLike(String name, Page page) {
-		return computerDao.getComputerLike(name,page);
+	public List<Computer> getComputerLike(OrderByComputer column, OrderByMode mode,String name, Page page) {
+		return computerDao.getComputerLike(column, mode, name,page);
 	}
 	
 	public Optional<Computer> showComputerDetailsByID(long id) {

@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.cli.ComputerCLI;
-import com.excilys.formation.exception.CompanyIDException;
-import com.excilys.formation.exception.DateException;
-import com.excilys.formation.exception.NameException;
+import com.excilys.formation.exception.NotPermittedComputerException;
 import com.excilys.formation.mapper.MapperComputer;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
@@ -90,8 +88,8 @@ public class UpdateComputer extends HttpServlet {
 		try {
 			Validator.checkComputer(computer);
 			computerService.updateComputer(computer);
-		} catch (DateException | NameException | CompanyIDException e) {
-			LOGGER.info("COMPUTER NOT CREATED");
+		} catch (NotPermittedComputerException e) {
+			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
 		}
 		doGet(request, response);
 	}

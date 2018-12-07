@@ -1,14 +1,16 @@
 package com.excilys.formation.exception;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-public class CompanyIDException extends Exception {
-	private final static Logger LOGGER = LogManager.getLogger(CompanyIDException.class.getName());
+public class CompanyIDException extends NotPermittedComputerException {
 
 	private static final long serialVersionUID = 1L;
-
+	String ErrorMsg;
+	
+	public String getErrorMsg() {
+		return ErrorMsg;
+	}
+	
 	public CompanyIDException() {
-		LOGGER.info("You gived a wrong Company ID, can't achieve the creation or update of computer");
+		ErrorMsg="You gived a wrong Company ID, can't achieve the creation or update of computer";
 	}
 }

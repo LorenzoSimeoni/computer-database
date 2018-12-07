@@ -1,14 +1,13 @@
 package com.excilys.formation.exception;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-public class NameException extends Exception {
-	private final static Logger LOGGER = LogManager.getLogger(NameException.class.getName());
-
+public class NameException extends NotPermittedComputerException {
 	private static final long serialVersionUID = 1L;
-
+	private String ErrorMsg;
+	
+	public String getErrorMsg() {
+		return ErrorMsg;
+	}
 	public NameException() {
-		LOGGER.info("You gived a computer with no name, can't achieve the creation or update");
+		ErrorMsg = "You gived a computer with no name, can't achieve the creation or update";
 	}
 }
