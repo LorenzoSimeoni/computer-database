@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.model.Company;
-import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 
 @Service
@@ -15,9 +14,6 @@ public class CompanyService {
 	
 	@Autowired
 	private CompanyDAO companyDao;
-	@Autowired
-	private ComputerService computerService;
-
 	
 	private CompanyService(){}
 	
@@ -43,8 +39,6 @@ public class CompanyService {
 	}
 	
 	public int delete(long id) {
-		List<Computer> list = computerService.showComputerDetailsByCompanyID(id);
-		list.stream().forEach(i -> computerService.deleteComputer(i.getId()));
 		return companyDao.delete(id);
 	}
 }
