@@ -30,8 +30,6 @@ public class CompanyDAOTest {
 	@Mock
 	private Connection connection;
 	@Mock
-	private ConnectionDatabase connectionMock;
-	@Mock
 	private MapperCompany mapperCompany;
 	@Mock
 	private List<Company> list;
@@ -43,10 +41,10 @@ public class CompanyDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		Mockito.when(connectionMock.connect()).thenReturn(connection);
-		Mockito.when(connection.prepareStatement(Mockito.anyString())).thenReturn(stmt);
-		Mockito.when(stmt.executeQuery()).thenReturn(results);
+//		MockitoAnnotations.initMocks(this);
+//		Mockito.when(connectionMock.connect()).thenReturn(connection);
+//		Mockito.when(connection.prepareStatement(Mockito.anyString())).thenReturn(stmt);
+//		Mockito.when(stmt.executeQuery()).thenReturn(results);
 	}
 
 	@Test

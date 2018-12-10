@@ -14,9 +14,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.formation.mapper.MapperRawComputer;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
-import com.excilys.formation.rawmapper.MapperRawComputer;
 
 /**
  * 
@@ -27,11 +27,16 @@ import com.excilys.formation.rawmapper.MapperRawComputer;
 public class ComputerDAO {
 
 	private final static Logger LOGGER = LogManager.getLogger(ComputerDAO.class.getName());
+	
 	@Autowired
-	ConnectionDatabase connectionDatabase;
-	NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-	JdbcTemplate jdbcTemplateWithoutArg = new JdbcTemplate(connectionDatabase.getDataSource());
-	MapSqlParameterSource params = new MapSqlParameterSource();
+	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	@Autowired
+	private RowMapper<Computer> rowMapper = new MapperRawComputer();
+	@Autowired
+	MapSqlParameterSource params;
+
 	private static final String LISTCOMPUTER = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id;";
 	private static final String SHOWCOMPUTERDETAILS = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
@@ -64,10 +69,9 @@ public class ComputerDAO {
 	}
 
 	public List<Computer> getList() {
-		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		List<Computer> list = new ArrayList<Computer>();
 		try {
-			list = jdbcTemplateWithoutArg.query(LISTCOMPUTER, rowMapper);
+			list = jdbcTemplate.query(LISTCOMPUTER, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request getList", e);
 		}
@@ -77,7 +81,7 @@ public class ComputerDAO {
 	public int countComputer() {
 		int count = 0;
 		try {
-			count = jdbcTemplateWithoutArg.queryForObject(COUNTCOMPUTER, Integer.class);
+			count = jdbcTemplate.queryForObject(COUNTCOMPUTER, Integer.class);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request countComputer", e);
 		}
@@ -89,7 +93,7 @@ public class ComputerDAO {
 		params.addValue("nameComputer", '%' + name + '%');
 		params.addValue("nameCompany", '%' + name + '%');
 		try {
-			count = jdbcTemplate.queryForObject(COUNTSEARCHCOMPUTER, params, Integer.class);
+			count = namedParameterJdbcTemplate.queryForObject(COUNTSEARCHCOMPUTER, params, Integer.class);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request countComputer", e);
 		}
@@ -98,11 +102,10 @@ public class ComputerDAO {
 
 	public List<Computer> getListPage(Page page) {
 		List<Computer> list = new ArrayList<Computer>();
-		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		params.addValue("limit", page.getLimit());
 		params.addValue("offset", page.getOffset());
 		try {
-			list = jdbcTemplate.query(SHOWCOMPUTERPAGE, params, rowMapper);
+			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERPAGE, params, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request getListPage", e);
 		}
@@ -112,11 +115,10 @@ public class ComputerDAO {
 	public List<Computer> getListOrderBy(OrderByComputer column, OrderByMode mode, Page page) {
 		List<Computer> list = new ArrayList<Computer>();
 		String order = SHOWORDERBY + column + " " + mode + LIMIT;
-		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		params.addValue("limit", page.getLimit());
 		params.addValue("offset", page.getOffset());
 		try {
-			list = jdbcTemplate.query(order, params, rowMapper);
+			list = namedParameterJdbcTemplate.query(order, params, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request getListOrderBy", e);
 		}
@@ -126,13 +128,12 @@ public class ComputerDAO {
 	public List<Computer> getComputerOrderByLike(OrderByComputer column, OrderByMode mode, String name, Page page) {
 		List<Computer> list = new ArrayList<Computer>();
 		String order = SEARCHCOMPUTERANDCOMPANY + column + " " + mode + LIMIT;
-		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		params.addValue("limit", page.getLimit());
 		params.addValue("offset", page.getOffset());
 		params.addValue("nameComputer", '%' + name + '%');
 		params.addValue("nameCompany", '%' + name + '%');
 		try {
-			list = jdbcTemplate.query(order, params, rowMapper);
+			list = namedParameterJdbcTemplate.query(order, params, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request getComputerOrderByLike", e);
 		}
@@ -147,10 +148,9 @@ public class ComputerDAO {
 	 */
 	public List<Computer> getDetailsByName(String name) {
 		List<Computer> list = new ArrayList<Computer>();
-		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		params.addValue("name", name);
 		try {
-			list = jdbcTemplate.query(SHOWCOMPUTERDETAILS, params, rowMapper);
+			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERDETAILS, params, rowMapper);
 		} catch (EmptyResultDataAccessException e) {
 			LOGGER.error("Can't execute the request GetDetailsByID", e);
 		}
@@ -165,10 +165,9 @@ public class ComputerDAO {
 	 */
 	public Optional<Computer> getDetailsByID(long id) {
 		Computer computer = null;
-		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		params.addValue("id", id);
 		try {
-			computer = jdbcTemplate.queryForObject(SHOWCOMPUTERDETAILSBYID, params, rowMapper);
+			computer = namedParameterJdbcTemplate.queryForObject(SHOWCOMPUTERDETAILSBYID, params, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request GetDetailsByID", e);
 		}
@@ -177,10 +176,9 @@ public class ComputerDAO {
 
 	public List<Computer> getDetailsByCompanyID(long id) {
 		List<Computer> list = new ArrayList<Computer>();
-		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		params.addValue("id", id);
 		try {
-			list = jdbcTemplate.query(SHOWCOMPUTERBYCOMPANYID, params, rowMapper);
+			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERBYCOMPANYID, params, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request GetDetailsByCompanyID", e);
 		}
@@ -203,7 +201,7 @@ public class ComputerDAO {
 			params.addValue("companyId", computer.getCompany().getId());			
 		}
 		try {
-			numberOfCreatedElement = jdbcTemplate.update(CREATECOMPUTER, params);
+			numberOfCreatedElement = namedParameterJdbcTemplate.update(CREATECOMPUTER, params);
 			LOGGER.info(numberOfCreatedElement + " elements with ID : " + computer.getId() + " are now created");
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request create", e);
@@ -228,7 +226,7 @@ public class ComputerDAO {
 		}
 		params.addValue("id", computer.getId());
 		try {
-			numberOfUpdatedElement = jdbcTemplate.update(UPDATEACOMPUTER, params);
+			numberOfUpdatedElement = namedParameterJdbcTemplate.update(UPDATEACOMPUTER, params);
 			LOGGER.info(numberOfUpdatedElement + " elements with ID : " + computer.getId() + " are now updated");
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request update", e);
@@ -245,7 +243,7 @@ public class ComputerDAO {
 		int numberOfDeletedElement = 0;
 		params.addValue("id",id);
 		try {
-			numberOfDeletedElement = jdbcTemplate.update(DELETEACOMPUTER,params);
+			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETEACOMPUTER,params);
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request delete", e);

@@ -20,6 +20,14 @@ import com.excilys.formation.service.CompanyService;
 public class Validator {
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	
+	private Validator(){}
+	
+	private static Validator validator = new Validator();
+	
+	public static Validator getInstance() {
+		return validator;
+	}
+	
 	@Autowired
 	private CompanyService companyServices;
 	

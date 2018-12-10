@@ -1,17 +1,20 @@
-package com.excilys.formation.rawmapper;
+package com.excilys.formation.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.excilys.formation.model.Company;
 
 public class MapperRawCompany implements RowMapper<Company> {
 	
+	@Autowired
+	MapperCompany mapperCompany;
+	
 	@Override
 	public Company mapRow(ResultSet results, int rowNum) throws SQLException {
-		Company company = new Company.CompanyBuilder(results.getLong(1)).setName(results.getString(2)).build();	
-		return company;
+		return mapperCompany.mapper(results);
 	}
 }

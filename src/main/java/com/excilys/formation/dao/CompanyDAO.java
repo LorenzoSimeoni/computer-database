@@ -14,9 +14,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.formation.mapper.MapperRawCompany;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Page;
-import com.excilys.formation.rawmapper.MapperRawCompany;
 
 /**
  * 
@@ -33,7 +33,15 @@ public class CompanyDAO {
 	private static final String DELETEACOMPANY = "DELETE FROM company WHERE id = :id;";
 
 	@Autowired
-	private ConnectionDatabase connectionDatabase;
+	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	@Autowired
+	private RowMapper<Company> rowMapper = new MapperRawCompany();
+	@Autowired
+	MapSqlParameterSource params;
+
+
 
 	private CompanyDAO() {
 	}
@@ -45,8 +53,6 @@ public class CompanyDAO {
 	}
 
 	public List<Company> getList() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(connectionDatabase.getDataSource());
-		RowMapper<Company> rowMapper = new MapperRawCompany();
 		List<Company> list = new ArrayList<Company>();
 		try {
 			list = jdbcTemplate.query(LISTCOMPANY, rowMapper);
@@ -58,12 +64,9 @@ public class CompanyDAO {
 
 	public Optional<Company> getDetailsById(long id) {
 		Company company = null;
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		RowMapper<Company> rowMapper = new MapperRawCompany();
 		params.addValue("id", id);
 		try {
-			company = jdbcTemplate.queryForObject(LISTCOMPANYDETAILSBYID, params, rowMapper);
+			company = namedParameterJdbcTemplate.queryForObject(LISTCOMPANYDETAILSBYID, params, rowMapper);
 		} catch (EmptyResultDataAccessException e) {
 			LOGGER.error("Can't execute the request LISTCOMPANYDETAILSBYID", e);
 		}
@@ -72,13 +75,10 @@ public class CompanyDAO {
 
 	public List<Company> getListPage(Page page) {
 		List<Company> list = new ArrayList<Company>();
-		RowMapper<Company> rowMapper = new MapperRawCompany();
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("limit", page.getLimit());
 		params.addValue("offset", page.getOffset());
 		try {
-			list = jdbcTemplate.query(SHOWCOMPANYPAGE, params, rowMapper);
+			list = namedParameterJdbcTemplate.query(SHOWCOMPANYPAGE, params, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request SHOWCOMPANYPAGE", e);
 		}
@@ -87,11 +87,9 @@ public class CompanyDAO {
 	
 	public int delete(long id) {
 		int numberOfDeletedElement = 0;
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id",id);
 		try {
-			numberOfDeletedElement = jdbcTemplate.update(DELETEACOMPANY,params);
+			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETEACOMPANY,params);
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request delete", e);
