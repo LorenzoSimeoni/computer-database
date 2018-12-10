@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 		"com.excilys.formation.dao",
 		"com.excilys.formation.cli",
 		"com.excilys.formation.service",
-		"com.excilys.formation.controller"})
+		"com.excilys.formation.controller",
+		"com.excilys.formation.validator"})
 public class Config {
 	
 }

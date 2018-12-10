@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.exception.CompanyIDException;
 import com.excilys.formation.exception.DateDiscontinuedIsBeforIntroducedException;
@@ -14,10 +16,14 @@ import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.service.CompanyService;
 
+@Component
 public class Validator {
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
-
-	public static void checkComputer(Computer computer) throws NotPermittedComputerException {
+	
+	@Autowired
+	private CompanyService companyServices;
+	
+	public void checkComputer(Computer computer) throws NotPermittedComputerException {
 		if (nameIsNull(computer)) {
 			throw new NameException();
 		}
@@ -32,21 +38,21 @@ public class Validator {
 		}
 	}
 	
-	private static boolean nameIsNull(Computer computer) {
+	private boolean nameIsNull(Computer computer) {
 		if (computer.getName() == null) {
 			return true;			
 		}
 		return false;
 	}
 	
-	private static boolean discontinuedNotNullWhileIntroducedIs(Computer computer) {
+	private boolean discontinuedNotNullWhileIntroducedIs(Computer computer) {
 		if (computer.getDiscontinued() != null && computer.getIntroduced() == null) {
 			return true;
 		}
 		return false;
 	}
 	
-	private static boolean discontinuedNotAfterIntroduced(Computer computer) {
+	private boolean discontinuedNotAfterIntroduced(Computer computer) {
 		if (computer.getIntroduced() != null && computer.getDiscontinued() != null) {
 			if (!computer.getDiscontinued().isBefore(computer.getIntroduced())) {
 				return true;
@@ -55,11 +61,10 @@ public class Validator {
 		return false;
 	}
 	
-	private static boolean companyIdExist(long id) {
+	private boolean companyIdExist(long id) {
 		if(id == 0) {
 			return true;
 		}
-		CompanyService companyServices = CompanyService.getInstance();
 		Optional<Company> company = companyServices.showDetailsById(id);
 		if(!company.isPresent()) {
 			LOGGER.info("You gived a wrong CompanyID, it doesn't exist !");

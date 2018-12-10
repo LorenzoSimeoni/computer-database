@@ -38,6 +38,8 @@ public class AddComputer extends HttpServlet {
 	private CompanyService companyService;
 	@Autowired
 	private MapperComputer mapperComputer;
+	@Autowired
+	private Validator validator;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -73,7 +75,7 @@ public class AddComputer extends HttpServlet {
 			} 
 			Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
 			try {
-				Validator.checkComputer(computer);
+				validator.checkComputer(computer);
 				computerService.insertComputer(computer);
 			} catch (NotPermittedComputerException e) {
 				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);

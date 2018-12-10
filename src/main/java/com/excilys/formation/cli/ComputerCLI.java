@@ -21,6 +21,8 @@ public class ComputerCLI {
 	private MapperComputer mapperComputer;
 	@Autowired
 	private ComputerService computerService;
+	@Autowired
+	private Validator validator;
 	private final static Logger LOGGER = LogManager.getLogger(ComputerCLI.class.getName());
 	
 	/**
@@ -89,7 +91,7 @@ public class ComputerCLI {
 	public void insertComputer(String name, String introduced, String discontinued, String companyID) {
 		Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyID);
 		try {
-			Validator.checkComputer(computer);
+			validator.checkComputer(computer);
 			computerService.insertComputer(computer);
 		} catch (NotPermittedComputerException e) {
 			LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
@@ -107,7 +109,7 @@ public class ComputerCLI {
 	public void updateComputer(long id, String name, String introduced, String discontinued, String companyID) {
 		Computer computer = mapperComputer.mapper(id, name,introduced,discontinued,companyID);
 		try {
-			Validator.checkComputer(computer);
+			validator.checkComputer(computer);
 			computerService.updateComputer(computer);							
 		} catch (NotPermittedComputerException e) {
 			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);

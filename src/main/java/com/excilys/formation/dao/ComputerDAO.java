@@ -1,7 +1,5 @@
 package com.excilys.formation.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +29,9 @@ public class ComputerDAO {
 	private final static Logger LOGGER = LogManager.getLogger(ComputerDAO.class.getName());
 	@Autowired
 	ConnectionDatabase connectionDatabase;
+	NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
+	JdbcTemplate jdbcTemplateWithoutArg = new JdbcTemplate(connectionDatabase.getDataSource());
+	MapSqlParameterSource params = new MapSqlParameterSource();
 	private static final String LISTCOMPUTER = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id;";
 	private static final String SHOWCOMPUTERDETAILS = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
@@ -39,9 +40,9 @@ public class ComputerDAO {
 			+ " FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = :id;";
 	private static final String SHOWCOMPUTERBYCOMPANYID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
 			+ " FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company_id = :id;";
-	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
+	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(:name,:introduced,:discontinued,:companyId);";
 	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = :name,introduced = :introduced, discontinued = :discontinued, company_id = :companyId WHERE id = :id;";
-	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = ?;";
+	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = :id;";
 	private static final String SHOWCOMPUTERPAGE = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
 			+ " FROM computer LEFT JOIN company ON computer.company_id = company.id LIMIT :limit, :offset;";
 	private static final String COUNTCOMPUTER = "SELECT COUNT(computer.name) FROM computer;";
@@ -63,11 +64,10 @@ public class ComputerDAO {
 	}
 
 	public List<Computer> getList() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(connectionDatabase.getDataSource());
 		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		List<Computer> list = new ArrayList<Computer>();
 		try {
-			list = jdbcTemplate.query(LISTCOMPUTER, rowMapper);
+			list = jdbcTemplateWithoutArg.query(LISTCOMPUTER, rowMapper);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request getList", e);
 		}
@@ -76,9 +76,8 @@ public class ComputerDAO {
 
 	public int countComputer() {
 		int count = 0;
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(connectionDatabase.getDataSource());
 		try {
-			count = jdbcTemplate.queryForObject(COUNTCOMPUTER, Integer.class);
+			count = jdbcTemplateWithoutArg.queryForObject(COUNTCOMPUTER, Integer.class);
 		} catch (Exception e) {
 			LOGGER.error("Can't execute the request countComputer", e);
 		}
@@ -87,8 +86,6 @@ public class ComputerDAO {
 
 	public int countComputerLike(String name) {
 		int count = 0;
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("nameComputer", '%' + name + '%');
 		params.addValue("nameCompany", '%' + name + '%');
 		try {
@@ -102,8 +99,6 @@ public class ComputerDAO {
 	public List<Computer> getListPage(Page page) {
 		List<Computer> list = new ArrayList<Computer>();
 		RowMapper<Computer> rowMapper = new MapperRawComputer();
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("limit", page.getLimit());
 		params.addValue("offset", page.getOffset());
 		try {
@@ -118,8 +113,6 @@ public class ComputerDAO {
 		List<Computer> list = new ArrayList<Computer>();
 		String order = SHOWORDERBY + column + " " + mode + LIMIT;
 		RowMapper<Computer> rowMapper = new MapperRawComputer();
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("limit", page.getLimit());
 		params.addValue("offset", page.getOffset());
 		try {
@@ -134,8 +127,6 @@ public class ComputerDAO {
 		List<Computer> list = new ArrayList<Computer>();
 		String order = SEARCHCOMPUTERANDCOMPANY + column + " " + mode + LIMIT;
 		RowMapper<Computer> rowMapper = new MapperRawComputer();
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("limit", page.getLimit());
 		params.addValue("offset", page.getOffset());
 		params.addValue("nameComputer", '%' + name + '%');
@@ -157,8 +148,6 @@ public class ComputerDAO {
 	public List<Computer> getDetailsByName(String name) {
 		List<Computer> list = new ArrayList<Computer>();
 		RowMapper<Computer> rowMapper = new MapperRawComputer();
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("name", name);
 		try {
 			list = jdbcTemplate.query(SHOWCOMPUTERDETAILS, params, rowMapper);
@@ -176,8 +165,6 @@ public class ComputerDAO {
 	 */
 	public Optional<Computer> getDetailsByID(long id) {
 		Computer computer = null;
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		RowMapper<Computer> rowMapper = new MapperRawComputer();
 		params.addValue("id", id);
 		try {
@@ -191,8 +178,6 @@ public class ComputerDAO {
 	public List<Computer> getDetailsByCompanyID(long id) {
 		List<Computer> list = new ArrayList<Computer>();
 		RowMapper<Computer> rowMapper = new MapperRawComputer();
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
 		try {
 			list = jdbcTemplate.query(SHOWCOMPUTERBYCOMPANYID, params, rowMapper);
@@ -209,30 +194,19 @@ public class ComputerDAO {
 	 */
 	public void create(Computer computer) {
 		int numberOfCreatedElement;
-		try (PreparedStatement stmt = connectionDatabase.connect().prepareStatement(CREATECOMPUTER)) {
-			stmt.setString(1, computer.getName());
-			if (computer.getIntroduced() != null) {
-				stmt.setString(2, computer.getIntroduced().toString());
-				if (computer.getDiscontinued() != null) {
-					stmt.setString(3, computer.getDiscontinued().toString());
-				} else {
-					stmt.setString(3, null);
-				}
-			} else {
-				stmt.setString(2, null);
-				stmt.setString(3, null);
-			}
-			if (computer.getCompany().getId() == 0) {
-				stmt.setString(4, null);
-			} else {
-				stmt.setLong(4, computer.getCompany().getId());
-			}
-			numberOfCreatedElement = stmt.executeUpdate();
+		params.addValue("name", computer.getName());
+		params.addValue("introduced", computer.getIntroduced());
+		params.addValue("discontinued", computer.getDiscontinued());
+		if (computer.getCompany().getId() == 0) {
+			params.addValue("companyId", null);	
+		} else {
+			params.addValue("companyId", computer.getCompany().getId());			
+		}
+		try {
+			numberOfCreatedElement = jdbcTemplate.update(CREATECOMPUTER, params);
 			LOGGER.info(numberOfCreatedElement + " elements with ID : " + computer.getId() + " are now created");
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error("Can't execute the request create", e);
-		} finally {
-			connectionDatabase.disconnect();
 		}
 	}
 
@@ -242,45 +216,16 @@ public class ComputerDAO {
 	 * @param computer contains the new configuration of computer
 	 * @param id       the ID of the computer we want to change
 	 */
-	public Computer update2(Computer computer) {
-		int numberOfUpdatedElement = 0;
-		try (PreparedStatement stmt = connectionDatabase.connect().prepareStatement(UPDATEACOMPUTER)) {
-			stmt.setString(1, computer.getName());
-			if (computer.getIntroduced() != null) {
-				stmt.setString(2, computer.getIntroduced().toString());
-				if (computer.getDiscontinued() != null) {
-					stmt.setString(3, computer.getDiscontinued().toString());
-				} else {
-					stmt.setString(3, null);
-				}
-			} else {
-				stmt.setString(2, null);
-				stmt.setString(3, null);
-			}
-			if (computer.getCompany().getId() == 0) {
-				stmt.setString(4, null);
-			} else {
-				stmt.setLong(4, computer.getCompany().getId());
-			}
-			stmt.setLong(5, computer.getId());
-			numberOfUpdatedElement = stmt.executeUpdate();
-			LOGGER.info(numberOfUpdatedElement + " elements with ID : " + computer.getId() + " are now updated");
-		} catch (SQLException e) {
-			LOGGER.error("Can't execute the request update", e);
-		} finally {
-			connectionDatabase.disconnect();
-		}
-		return computer;
-	}
-
 	public Computer update(Computer computer) {
 		int numberOfUpdatedElement = 0;
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
-		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("name", computer.getName());
 		params.addValue("introduced", computer.getIntroduced());
 		params.addValue("discontinued", computer.getDiscontinued());
-		params.addValue("idCompany", computer.getCompany().getId());
+		if (computer.getCompany().getId() == 0) {
+			params.addValue("companyId", null);	
+		} else {
+			params.addValue("companyId", computer.getCompany().getId());			
+		}
 		params.addValue("id", computer.getId());
 		try {
 			numberOfUpdatedElement = jdbcTemplate.update(UPDATEACOMPUTER, params);
@@ -298,14 +243,12 @@ public class ComputerDAO {
 	 */
 	public int delete(long id) {
 		int numberOfDeletedElement = 0;
-		try (PreparedStatement stmt = connectionDatabase.connect().prepareStatement(DELETEACOMPUTER)) {
-			stmt.setLong(1, id);
-			numberOfDeletedElement = stmt.executeUpdate();
+		params.addValue("id",id);
+		try {
+			numberOfDeletedElement = jdbcTemplate.update(DELETEACOMPUTER,params);
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error("Can't execute the request delete", e);
-		} finally {
-			connectionDatabase.disconnect();
 		}
 		return numberOfDeletedElement;
 	}

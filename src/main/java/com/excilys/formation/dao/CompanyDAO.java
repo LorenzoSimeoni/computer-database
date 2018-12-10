@@ -28,9 +28,9 @@ public class CompanyDAO {
 
 	private final static Logger LOGGER = LogManager.getLogger(CompanyDAO.class.getName());
 	private static final String LISTCOMPANY = "SELECT id, name FROM company;";
-	private static final String LISTCOMPANYDETAILSBYID = "SELECT id, name FROM company WHERE id = :num_id;";
+	private static final String LISTCOMPANYDETAILSBYID = "SELECT id, name FROM company WHERE id = :id;";
 	private static final String SHOWCOMPANYPAGE = "SELECT id, name FROM company LIMIT :limit, :offset";
-	private static final String DELETEACOMPANY = "DELETE FROM company WHERE id = :num_id;";
+	private static final String DELETEACOMPANY = "DELETE FROM company WHERE id = :id;";
 
 	@Autowired
 	private ConnectionDatabase connectionDatabase;
@@ -61,7 +61,7 @@ public class CompanyDAO {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		RowMapper<Company> rowMapper = new MapperRawCompany();
-		params.addValue("num_id", id);
+		params.addValue("id", id);
 		try {
 			company = jdbcTemplate.queryForObject(LISTCOMPANYDETAILSBYID, params, rowMapper);
 		} catch (EmptyResultDataAccessException e) {
@@ -89,7 +89,7 @@ public class CompanyDAO {
 		int numberOfDeletedElement = 0;
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connectionDatabase.getDataSource());
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("num_id",id);
+		params.addValue("id",id);
 		try {
 			numberOfDeletedElement = jdbcTemplate.update(DELETEACOMPANY,params);
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");

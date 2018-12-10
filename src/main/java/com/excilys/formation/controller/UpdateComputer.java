@@ -39,6 +39,8 @@ public class UpdateComputer extends HttpServlet {
 	private CompanyService companyService;
 	@Autowired
 	private MapperComputer mapperComputer;
+	@Autowired
+	private Validator validator;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -86,7 +88,7 @@ public class UpdateComputer extends HttpServlet {
 		}
 		Computer computer = mapperComputer.mapper(Long.parseLong(id), name, introduced, discontinued, companyId);
 		try {
-			Validator.checkComputer(computer);
+			validator.checkComputer(computer);
 			computerService.updateComputer(computer);
 		} catch (NotPermittedComputerException e) {
 			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
