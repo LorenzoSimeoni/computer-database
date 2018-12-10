@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.formation.checker.Controller;
@@ -32,6 +33,9 @@ public class MapperComputer {
 	public static MapperComputer getInstance() {
 		return mapperComputer;
 	}
+	
+	@Autowired
+	ComputerService computerService;
 	
 	/**
 	 * Construct a computer object from a ResultSet (Select)
@@ -78,7 +82,7 @@ public class MapperComputer {
 		Computer computerUpdated = null;
 		String nameComputer = name;
 		long companyID;
-		Optional<Computer> computerOptional = ComputerService.getInstance().showComputerDetailsByID(id);
+		Optional<Computer> computerOptional = computerService.showComputerDetailsByID(id);
 		if(computerOptional.isPresent()) {
 			Computer computer = computerOptional.get();
 			LocalDateTime localIntroduced = null;

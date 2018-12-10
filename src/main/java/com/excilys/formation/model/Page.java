@@ -1,8 +1,8 @@
 package com.excilys.formation.model;
 
 public class Page {
-	private int limit;
-	private int offset;
+	private int limit = 0;
+	private int offset = 0;
 	private int pageNumber = 1;
 	
 	public int getLimit() {
@@ -47,5 +47,9 @@ public class Page {
 	}
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
+	}
+	@Override
+	public String toString() {
+		return "Page [limit=" + limit + ", offset=" + offset + ", pageNumber=" + pageNumber + "]";
 	}
 }

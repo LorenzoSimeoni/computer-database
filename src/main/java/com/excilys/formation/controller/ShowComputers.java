@@ -69,7 +69,7 @@ public class ShowComputers extends HttpServlet {
 		OrderByMode orderByMode = OrderByMode.myValueOf(mode);
 		if (name != null) {
 			countComputer = computerService.countComputerLike(name);
-			listComputer = computerService.getComputerLike(orderColumn, orderByMode, name, page);
+			listComputer = computerService.getComputerOrderByLike(orderColumn, orderByMode, name, page);
 		} else {
 			countComputer = computerService.countComputer();
 			listComputer = computerService.getListOrderBy(orderColumn, orderByMode, page);

@@ -189,7 +189,6 @@ public class FeatureCLI {
 	public void pageCompany(int size, Scanner sc) {
 		Page page = new Page();		
 		sc.nextLine();
-		CompanyCLI companyCLI = new CompanyCLI();
 		String str;
 		page.setOffset(size);
 		do {
@@ -210,9 +209,10 @@ public class FeatureCLI {
 	public void pageComputer(int size, Scanner sc) {
 		Page page = new Page();
 		sc.nextLine();
-		ComputerCLI computerCLI = new ComputerCLI();
 		String str;
 		page.setOffset(size);
+		page.incrementLimit();
+		computerCLI.showComputerPage(page);
 		do {
 			displayPageMenu();
 			str = sc.nextLine();
