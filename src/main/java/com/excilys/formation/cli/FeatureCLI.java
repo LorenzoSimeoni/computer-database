@@ -6,12 +6,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.formation.checker.Controller;
-import com.excilys.formation.configSpring.Config;
+import com.excilys.formation.configSpring.SpringRootConfig;
 import com.excilys.formation.model.Page;
 
 public class FeatureCLI {
 	private static Scanner sc;
-	static ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
+	static ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringRootConfig.class);
 	static CompanyCLI companyCLI = applicationContext.getBean("companyCLI", CompanyCLI.class);
 	static ComputerCLI computerCLI = applicationContext.getBean("computerCLI", ComputerCLI.class);
 	

@@ -1,8 +1,7 @@
-package com.excilys.formation.controller;
+package com.excilys.formation.servlet;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -26,10 +25,9 @@ import com.excilys.formation.service.ComputerService;
 import com.excilys.formation.validator.Validator;
 
 /**
- * Servlet implementation class UpdateComputer
+ * Servlet implementation class AddComputer
  */
-@WebServlet("/updateComputer")
-public class UpdateComputer extends HttpServlet {
+public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOGGER = LogManager.getLogger(ComputerCLI.class.getName());
 
@@ -41,57 +39,46 @@ public class UpdateComputer extends HttpServlet {
 	private MapperComputer mapperComputer;
 	@Autowired
 	private Validator validator;
-
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
-	public UpdateComputer() {
-		super();
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String id = request.getParameter("id");
-		request.setAttribute("id", id);
-		Optional<Computer> computer = computerService.showComputerDetailsByID(Long.parseLong(id));
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Company> listCompany = companyService.show();
 		request.setAttribute("listCompany", listCompany);
-		request.setAttribute("computerName", computer.get().getName());
-		request.setAttribute("introduced", computer.get().getIntroduced());
-		request.setAttribute("discontinued", computer.get().getDiscontinued());
-		request.setAttribute("companyId", computer.get().getCompany().getId());
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String name = request.getParameter("computerName");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("computerName");     
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
-		String id = request.getParameter("id");
-		if (introduced.equals("")) {
-			introduced = null;
-		} else {
-			introduced = introduced + "T00:00:00";
-		}
-		if (discontinued.equals("")) {
-			discontinued = null;
-		} else {
-			discontinued = discontinued + "T00:00:00";
-		}
-		if (companyId.equals("")) {
-			companyId = null;
-		}
-		Computer computer = mapperComputer.mapper(Long.parseLong(id), name, introduced, discontinued, companyId);
-		try {
-			validator.checkComputer(computer);
-			computerService.updateComputer(computer);
-		} catch (NotPermittedComputerException e) {
-			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
+		
+		if(!name.equals("")) {
+			if(introduced.equals("")) {
+				introduced = null;
+			} else {
+				introduced = introduced+"T00:00:00";
+			}
+			if(discontinued.equals("")) {
+				discontinued = null;
+			} else {
+				discontinued = discontinued+"T00:00:00";
+			}
+			if(companyId.equals("")) {
+				companyId = null;
+			} 
+			Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyId);
+			try {
+				validator.checkComputer(computer);
+				computerService.insertComputer(computer);
+			} catch (NotPermittedComputerException e) {
+				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+			}											
 		}
 		doGet(request, response);
 	}

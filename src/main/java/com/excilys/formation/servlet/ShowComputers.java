@@ -1,4 +1,4 @@
-package com.excilys.formation.controller;
+package com.excilys.formation.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import com.excilys.formation.service.ComputerService;
 /**
  * Servlet implementation class ShowComputers
  */
-@WebServlet("/")
 public class ShowComputers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private int maxListPage = 5;

@@ -33,7 +33,7 @@ public class ComputerDAO {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	@Autowired
-	private RowMapper<Computer> rowMapper = new MapperRawComputer();
+	private RowMapper<Computer> rowMapper;
 	@Autowired
 	MapSqlParameterSource params;
 

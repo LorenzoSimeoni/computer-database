@@ -15,7 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import com.excilys.formation.mapper.MapperRawCompany;
 import com.excilys.formation.mapper.MapperRawComputer;
 import com.excilys.formation.model.Company;
@@ -25,10 +24,10 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @ComponentScan(basePackages = { "com.excilys.formation.mapper", "com.excilys.formation.dao",
-		"com.excilys.formation.cli", "com.excilys.formation.service", "com.excilys.formation.controller",
+		"com.excilys.formation.cli", "com.excilys.formation.service",
 		"com.excilys.formation.validator" })
-public class Config {
-	private final static Logger LOGGER = LogManager.getLogger(Config.class.getName());
+public class SpringRootConfig {
+	private final static Logger LOGGER = LogManager.getLogger(SpringRootConfig.class.getName());
 
 	@Bean
 	public DataSource mysqlDataSource() {

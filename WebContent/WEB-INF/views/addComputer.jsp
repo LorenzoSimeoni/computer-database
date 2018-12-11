@@ -6,9 +6,9 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="ressources/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="ressources/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="ressources/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -60,7 +60,7 @@
 		</div>
 	</section>
 </body>
-<script src="js/jquery.min.js"></script>
+<script src="ressources/js/jquery.min.js"></script>
 <script type="text/javascript" charset="utf-8">
 $('form').submit(function (event) {
     var name = $.trim($('#computerName').val());
