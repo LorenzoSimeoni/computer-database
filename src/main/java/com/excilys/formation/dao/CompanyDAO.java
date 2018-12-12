@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -42,20 +42,12 @@ public class CompanyDAO {
 	@Autowired
 	MapSqlParameterSource params;
 
-	private CompanyDAO() {
-	}
-
-	private static CompanyDAO companyDAO = new CompanyDAO();
-
-	public static CompanyDAO getInstance() {
-		return companyDAO;
-	}
 
 	public List<Company> getList() {
 		List<Company> list = new ArrayList<Company>();
 		try {
 			list = jdbcTemplate.query(LISTCOMPANY, rowMapperCompany);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request LISTCOMPANY", e);
 		}
 		return list;
@@ -66,7 +58,7 @@ public class CompanyDAO {
 		params.addValue("id", id);
 		try {
 			company = namedParameterJdbcTemplate.queryForObject(LISTCOMPANYDETAILSBYID, params, rowMapperCompany);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request LISTCOMPANYDETAILSBYID", e);
 		}
 		return Optional.ofNullable(company);
@@ -78,7 +70,7 @@ public class CompanyDAO {
 		params.addValue("offset", page.getOffset());
 		try {
 			list = namedParameterJdbcTemplate.query(SHOWCOMPANYPAGE, params, rowMapperCompany);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request SHOWCOMPANYPAGE", e);
 		}
 		return list;
@@ -91,13 +83,13 @@ public class CompanyDAO {
 		try {
 			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETECOMPUTERS, params);
 			LOGGER.info(numberOfDeletedElement + " elements are now deleted");
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request delete", e);
 		}
 		try {
 			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETEACOMPANY, params);
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request delete", e);
 		}
 		return numberOfDeletedElement;

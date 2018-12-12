@@ -18,14 +18,6 @@ import com.excilys.formation.model.Company;
 @Component
 public class MapperCompany {
 	
-	private MapperCompany(){}
-	
-	private static MapperCompany mapperCompany = new MapperCompany();
-	
-	public static MapperCompany getInstance() {
-		return mapperCompany;
-	}
-	
 	/**
 	 * Map a ResultSet in a Company object
 	 * @param results contains what we found in database

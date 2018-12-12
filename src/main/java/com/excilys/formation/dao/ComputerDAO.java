@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -61,17 +61,12 @@ public class ComputerDAO {
 	private ComputerDAO() {
 	}
 
-	private static ComputerDAO computerDAO = new ComputerDAO();
-
-	public static ComputerDAO getInstance() {
-		return computerDAO;
-	}
 
 	public List<Computer> getList() {
 		List<Computer> list = new ArrayList<Computer>();
 		try {
 			list = jdbcTemplate.query(LISTCOMPUTER, rowMapper);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request getList", e);
 		}
 		return list;
@@ -81,7 +76,7 @@ public class ComputerDAO {
 		int count = 0;
 		try {
 			count = jdbcTemplate.queryForObject(COUNTCOMPUTER, Integer.class);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request countComputer", e);
 		}
 		return count;
@@ -93,7 +88,7 @@ public class ComputerDAO {
 		params.addValue("nameCompany", '%' + name + '%');
 		try {
 			count = namedParameterJdbcTemplate.queryForObject(COUNTSEARCHCOMPUTER, params, Integer.class);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request countComputer", e);
 		}
 		return count;
@@ -105,7 +100,7 @@ public class ComputerDAO {
 		params.addValue("offset", page.getOffset());
 		try {
 			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERPAGE, params, rowMapper);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request getListPage", e);
 		}
 		return list;
@@ -118,7 +113,7 @@ public class ComputerDAO {
 		params.addValue("offset", page.getOffset());
 		try {
 			list = namedParameterJdbcTemplate.query(order, params, rowMapper);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request getListOrderBy", e);
 		}
 		return list;
@@ -133,7 +128,7 @@ public class ComputerDAO {
 		params.addValue("nameCompany", '%' + name + '%');
 		try {
 			list = namedParameterJdbcTemplate.query(order, params, rowMapper);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request getComputerOrderByLike", e);
 		}
 		return list;
@@ -150,7 +145,7 @@ public class ComputerDAO {
 		params.addValue("name", name);
 		try {
 			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERDETAILS, params, rowMapper);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request GetDetailsByID", e);
 		}
 		return list;
@@ -167,7 +162,7 @@ public class ComputerDAO {
 		params.addValue("id", id);
 		try {
 			computer = namedParameterJdbcTemplate.queryForObject(SHOWCOMPUTERDETAILSBYID, params, rowMapper);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request GetDetailsByID", e);
 		}
 		return Optional.ofNullable(computer);
@@ -178,7 +173,7 @@ public class ComputerDAO {
 		params.addValue("id", id);
 		try {
 			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERBYCOMPANYID, params, rowMapper);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request GetDetailsByCompanyID", e);
 		}
 		return list;
@@ -202,7 +197,7 @@ public class ComputerDAO {
 		try {
 			numberOfCreatedElement = namedParameterJdbcTemplate.update(CREATECOMPUTER, params);
 			LOGGER.info(numberOfCreatedElement + " elements with ID : " + computer.getId() + " are now created");
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request create", e);
 		}
 	}
@@ -227,7 +222,7 @@ public class ComputerDAO {
 		try {
 			numberOfUpdatedElement = namedParameterJdbcTemplate.update(UPDATEACOMPUTER, params);
 			LOGGER.info(numberOfUpdatedElement + " elements with ID : " + computer.getId() + " are now updated");
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request update", e);
 		}
 		return computer;
@@ -244,7 +239,7 @@ public class ComputerDAO {
 		try {
 			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETEACOMPUTER,params);
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("Can't execute the request delete", e);
 		}
 		return numberOfDeletedElement;

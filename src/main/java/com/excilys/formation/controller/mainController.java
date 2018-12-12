@@ -40,45 +40,68 @@ public class mainController {
 	private MapperComputer mapperComputer;
 	@Autowired
 	private Validator validator;
+	
+	private String order = "";
+	private String mode = "";
+	private Page pagination = new Page();
+	private String search = "";
 
+	@GetMapping(value = "/", params="nbElement")
+	public ModelAndView changeNbElementsPage(@RequestParam int nbElement) {
+		pagination.setOffset(nbElement);
+		return constructPage();
+	}
+	@GetMapping(value = "/", params="numPage")
+	public ModelAndView changeNumPage(@RequestParam int numPage) {
+		pagination.changePage(numPage);
+		return constructPage();
+	}
+	@GetMapping(value = "/", params="search")
+	public ModelAndView search(@RequestParam String search) {
+		this.search = search;
+		return constructPage();
+	}
+	@GetMapping(value = "/", params= {"order","mode"})
+	public ModelAndView orderBy(@RequestParam String order,
+			@RequestParam String mode) {
+		this.order = order;
+		this.mode = mode;
+		return constructPage();
+	}
 	@GetMapping(value = "/")
-    public ModelAndView getDashboardPage(@RequestParam(defaultValue = "") String order,
-    		@RequestParam(defaultValue = "") String mode,
-    		@RequestParam(defaultValue = "10") int nbElement,
-    		@RequestParam(defaultValue = "1") int page,
-    		@RequestParam(defaultValue = "") String search) {
-		Page ourPage = new Page();
+	public ModelAndView getDashboardPage() {
+		return constructPage();
+	}
+	
+	private ModelAndView constructPage() {
+		OrderByComputer orderColumn = OrderByComputer.myValueOf(order);
+		OrderByMode orderByMode = OrderByMode.myValueOf(mode);
 		List<Computer> listComputer = new ArrayList<>();
 		List<ComputerDTO> listComputerDTO = new ArrayList<>();
 		int countComputer = 0;
-		ourPage.setOffset(nbElement);
-		ourPage.changePage(page);
-		OrderByComputer orderColumn = OrderByComputer.myValueOf(order);
-		OrderByMode orderByMode = OrderByMode.myValueOf(mode);
 		if (search.equals("")) {
 			countComputer = computerService.countComputer();
-			listComputer = computerService.getListOrderBy(orderColumn, orderByMode, ourPage);
+			listComputer = computerService.getListOrderBy(orderColumn, orderByMode, pagination);
 		} else {
 			countComputer = computerService.countComputerLike(search);
-			listComputer = computerService.getComputerOrderByLike(orderColumn, orderByMode, search, ourPage);
+			listComputer = computerService.getComputerOrderByLike(orderColumn, orderByMode, search, pagination);
 		}
 		listComputer.stream().forEach(i -> {
 			listComputerDTO.add(new ComputerDTO(i));
 		});
 		ModelAndView mv = new ModelAndView();
-        mv.setViewName("dashboard");
-        mv.getModel().put("nbElement", nbElement);
-        mv.getModel().put("numPage", page);
+		mv.setViewName("dashboard");
+		mv.getModel().put("pagination",pagination);
+        mv.getModel().put("nbElement", pagination.getOffset());
+        mv.getModel().put("numPage", pagination.getPageNumber());
         mv.getModel().put("search", search);
         mv.getModel().put("order", order);
         mv.getModel().put("mode", mode);
-        mv.getModel().put("maxListPage", 5);
-        mv.getModel().put("minListPage", 1);
         mv.getModel().put("listComputer", listComputerDTO);
         mv.getModel().put("nbElementShown", listComputerDTO.size());
         mv.getModel().put("sizeComputerFound", countComputer);
-        return mv;
-    }
+		return mv;
+	}
 	
 	@PostMapping(value = "/")
     public ModelAndView postDashboardPage(@RequestParam(defaultValue = "") String cb) {
@@ -89,8 +112,6 @@ public class mainController {
 		mv.setViewName("dashboard");
 		return mv;
 	}
-
-	
 
 	@GetMapping(value = "/updateComputer")
     public ModelAndView getUpdateComputer(@RequestParam(defaultValue = "") long id) {

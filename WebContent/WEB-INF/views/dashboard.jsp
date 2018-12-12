@@ -8,15 +8,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="ressources/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="ressources/css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="ressources/css/main.css" rel="stylesheet" media="screen">
+<link href="static/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
+<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="/computer-databases/"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="/computer-databases/"> Application
+				- Computer Database </a>
+				<c:out value="${ pagination.minNumberPage }" />
+				<c:out value="${ pagination.maxNumberPage }" />
+				<c:out value="${ pagination.pageNumber }" />
 		</div>
 	</header>
 
@@ -24,14 +28,16 @@
 		<div class="container">
 			<h1 id="homeTitle">
 				<c:out value="${ sizeComputerFound }  Computer found" />
-				<spring:message code="lang.greeting"/>
+				<spring:message code="lang.greeting" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" method="GET" class="form-inline">
 						<input type="hidden" value="${nbElement}" id="nbElement"
-							name="nbElement" /> <input type="hidden" value="${numPage}"
-							id="page" name="page" /> <input type="search" id="searchbox"
+							name="nbElement" /> 
+						<input type="hidden" value="${numPage}"
+							id="numPage" name="numPage" /> 
+						<input type="search" id="searchbox"
 							name="search" class="form-control" placeholder="Search name" />
 						<input type="submit" id="searchsubmit" value="Filter by name"
 							class="btn btn-primary" />
@@ -39,7 +45,8 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addComputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
+						Computer</a> 
+					<a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
@@ -48,22 +55,22 @@
 		<form id="deleteForm" action="#" method="POST">
 			<input type="hidden" name="selection" value="">
 			<div class="hide">
-			
-			<c:set var="url" value="?" scope="page" />
-			<c:set var="nbElementValue" value="nbElement=" scope="page" />
-			<c:set var="pageValue" value="&page=" scope="page" />
-			<c:set var="searchValue" value="&search=" scope="page" />
-			<c:set var="modeValue" value="&mode=" scope="page" />
-			<c:set var="orderValue" value="&order=" scope="page" />
-			<c:if test="${ nbElement != null }">
+
+				<c:set var="url" value="?" scope="page" />
+				<c:set var="nbElementValue" value="nbElement=" scope="page" />
+				<c:set var="pageValue" value="&page=" scope="page" />
+				<c:set var="searchValue" value="&search=" scope="page" />
+				<c:set var="modeValue" value="&mode=" scope="page" />
+				<c:set var="orderValue" value="&order=" scope="page" />
+				<c:if test="${ nbElement != null }">
 								${url = url.concat(nbElementValue)};
 							    ${url = url.concat(nbElement)};
 							</c:if>
-			<c:if test="${ numPage != null }">
+				<c:if test="${ numPage != null }">
 								${url = url.concat(pageValue)};
 							    ${url = url.concat(numPage)};
 							</c:if>
-			<c:if test="${ search != null }">
+				<c:if test="${ search != null }">
 								${url = url.concat(searchValue)};
 							    ${url = url.concat(search)};
 							</c:if>
@@ -175,56 +182,26 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
+			<div class="btn-group btn-group-sm pull-left" role="group">
+				<button type="button" class="btn btn-default"
+					onclick="location.replace('?lang=fr')">Français</button>
+				<button type="button" class="btn btn-default"
+					onclick="location.replace('?lang=en')">English</button>
+			</div>
+
 			<ul class="pagination">
 				<li><a
-					href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${param["page"]!=null?param["page"]-1>0?param["page"]-1:param["page"]:"1"}
-					<c:choose>
-						<c:when test="${search == null}"></c:when>
-						<c:otherwise>&search=<c:out value="${search}"/></c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${order == null}"></c:when>
-						<c:otherwise>&order=<c:out value="${order}"/></c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${mode == null}"></c:when>
-						<c:otherwise>&mode=<c:out value="${mode}"/></c:otherwise>
-					</c:choose>'
+					href='?numPage=${pagination.pageNumber-1}'
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
-				<c:forEach var="i" begin="${minListPage}" end="${maxListPage}"
-					step="1">
+				<c:forEach var="i" begin="${pagination.minNumberPage}" end="${pagination.maxNumberPage}" step="1">
 					<li><a
-						href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${i}
-					<c:choose>
-						<c:when test="${search == null}"></c:when>
-						<c:otherwise>&search=<c:out value="${search}"/></c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${order == null}"></c:when>
-						<c:otherwise>&order=<c:out value="${order}"/></c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${mode == null}"></c:when>
-						<c:otherwise>&mode=<c:out value="${mode}"/></c:otherwise>
-					</c:choose>'>
-							<c:out value="${i}" />
+						href='?numPage=${i}'>
+						<c:out value="${i}" />
 					</a></li>
 				</c:forEach>
 				<li><a
-					href='?nbElement=${param["nbElement"]!=null?param["nbElement"] : "10"}&page=${param["page"]!=null?nbElementShown!=param["nbElement"]?param["page"]:param["page"]+1:"2"}
-					<c:choose>
-						<c:when test="${search == null}"></c:when>
-						<c:otherwise>&search=<c:out value="${search}"/></c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${order == null}"></c:when>
-						<c:otherwise>&order=<c:out value="${order}"/></c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${mode == null}"></c:when>
-						<c:otherwise>&mode=<c:out value="${mode}"/></c:otherwise>
-					</c:choose>'
+					href='?numPage=${pagination.pageNumber+1}'
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
@@ -239,8 +216,22 @@
 			</div>
 		</div>
 	</footer>
-	<script src="ressources/js/jquery.min.js"></script>
-	<script src="ressources/js/bootstrap.min.js"></script>
-	<script src="ressources/js/dashboard.js"></script>
+	<script src="static/js/jquery.min.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/dashboard.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#locales").change(function() {
+				var selectedOption = $('#locales').val();
+				if (selectedOption != '') {
+					window.location.replace('?lang=' + selectedOption);
+				}
+			});
+		});
+		$(function(){
+		    $('.selectpicker').selectpicker();
+		});
+	</script>
+	
 </body>
 </html>

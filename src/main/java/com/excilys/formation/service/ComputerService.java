@@ -18,14 +18,6 @@ public class ComputerService {
 	@Autowired
 	private ComputerDAO computerDao;
 	
-	private ComputerService(){}
-	
-	private static ComputerService computerServices = new ComputerService();
-	
-	public static ComputerService getInstance() {
-		return computerServices;
-	}
-	
 	public List<Computer> showComputer() {
 		return computerDao.getList();
 	}

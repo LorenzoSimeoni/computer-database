@@ -25,14 +25,6 @@ import com.excilys.formation.service.ComputerService;
 @Component
 public class MapperComputer {
 	private final static Logger LOGGER = LogManager.getLogger(MapperComputer.class.getName());
-
-	private MapperComputer(){}
-	
-	private static MapperComputer mapperComputer = new MapperComputer();
-	
-	public static MapperComputer getInstance() {
-		return mapperComputer;
-	}
 	
 	@Autowired
 	ComputerService computerService;

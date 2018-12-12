@@ -10,6 +10,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -29,6 +30,11 @@ public class SpringWebConfig implements WebMvcConfigurer {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+    }
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

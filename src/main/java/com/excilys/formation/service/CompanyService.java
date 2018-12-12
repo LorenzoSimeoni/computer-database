@@ -15,14 +15,6 @@ public class CompanyService {
 	@Autowired
 	private CompanyDAO companyDao;
 	
-	private CompanyService(){}
-	
-	private static CompanyService companyServices = new CompanyService();
-	
-	public static CompanyService getInstance() {
-		return companyServices;
-	}
-	
 	/**
 	 * Fill a list with all the Company object found in the List<Company> gived by our companyDao
 	 */
