@@ -24,7 +24,7 @@
 		<div class="container">
 			<h1 id="homeTitle">
 				<c:out value="${ sizeComputerFound }  Computer found" />
-				<spring:message code="greeting" text="default"/>
+				<spring:message code="lang.greeting"/>
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">

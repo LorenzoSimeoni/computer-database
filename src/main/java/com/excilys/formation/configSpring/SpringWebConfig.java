@@ -38,7 +38,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
 	@Bean
 	public LocaleResolver localeResolver() {
 		SessionLocaleResolver slr = new SessionLocaleResolver();
-		slr.setDefaultLocale(Locale.US);
+		slr.setDefaultLocale(Locale.ENGLISH);
 		return slr;
 	}
 
@@ -49,11 +49,11 @@ public class SpringWebConfig implements WebMvcConfigurer {
 		return lci;
 	}
 
-//	@Bean
-//	public MessageSource messageSource() {
-//		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-//		messageSource.setBasename("classpath:resources");
-//		messageSource.setDefaultEncoding("UTF-8");
-//		return messageSource;
-//	}
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:messages");
+		messageSource.setDefaultEncoding("UTF-8");
+		return messageSource;
+	}
 }
