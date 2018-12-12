@@ -2,10 +2,13 @@ package com.excilys.formation.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotBlank;
+
 import com.excilys.formation.model.Computer;
 
 public class ComputerDTO {
 	private long id;
+	@NotBlank
 	private String name;
 	private LocalDateTime introduced;
 	private LocalDateTime discontinued;

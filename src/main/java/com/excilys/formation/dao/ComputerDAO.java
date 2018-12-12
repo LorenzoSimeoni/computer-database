@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.formation.mapper.MapperRawComputer;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 

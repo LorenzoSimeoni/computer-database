@@ -3,8 +3,11 @@ package com.excilys.formation.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +18,28 @@ import org.springframework.web.servlet.ModelAndView;
 import com.excilys.formation.dao.OrderByComputer;
 import com.excilys.formation.dao.OrderByMode;
 import com.excilys.formation.dto.ComputerDTO;
+import com.excilys.formation.exception.NotPermittedComputerException;
+import com.excilys.formation.mapper.MapperComputer;
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
+import com.excilys.formation.service.CompanyService;
 import com.excilys.formation.service.ComputerService;
+import com.excilys.formation.validator.Validator;
 
 @Controller
 public class mainController {
 	
+	private final static Logger LOGGER = LogManager.getLogger(mainController.class.getName());
+
 	@Autowired
 	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private MapperComputer mapperComputer;
+	@Autowired
+	private Validator validator;
 
 	@GetMapping(value = "/")
     public ModelAndView getDashboardPage(@RequestParam(defaultValue = "") String order,
@@ -77,20 +93,91 @@ public class mainController {
 	
 
 	@GetMapping(value = "/updateComputer")
-    public ModelAndView getUpdateComputer() {
+    public ModelAndView getUpdateComputer(@RequestParam(defaultValue = "") long id) {
+		Optional<Computer> computer = computerService.showComputerDetailsByID(id);
+		List<Company> listCompany = companyService.show();
+		
         ModelAndView mv = new ModelAndView();
         mv.setViewName("editComputer");
-        mv.getModel().put("data", "Welcome home man");
- 
+        mv.getModel().put("id", id);
+        mv.getModel().put("listCompany", listCompany);
+        mv.getModel().put("computerName", computer.get().getName());
+        mv.getModel().put("introduced", computer.get().getIntroduced());
+        mv.getModel().put("discontinued", computer.get().getDiscontinued());
+        mv.getModel().put("companyId", computer.get().getCompany().getId());
         return mv;
     }
+	
+	@PostMapping(value="/updateComputer")
+	public ModelAndView postUpdateComputer(@RequestParam(defaultValue = "") String computerName,
+			@RequestParam(defaultValue = "") String introduced,
+			@RequestParam(defaultValue = "") String discontinued,
+			@RequestParam(defaultValue = "") String companyId,
+			@RequestParam(defaultValue = "") long id) {
+		if (introduced.equals("")) {
+			introduced = null;
+		} else {
+			introduced = introduced + "T00:00:00";
+		}
+		if (discontinued.equals("")) {
+			discontinued = null;
+		} else {
+			discontinued = discontinued + "T00:00:00";
+		}
+		if (companyId.equals("")) {
+			companyId = null;
+		}
+		Computer computer = mapperComputer.mapper(id, computerName, introduced, discontinued, companyId);
+		try {
+			validator.checkComputer(computer);
+			computerService.updateComputer(computer);
+		} catch (NotPermittedComputerException e) {
+			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
+		}
+        ModelAndView mv = new ModelAndView();
+        return mv;
+	}
 
 	@GetMapping(value = "/addComputer")
     public ModelAndView getAddComputer() {
+		List<Company> listCompany = companyService.show();
         ModelAndView mv = new ModelAndView();
         mv.setViewName("addComputer");
-        mv.getModel().put("data", "Welcome home man");
- 
+        mv.getModel().put("listCompany", listCompany);
         return mv;
     }
+	
+	@PostMapping(value = "/addComputer")
+    public ModelAndView postAddComputer(@RequestParam(defaultValue = "") String computerName,
+    		@RequestParam(defaultValue = "") String introduced,
+    		@RequestParam(defaultValue = "") String discontinued,
+    		@RequestParam(defaultValue = "") String companyId) {
+		
+		if(!computerName.equals("")) {
+			if(introduced.equals("")) {
+				introduced = null;
+			} else {
+				introduced = introduced+"T00:00:00";
+			}
+			if(discontinued.equals("")) {
+				discontinued = null;
+			} else {
+				discontinued = discontinued+"T00:00:00";
+			}
+			if(companyId.equals("")) {
+				companyId = null;
+			} 
+			Computer computer = mapperComputer.mapper(computerName, introduced, discontinued,companyId);
+			try {
+				validator.checkComputer(computer);
+				computerService.insertComputer(computer);
+			} catch (NotPermittedComputerException e) {
+				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+			}											
+		}
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("addComputer");
+        return mv;
+    }
+	
 }

@@ -98,6 +98,7 @@ local.properties
 hs_err_pid*
 /build/
 /db/
+/src/main/resources/hikari.properties
 /dbConf.properties
 /configurationLog4j/
 
