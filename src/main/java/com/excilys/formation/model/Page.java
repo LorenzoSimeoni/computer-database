@@ -4,8 +4,8 @@ public class Page {
 	private int limit = 0;
 	private int offset = 10;
 	private int pageNumber = 1;
-	private int maxNumberPage = 1;
-	private int minNumberPage = 9;
+	private int maxNumberPage = 9;
+	private int minNumberPage = 1;
 	private final int firstMiddleNumerotation = 5;
 	
 	public int getLimit() {
@@ -65,14 +65,21 @@ public class Page {
 		this.minNumberPage = minNumberPage;
 	}
 	public void changeMaxAndMin() {
-		if(pageNumber>(maxNumberPage+minNumberPage/2)) {
-			maxNumberPage++;
-			minNumberPage++;
-		} else if(pageNumber<(maxNumberPage+minNumberPage/2)&&pageNumber>=firstMiddleNumerotation) {
-			maxNumberPage--;
-			minNumberPage--;				
-			
+		if(pageNumber>((maxNumberPage+minNumberPage)/2)) {
+			while(pageNumber>((maxNumberPage+minNumberPage)/2)) {
+				maxNumberPage++;
+				minNumberPage++;				
+			}
+		} else if(pageNumber<((maxNumberPage+minNumberPage)/2)&&minNumberPage!=1) {
+			while(pageNumber<((maxNumberPage+minNumberPage)/2)&&minNumberPage!=1) {
+				maxNumberPage--;
+				minNumberPage--;								
+			}
 		}
+	}
+	
+	public void resetNumerotation() {
+		changePage(1);
 	}
 	
 	@Override

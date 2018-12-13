@@ -49,6 +49,7 @@ public class mainController {
 	@GetMapping(value = "/", params="nbElement")
 	public ModelAndView changeNbElementsPage(@RequestParam int nbElement) {
 		pagination.setOffset(nbElement);
+		pagination.resetNumerotation();
 		return constructPage();
 	}
 	@GetMapping(value = "/", params="numPage")
@@ -59,6 +60,7 @@ public class mainController {
 	@GetMapping(value = "/", params="search")
 	public ModelAndView search(@RequestParam String search) {
 		this.search = search;
+		pagination.resetNumerotation();
 		return constructPage();
 	}
 	@GetMapping(value = "/", params= {"order","mode"})
@@ -70,7 +72,17 @@ public class mainController {
 	}
 	@GetMapping(value = "/")
 	public ModelAndView getDashboardPage() {
+		resetAll();
 		return constructPage();
+	}
+	
+	private void resetAll() {
+		order = "";
+		mode = "";
+		pagination.resetNumerotation();
+		pagination.setOffset(10);
+		pagination.setLimit(0);
+		search = "";
 	}
 	
 	private ModelAndView constructPage() {

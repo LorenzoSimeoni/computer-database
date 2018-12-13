@@ -18,9 +18,6 @@
 		<div class="container">
 			<a class="navbar-brand" href="/computer-databases/"> Application
 				- Computer Database </a>
-				<c:out value="${ pagination.minNumberPage }" />
-				<c:out value="${ pagination.maxNumberPage }" />
-				<c:out value="${ pagination.pageNumber }" />
 		</div>
 	</header>
 
@@ -33,10 +30,6 @@
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" method="GET" class="form-inline">
-						<input type="hidden" value="${nbElement}" id="nbElement"
-							name="nbElement" /> 
-						<input type="hidden" value="${numPage}"
-							id="numPage" name="numPage" /> 
 						<input type="search" id="searchbox"
 							name="search" class="form-control" placeholder="Search name" />
 						<input type="submit" id="searchsubmit" value="Filter by name"
@@ -54,27 +47,6 @@
 
 		<form id="deleteForm" action="#" method="POST">
 			<input type="hidden" name="selection" value="">
-			<div class="hide">
-
-				<c:set var="url" value="?" scope="page" />
-				<c:set var="nbElementValue" value="nbElement=" scope="page" />
-				<c:set var="pageValue" value="&page=" scope="page" />
-				<c:set var="searchValue" value="&search=" scope="page" />
-				<c:set var="modeValue" value="&mode=" scope="page" />
-				<c:set var="orderValue" value="&order=" scope="page" />
-				<c:if test="${ nbElement != null }">
-								${url = url.concat(nbElementValue)};
-							    ${url = url.concat(nbElement)};
-							</c:if>
-				<c:if test="${ numPage != null }">
-								${url = url.concat(pageValue)};
-							    ${url = url.concat(numPage)};
-							</c:if>
-				<c:if test="${ search != null }">
-								${url = url.concat(searchValue)};
-							    ${url = url.concat(search)};
-							</c:if>
-			</div>
 
 			<div class="container" style="margin-top: 10px;">
 				<table class="table table-striped table-bordered">
@@ -93,68 +65,68 @@
 							<th><c:choose>
 									<c:when test="${mode == null}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=name&mode=asc')"
+											onclick="location.replace('?order=name&mode=asc')"
 											value="Computer name" />
 									</c:when>
 									<c:when test="${mode.equals('asc')}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=name&mode=desc')"
+											onclick="location.replace('?order=name&mode=desc')"
 											value="Computer name" />
 									</c:when>
 									<c:otherwise>
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=name&mode=asc')"
+											onclick="location.replace('?order=name&mode=asc')"
 											value="Computer name" />
 									</c:otherwise>
 								</c:choose></th>
 							<th><c:choose>
 									<c:when test="${mode == null}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=introduced&mode=asc')"
+											onclick="location.replace('?order=introduced&mode=asc')"
 											value="Introduced date" />
 									</c:when>
 									<c:when test="${mode.equals('asc')}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=introduced&mode=desc')"
+											onclick="location.replace('?order=introduced&mode=desc')"
 											value="Introduced date" />
 									</c:when>
 									<c:otherwise>
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=introduced&mode=asc')"
+											onclick="location.replace('?order=introduced&mode=asc')"
 											value="Introduced date" />
 									</c:otherwise>
 								</c:choose></th>
 							<th><c:choose>
 									<c:when test="${mode == null}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=discontinued&mode=asc')"
+											onclick="location.replace('?order=discontinued&mode=asc')"
 											value="Discontinued date" />
 									</c:when>
 									<c:when test="${mode.equals('asc')}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=discontinued&mode=desc')"
+											onclick="location.replace('?order=discontinued&mode=desc')"
 											value="Discontinued date" />
 									</c:when>
 									<c:otherwise>
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=discontinued&mode=asc')"
+											onclick="location.replace('?order=discontinued&mode=asc')"
 											value="Discontinued date" />
 									</c:otherwise>
 								</c:choose></th>
 							<th><c:choose>
 									<c:when test="${mode == null}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=company&mode=asc')"
+											onclick="location.replace('?order=company&mode=asc')"
 											value="Company" />
 									</c:when>
 									<c:when test="${mode.equals('asc')}">
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=company&mode=desc')"
+											onclick="location.replace('?order=company&mode=desc')"
 											value="Company" />
 									</c:when>
 									<c:otherwise>
 										<input type="button"
-											onclick="location.replace('${url}'+'&order=company&mode=asc')"
+											onclick="location.replace('?order=company&mode=asc')"
 											value="Company" />
 									</c:otherwise>
 								</c:choose></th>
