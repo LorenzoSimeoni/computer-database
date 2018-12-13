@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.formation.checker.Controller;
+import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.service.ComputerService;
@@ -148,7 +149,26 @@ public class MapperComputer {
 				.setIntroduced(localIntroduced)
 				.setDiscontinued(localDiscontinued)
 				.setCompanyId(company)
-				.build();			
+				.build();			  
+		return computer;
+	}
+	
+	public Computer mapper(ComputerDTO computerDTO) {
+		
+		if(computerDTO.getIntroduced().equals("")) {
+			computerDTO.setIntroduced(null);
+		} else {
+			computerDTO.setIntroduced(computerDTO.getIntroduced()+"T00:00:00");
+		}
+		if(computerDTO.getDiscontinued().equals("")) {
+			computerDTO.setDiscontinued(null);
+		} else {
+			computerDTO.setDiscontinued(computerDTO.getDiscontinued()+"T00:00:00");
+		}
+		if(computerDTO.getCompanyId().equals("")) {
+			computerDTO.setCompanyId(null);
+		} 
+		Computer computer = mapper(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(),computerDTO.getCompanyId());
 		return computer;
 	}
 }

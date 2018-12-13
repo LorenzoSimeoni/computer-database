@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -23,31 +24,42 @@
 				<div class="row">
 					<div class="col-xs-8 col-xs-offset-2 box">
 						<h1><spring:message code="lang.addComputer" /></h1>
-						<form action="addComputer" method="POST">
+						<form:form method="POST" modelAttribute="computerDTO" action="addComputer">
 							<fieldset>
 								<div class="form-group">
-									<label for="computerName"><spring:message code="lang.computerName" /></label> <input
-										type="text" class="form-control required" id="computerName"
-										name="computerName" placeholder="Computer name">
+									<form:label path="computerName">
+										<spring:message code="lang.computerName" />
+									</form:label> 
+									<form:input path="name" type="text" class="form-control required" id="computerName"
+										name="computerName" placeholder="Computer name"/>
 								</div>
 								<div class="form-group">
-									<label for="introduced"><spring:message code="lang.introduced" /></label> <input
+									<form:label path="introduced">
+										<spring:message code="lang.introduced" />
+									</form:label> 
+									<form:input path="introduced"
 										type="date" class="form-control" id="introduced"
-										name="introduced" placeholder="Introduced date">
+										name="introduced" placeholder="Introduced date"/>
 								</div>
 								<div class="form-group">
-									<label for="discontinued"><spring:message code="lang.discontinued" /></label> <input
+									<form:label path="discontinued">
+										<spring:message code="lang.discontinued" />
+									</form:label> 
+									<form:input path="discontinued"
 										type="date" class="form-control" id="discontinued"
-										name="discontinued" placeholder="Discontinued date">
+										name="discontinued" placeholder="Discontinued date"/>
 								</div>
 								<div class="form-group">
-									<label for="companyId"><spring:message code="lang.company" /></label> <select
+									<form:label path="companyId">
+										<spring:message code="lang.company" />
+									</form:label> 
+									<form:select path="companyId"
 										class="form-control" id="companyId" name="companyId">
 										<option value=""></option>
 										<c:forEach items="${listCompany}" var="company">
 											<option value="${company.id}">${company.id}</option>
 										</c:forEach>
-									</select>
+									</form:select>
 								</div>
 							</fieldset>
 							<div class="actions pull-right">
@@ -55,7 +67,7 @@
 								<spring:message code="lang.or" /> <a href="/computer-databases/" class="btn btn-default">
 								<spring:message code="lang.cancel" /></a>
 							</div>
-						</form>
+						</form:form>
 					</div>
 				</div>
 			</div>

@@ -1,7 +1,5 @@
 package com.excilys.formation.dto;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotBlank;
 
 import com.excilys.formation.model.Computer;
@@ -10,16 +8,35 @@ public class ComputerDTO {
 	private long id;
 	@NotBlank
 	private String name;
-	private LocalDateTime introduced;
-	private LocalDateTime discontinued;
+	private String introduced;
+	private String discontinued;
 	private String companyName;
+	private String companyId;
 	
 	public ComputerDTO(Computer computer) {
 		this.id = computer.getId();
 		this.name = computer.getName();
-		this.introduced = computer.getIntroduced();
-		this.discontinued = computer.getDiscontinued();
+		if(computer.getIntroduced()!=null) {
+			this.introduced = computer.getIntroduced().toString();			
+		} else {
+			this.introduced = null;
+		}
+		if(computer.getDiscontinued()!=null) {
+			this.discontinued = computer.getDiscontinued().toString();
+		} else {
+			this.discontinued = null;
+		}
 		this.companyName = computer.getCompany().getName();
+		this.companyId = Long.toString(computer.getCompany().getId());
+	}
+	
+	public ComputerDTO() {
+		this.id = 0;
+		this.name = "";
+		this.introduced = "";
+		this.discontinued = "";
+		this.companyName = "";
+		this.companyId = "";
 	}
 
 	public long getId() {
@@ -30,21 +47,49 @@ public class ComputerDTO {
 		return name;
 	}
 
-	public LocalDateTime getIntroduced() {
+	public String getIntroduced() {
 		return introduced;
 	}
 
-	public LocalDateTime getDiscontinued() {
+	public String getDiscontinued() {
 		return discontinued;
 	}
 	public String getCompanyName() {
 		return companyName;
 	}
 
+	public String getCompanyId() {
+		return companyId;
+	}
 
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", companyId=" + companyName + "]";
+				+ ", companyName=" + companyName + ", companyId="+ companyId + "]";
 	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setIntroduced(String introduced) {
+		this.introduced = introduced;
+	}
+
+	public void setDiscontinued(String discontinued) {
+		this.discontinued = discontinued;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
+
 }

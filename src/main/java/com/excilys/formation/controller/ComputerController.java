@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -243,35 +244,48 @@ public class ComputerController {
     }
 	
 	@PostMapping(value = "/addComputer")
-    public String postAddComputer(@RequestParam(defaultValue = "") String computerName,
-    		@RequestParam(defaultValue = "") String introduced,
-    		@RequestParam(defaultValue = "") String discontinued,
-    		@RequestParam(defaultValue = "") String companyId) {
-		
-		if(!computerName.equals("")) {
-			if(introduced.equals("")) {
-				introduced = null;
-			} else {
-				introduced = introduced+"T00:00:00";
-			}
-			if(discontinued.equals("")) {
-				discontinued = null;
-			} else {
-				discontinued = discontinued+"T00:00:00";
-			}
-			if(companyId.equals("")) {
-				companyId = null;
-			} 
-			Computer computer = mapperComputer.mapper(computerName, introduced, discontinued,companyId);
-			try {
-				validator.checkComputer(computer);
-				computerService.insertComputer(computer);
-			} catch (NotPermittedComputerException e) {
-				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
-			}											
+	public String postAddComputerDto(@ModelAttribute("computerDTO") ComputerDTO computerDTO) {
+		Computer computer = mapperComputer.mapper(computerDTO);
+		try {
+			validator.checkComputer(computer);
+			computerService.insertComputer(computer);
+		} catch (NotPermittedComputerException e) {
+			LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
 		}
-        return ViewName.ADDCOMPUTER.toString();
-    }
+		return ViewName.ADDCOMPUTER.toString(); 
+	}
+	
+//	@PostMapping(value = "/addComputer")
+//    public String postAddComputer(@RequestParam(defaultValue = "") String computerName,
+//    		@RequestParam(defaultValue = "") String introduced,
+//    		@RequestParam(defaultValue = "") String discontinued,
+//    		@RequestParam(defaultValue = "") String companyId) {
+//		
+//		if(!computerName.equals("")) {
+//			if(introduced.equals("")) {
+//				introduced = null;
+//			} else {
+//				introduced = introduced+"T00:00:00";
+//			}
+//			if(discontinued.equals("")) {
+//				discontinued = null;
+//			} else {
+//				discontinued = discontinued+"T00:00:00";
+//			}
+//			if(companyId.equals("")) {
+//				companyId = null;
+//			} 
+//			Computer computer = mapperComputer.mapper(computerName, introduced, discontinued,companyId);
+//			try {
+//				validator.checkComputer(computer);
+//				computerService.insertComputer(computer);
+//			} catch (NotPermittedComputerException e) {
+//				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+//			}											
+//		}
+//        return ViewName.ADDCOMPUTER.toString();
+//    }
+	
 	@GetMapping(value = "/*")
 	public String errorPage() {
 		return "404";
