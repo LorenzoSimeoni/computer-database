@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,10 +102,8 @@ public class mainController {
 		pagination.setMAX(countComputer/pagination.getOffset()+1);
 		pagination.checkMax();
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("dashboard");
+		mv.setViewName(ViewName.DASHBOARD.toString());
 		mv.getModel().put("pagination",pagination);
-        mv.getModel().put("nbElement", pagination.getOffset());
-        mv.getModel().put("numPage", pagination.getPageNumber());
         mv.getModel().put("search", search);
         mv.getModel().put("order", order);
         mv.getModel().put("mode", mode);
@@ -118,33 +114,30 @@ public class mainController {
 	}
 	
 	@PostMapping(value = "/")
-    public ModelAndView postDashboardPage(@RequestParam(defaultValue = "") String cb) {
+    public String postDashboardPage(@RequestParam(defaultValue = "") String cb) {
 		List<String> deleted = Arrays.asList(cb);
-		Stream<String> sp = deleted.stream();
-		sp.forEach(id -> computerService.deleteComputer(Long.parseLong(id)));
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("dashboard");
-		return mv;
+		deleted.stream().forEach(id -> computerService.deleteComputer(Long.parseLong(id)));
+		return ViewName.DASHBOARD.toString();
 	}
 
 	@GetMapping(value = "/updateComputer")
     public ModelAndView getUpdateComputer(@RequestParam(defaultValue = "") long id) {
-		Optional<Computer> computer = computerService.showComputerDetailsByID(id);
+		Optional<Computer> computerOpt = computerService.showComputerDetailsByID(id);
+		Computer computer = computerOpt.get();
 		List<Company> listCompany = companyService.show();
 		
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("editComputer");
+        mv.setViewName(ViewName.EDITCOMPUTER.toString());
         mv.getModel().put("id", id);
         mv.getModel().put("listCompany", listCompany);
-        mv.getModel().put("computerName", computer.get().getName());
-        mv.getModel().put("introduced", computer.get().getIntroduced());
-        mv.getModel().put("discontinued", computer.get().getDiscontinued());
-        mv.getModel().put("companyId", computer.get().getCompany().getId());
+        mv.getModel().put("computer", computer);
         return mv;
     }
 	
+	
+	
 	@PostMapping(value="/updateComputer")
-	public ModelAndView postUpdateComputer(@RequestParam(defaultValue = "") String computerName,
+	public String postUpdateComputer(@RequestParam(defaultValue = "") String computerName,
 			@RequestParam(defaultValue = "") String introduced,
 			@RequestParam(defaultValue = "") String discontinued,
 			@RequestParam(defaultValue = "") String companyId,
@@ -169,21 +162,20 @@ public class mainController {
 		} catch (NotPermittedComputerException e) {
 			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
 		}
-        ModelAndView mv = new ModelAndView();
-        return mv;
+        return ViewName.EDITCOMPUTER.toString();
 	}
 
 	@GetMapping(value = "/addComputer")
     public ModelAndView getAddComputer() {
 		List<Company> listCompany = companyService.show();
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("addComputer");
+        mv.setViewName(ViewName.ADDCOMPUTER.toString());
         mv.getModel().put("listCompany", listCompany);
         return mv;
     }
 	
 	@PostMapping(value = "/addComputer")
-    public ModelAndView postAddComputer(@RequestParam(defaultValue = "") String computerName,
+    public String postAddComputer(@RequestParam(defaultValue = "") String computerName,
     		@RequestParam(defaultValue = "") String introduced,
     		@RequestParam(defaultValue = "") String discontinued,
     		@RequestParam(defaultValue = "") String companyId) {
@@ -210,9 +202,6 @@ public class mainController {
 				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
 			}											
 		}
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("addComputer");
-        return mv;
+        return ViewName.ADDCOMPUTER.toString();
     }
-	
 }

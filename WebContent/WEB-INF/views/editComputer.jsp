@@ -29,19 +29,19 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
-									name="computerName" placeholder="${computerName}">
+									name="computerName" placeholder="${computer.name}">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
 									name="introduced" placeholder="Introduced date"
-									value="${introduced}">
+									value="${computer.introduced}">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
 									name="discontinued" placeholder="Discontinued date"
-									value="${discontinued}">
+									value="${computer.discontinued}">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
@@ -50,8 +50,8 @@
 									<option value=""></option>
 									<c:forEach items="${listCompany}" var="company">
 										<c:choose>
-											<c:when test="${company.id == companyId}">
-												<option selected="${companyId}">${companyId}</option>
+											<c:when test="${company.id == computer.company.id}">
+												<option selected="${computer.company.id}">${computer.company.id}</option>
 											</c:when>
 											<c:otherwise>
 												<option value="${company.id}">${company.id}</option>

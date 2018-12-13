@@ -12,7 +12,6 @@ public enum OrderByComputer {
 	OrderByComputer(String property) {
 		this.property = property;
 	}
-
 	
 	public static OrderByComputer myValueOf(String order) {
 	    if (order == null) {
