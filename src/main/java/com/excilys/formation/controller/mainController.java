@@ -101,6 +101,8 @@ public class mainController {
 		listComputer.stream().forEach(i -> {
 			listComputerDTO.add(new ComputerDTO(i));
 		});
+		pagination.setMAX(countComputer/pagination.getOffset()+1);
+		pagination.checkMax();
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("dashboard");
 		mv.getModel().put("pagination",pagination);

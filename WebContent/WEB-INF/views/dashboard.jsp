@@ -173,7 +173,7 @@
 					</a></li>
 				</c:forEach>
 				<li><a
-					href='?numPage=${pagination.pageNumber+1}'
+					href='?numPage=${listComputer.size()!=pagination.offset?pagination.pageNumber:pagination.pageNumber+1}'
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>

@@ -6,7 +6,7 @@ public class Page {
 	private int pageNumber = 1;
 	private int maxNumberPage = 9;
 	private int minNumberPage = 1;
-	private final int firstMiddleNumerotation = 5;
+	private int MAX = 0;
 	
 	public int getLimit() {
 		return limit;
@@ -70,6 +70,11 @@ public class Page {
 				maxNumberPage++;
 				minNumberPage++;				
 			}
+			if(maxNumberPage>MAX) {
+				int changes = maxNumberPage - MAX;
+				maxNumberPage = MAX;
+				minNumberPage = minNumberPage - changes;
+			}
 		} else if(pageNumber<((maxNumberPage+minNumberPage)/2)&&minNumberPage!=1) {
 			while(pageNumber<((maxNumberPage+minNumberPage)/2)&&minNumberPage!=1) {
 				maxNumberPage--;
@@ -77,13 +82,25 @@ public class Page {
 			}
 		}
 	}
-	
+	public void checkMax() {
+		if(maxNumberPage>MAX) {
+			maxNumberPage = MAX;
+		}
+	}
 	public void resetNumerotation() {
-		changePage(1);
+		pageNumber = 1;
+		maxNumberPage = 9;
+		minNumberPage = 1;
 	}
 	
 	@Override
 	public String toString() {
 		return "Page [limit=" + limit + ", offset=" + offset + ", pageNumber=" + pageNumber + "]";
+	}
+	public int getMAX() {
+		return MAX;
+	}
+	public void setMAX(int mAX) {
+		MAX = mAX;
 	}
 }
