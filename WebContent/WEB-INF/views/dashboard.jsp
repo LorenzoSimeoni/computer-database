@@ -24,23 +24,26 @@
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<c:out value="${ sizeComputerFound }  Computer found" />
-				<spring:message code="lang.greeting" />
+				<c:out value="${ sizeComputerFound }" />
+				<spring:message code="lang.count" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" method="GET" class="form-inline">
 						<input type="search" id="searchbox"
-							name="search" class="form-control" placeholder="Search name" />
-						<input type="submit" id="searchsubmit" value="Filter by name"
+							name="search" class="form-control" placeholder="<spring:message code="lang.search"/>" />
+						<input type="submit" id="searchsubmit" value="<spring:message code="lang.filter"/>"
 							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add
-						Computer</a> 
+					<a class="btn btn-success" id="addComputer" href="addComputer">
+						<spring:message code="lang.addComputer"/>
+					</a> 
 					<a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+						onclick="$.fn.toggleEditMode();">
+						<spring:message code="lang.edit"/>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -62,74 +65,18 @@
 										class="fa fa-trash"></i>
 								</a>
 							</span></th>
-							<th><c:choose>
-									<c:when test="${mode == null}">
-										<input type="button"
-											onclick="location.replace('?order=name&mode=asc')"
-											value="Computer name" />
-									</c:when>
-									<c:when test="${mode.equals('asc')}">
-										<input type="button"
-											onclick="location.replace('?order=name&mode=desc')"
-											value="Computer name" />
-									</c:when>
-									<c:otherwise>
-										<input type="button"
-											onclick="location.replace('?order=name&mode=asc')"
-											value="Computer name" />
-									</c:otherwise>
-								</c:choose></th>
-							<th><c:choose>
-									<c:when test="${mode == null}">
-										<input type="button"
-											onclick="location.replace('?order=introduced&mode=asc')"
-											value="Introduced date" />
-									</c:when>
-									<c:when test="${mode.equals('asc')}">
-										<input type="button"
-											onclick="location.replace('?order=introduced&mode=desc')"
-											value="Introduced date" />
-									</c:when>
-									<c:otherwise>
-										<input type="button"
-											onclick="location.replace('?order=introduced&mode=asc')"
-											value="Introduced date" />
-									</c:otherwise>
-								</c:choose></th>
-							<th><c:choose>
-									<c:when test="${mode == null}">
-										<input type="button"
-											onclick="location.replace('?order=discontinued&mode=asc')"
-											value="Discontinued date" />
-									</c:when>
-									<c:when test="${mode.equals('asc')}">
-										<input type="button"
-											onclick="location.replace('?order=discontinued&mode=desc')"
-											value="Discontinued date" />
-									</c:when>
-									<c:otherwise>
-										<input type="button"
-											onclick="location.replace('?order=discontinued&mode=asc')"
-											value="Discontinued date" />
-									</c:otherwise>
-								</c:choose></th>
-							<th><c:choose>
-									<c:when test="${mode == null}">
-										<input type="button"
-											onclick="location.replace('?order=company&mode=asc')"
-											value="Company" />
-									</c:when>
-									<c:when test="${mode.equals('asc')}">
-										<input type="button"
-											onclick="location.replace('?order=company&mode=desc')"
-											value="Company" />
-									</c:when>
-									<c:otherwise>
-										<input type="button"
-											onclick="location.replace('?order=company&mode=asc')"
-											value="Company" />
-									</c:otherwise>
-								</c:choose></th>
+							<th id="columnComputeName">
+								<spring:message code="lang.computerName" />	
+							</th>
+							<th id="columnIntroduced">
+								<spring:message code="lang.introduced" />	
+							</th>
+							<th id="columnDiscontinued">
+								<spring:message code="lang.discontinued" />
+							</th>
+							<th id="columnCompanyName">
+								<spring:message code="lang.company" />
+							</th>
 						</tr>
 					</thead>
 					<!-- Browse attribute computers -->
@@ -192,17 +139,18 @@
 	<script src="static/js/bootstrap.min.js"></script>
 	<script src="static/js/dashboard.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#locales").change(function() {
-				var selectedOption = $('#locales').val();
-				if (selectedOption != '') {
-					window.location.replace('?lang=' + selectedOption);
-				}
-			});
-		});
-		$(function(){
-		    $('.selectpicker').selectpicker();
-		});
+		document.getElementById("columnComputeName").onclick = function() {
+			window.location.href='?order=name';
+		}
+		document.getElementById("columnIntroduced").onclick = function() {
+			window.location.href='?order=introduced';
+		}
+		document.getElementById("columnDiscontinued").onclick = function() {
+			window.location.href='?order=discontinued';
+		}
+		document.getElementById("columnCompanyName").onclick = function() {
+			window.location.href='?order=company';
+		}
 	</script>
 	
 </body>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ import com.excilys.formation.service.ComputerService;
 import com.excilys.formation.validator.Validator;
 
 @Controller
-public class mainController {
+public class ComputerController {
 	
-	private final static Logger LOGGER = LogManager.getLogger(mainController.class.getName());
+	private final static Logger LOGGER = LogManager.getLogger(ComputerController.class.getName());
 
 	@Autowired
 	private ComputerService computerService;
@@ -41,6 +42,10 @@ public class mainController {
 	
 	private String order = "";
 	private String mode = "";
+	private boolean columnComputerName = false;
+	private boolean columnIntroduced = false;
+	private boolean columnDiscontinued = false;
+	private boolean columnCompanyName = false;
 	private Page pagination = new Page();
 	private String search = "";
 
@@ -61,13 +66,76 @@ public class mainController {
 		pagination.resetNumerotation();
 		return constructPage();
 	}
-	@GetMapping(value = "/", params= {"order","mode"})
-	public ModelAndView orderBy(@RequestParam String order,
-			@RequestParam String mode) {
+	@GetMapping(value = "/", params= {"order"})
+	public ModelAndView orderByColumnComputeName(@RequestParam String order) {
 		this.order = order;
-		this.mode = mode;
+		switch (this.order) {
+		case "name":
+			if(columnComputerName) {
+				if(mode.equals("asc")) {
+					mode = "desc";
+				} else {
+					mode = "asc";
+				}
+			} else {
+				columnComputerName = true;
+				columnIntroduced = false;
+				columnDiscontinued = false;
+				columnCompanyName = false;
+				mode = "asc";
+			}
+			break;
+		case "introduced":
+			if(columnIntroduced) {
+				if(mode.equals("asc")) {
+					mode = "desc";
+				} else {
+					mode = "asc";
+				}
+			} else {
+				columnIntroduced = true;
+				columnComputerName = false;
+				columnDiscontinued = false;
+				columnCompanyName = false;
+				mode = "asc";
+			}
+			break;
+		case "discontinued":
+			if(columnDiscontinued) {
+				if(mode.equals("asc")) {
+					mode = "desc";
+				} else {
+					mode = "asc";
+				}
+			} else {
+				columnDiscontinued = true;
+				columnComputerName = false;
+				columnIntroduced = false;
+				columnCompanyName = false;
+				mode = "asc";
+			}
+			break;
+		case "company":
+			if(columnCompanyName) {
+				if(mode.equals("asc")) {
+					mode = "desc";
+				} else {
+					mode = "asc";
+				}
+			} else {
+				columnCompanyName = true;
+				columnComputerName = false;
+				columnIntroduced = false;
+				columnDiscontinued = false;
+				mode = "asc";
+			}
+			break;
+		}
 		return constructPage();
 	}
+
+	
+	
 	@GetMapping(value = "/")
 	public ModelAndView getDashboardPage() {
 		resetAll();
@@ -121,7 +189,7 @@ public class mainController {
 	}
 
 	@GetMapping(value = "/updateComputer")
-    public ModelAndView getUpdateComputer(@RequestParam(defaultValue = "") long id) {
+    public ModelAndView getUpdateComputer(@RequestParam(defaultValue = "0") long id) {
 		Optional<Computer> computerOpt = computerService.showComputerDetailsByID(id);
 		Computer computer = computerOpt.get();
 		List<Company> listCompany = companyService.show();
@@ -204,4 +272,8 @@ public class mainController {
 		}
         return ViewName.ADDCOMPUTER.toString();
     }
+	@GetMapping(value = "/*")
+	public String errorPage() {
+		return "404";
+	}
 }
