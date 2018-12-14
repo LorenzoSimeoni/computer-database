@@ -7,6 +7,7 @@ package com.excilys.formation.cli;
  * @author excilys
  *
  */
+
 public class Main {
 	/**
 	 * @param args
