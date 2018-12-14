@@ -15,8 +15,12 @@ import com.excilys.formation.model.Page;
 @Service
 public class ComputerService {
 	
-	@Autowired
 	private ComputerDAO computerDao;
+	
+	@Autowired
+	public ComputerService(ComputerDAO computerDao) {
+		this.computerDao = computerDao;
+	}
 	
 	public List<Computer> showComputer() {
 		return computerDao.getList();

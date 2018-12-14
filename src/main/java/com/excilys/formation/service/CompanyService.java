@@ -12,8 +12,12 @@ import com.excilys.formation.model.Page;
 @Service
 public class CompanyService {
 	
-	@Autowired
 	private CompanyDAO companyDao;
+	
+	@Autowired
+	public CompanyService(CompanyDAO companyDao) {
+		this.companyDao = companyDao;
+	}
 	
 	/**
 	 * Fill a list with all the Company object found in the List<Company> gived by our companyDao

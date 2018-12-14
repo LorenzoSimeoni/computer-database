@@ -1,11 +1,12 @@
 package com.excilys.formation.dto;
 
-import javax.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.excilys.formation.model.Computer;
 
 public class ComputerDTO {
 	private long id;
+	
 	@NotBlank
 	private String name;
 	private String introduced;
@@ -17,12 +18,12 @@ public class ComputerDTO {
 		this.id = computer.getId();
 		this.name = computer.getName();
 		if(computer.getIntroduced()!=null) {
-			this.introduced = computer.getIntroduced().toString();			
+			this.introduced = computer.getIntroduced().toString().substring(0, 10);
 		} else {
 			this.introduced = null;
 		}
 		if(computer.getDiscontinued()!=null) {
-			this.discontinued = computer.getDiscontinued().toString();
+			this.discontinued = computer.getDiscontinued().toString().substring(0, 10);
 		} else {
 			this.discontinued = null;
 		}

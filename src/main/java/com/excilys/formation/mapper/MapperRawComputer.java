@@ -10,8 +10,12 @@ import com.excilys.formation.model.Computer;
 
 public class MapperRawComputer implements RowMapper<Computer>{
 	
+	private MapperComputer mapperComputer;
+	
 	@Autowired
-	MapperComputer mapperComputer;
+	public MapperRawComputer(MapperComputer mapperComputer) {
+		this.mapperComputer = mapperComputer;
+	}
 	
 	@Override
 	public Computer mapRow(ResultSet results, int rowNum) throws SQLException {

@@ -5,10 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -197,54 +200,15 @@ public class ComputerController {
 		
         ModelAndView mv = new ModelAndView();
         mv.setViewName(ViewName.EDITCOMPUTER.toString());
+        mv.addObject("computerDTO", new ComputerDTO(computer));
         mv.getModel().put("id", id);
         mv.getModel().put("listCompany", listCompany);
-        mv.getModel().put("computer", computer);
         return mv;
     }
-	
-	
 	
 	@PostMapping(value="/updateComputer")
-	public String postUpdateComputer(@RequestParam(defaultValue = "") String computerName,
-			@RequestParam(defaultValue = "") String introduced,
-			@RequestParam(defaultValue = "") String discontinued,
-			@RequestParam(defaultValue = "") String companyId,
-			@RequestParam(defaultValue = "") long id) {
-		if (introduced.equals("")) {
-			introduced = null;
-		} else {
-			introduced = introduced + "T00:00:00";
-		}
-		if (discontinued.equals("")) {
-			discontinued = null;
-		} else {
-			discontinued = discontinued + "T00:00:00";
-		}
-		if (companyId.equals("")) {
-			companyId = null;
-		}
-		Computer computer = mapperComputer.mapper(id, computerName, introduced, discontinued, companyId);
-		try {
-			validator.checkComputer(computer);
-			computerService.updateComputer(computer);
-		} catch (NotPermittedComputerException e) {
-			LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
-		}
-        return ViewName.EDITCOMPUTER.toString();
-	}
-
-	@GetMapping(value = "/addComputer")
-    public ModelAndView getAddComputer() {
-		List<Company> listCompany = companyService.show();
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName(ViewName.ADDCOMPUTER.toString());
-        mv.getModel().put("listCompany", listCompany);
-        return mv;
-    }
-	
-	@PostMapping(value = "/addComputer")
-	public String postAddComputerDto(@ModelAttribute("computerDTO") ComputerDTO computerDTO) {
+	public String postEditComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
+			BindingResult bindingResult) {
 		Computer computer = mapperComputer.mapper(computerDTO);
 		try {
 			validator.checkComputer(computer);
@@ -254,37 +218,29 @@ public class ComputerController {
 		}
 		return ViewName.ADDCOMPUTER.toString(); 
 	}
+
+	@GetMapping(value = "/addComputer")
+    public ModelAndView getAddComputer() {
+		List<Company> listCompany = companyService.show();
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName(ViewName.ADDCOMPUTER.toString());
+        mv.addObject("computerDTO", new ComputerDTO());
+        mv.getModel().put("listCompany", listCompany);
+        return mv;
+    }
 	
-//	@PostMapping(value = "/addComputer")
-//    public String postAddComputer(@RequestParam(defaultValue = "") String computerName,
-//    		@RequestParam(defaultValue = "") String introduced,
-//    		@RequestParam(defaultValue = "") String discontinued,
-//    		@RequestParam(defaultValue = "") String companyId) {
-//		
-//		if(!computerName.equals("")) {
-//			if(introduced.equals("")) {
-//				introduced = null;
-//			} else {
-//				introduced = introduced+"T00:00:00";
-//			}
-//			if(discontinued.equals("")) {
-//				discontinued = null;
-//			} else {
-//				discontinued = discontinued+"T00:00:00";
-//			}
-//			if(companyId.equals("")) {
-//				companyId = null;
-//			} 
-//			Computer computer = mapperComputer.mapper(computerName, introduced, discontinued,companyId);
-//			try {
-//				validator.checkComputer(computer);
-//				computerService.insertComputer(computer);
-//			} catch (NotPermittedComputerException e) {
-//				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
-//			}											
-//		}
-//        return ViewName.ADDCOMPUTER.toString();
-//    }
+	@PostMapping(value = "/addComputer")
+	public String postAddComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
+			BindingResult bindingResult) {
+		Computer computer = mapperComputer.mapper(computerDTO);
+		try {
+			validator.checkComputer(computer);
+			computerService.insertComputer(computer);
+		} catch (NotPermittedComputerException e) {
+			LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+		}
+		return ViewName.ADDCOMPUTER.toString(); 
+	}
 	
 	@GetMapping(value = "/*")
 	public String errorPage() {

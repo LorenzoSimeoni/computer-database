@@ -20,8 +20,12 @@ import com.excilys.formation.service.CompanyService;
 public class Validator {
 	private final static Logger LOGGER = LogManager.getLogger(Validator.class.getName());
 	
-	@Autowired
 	private CompanyService companyServices;
+	
+	@Autowired
+	public Validator(CompanyService companyServices) {
+		this.companyServices = companyServices;
+	}
 	
 	public void checkComputer(Computer computer) throws NotPermittedComputerException {
 		if (nameIsNull(computer)) {

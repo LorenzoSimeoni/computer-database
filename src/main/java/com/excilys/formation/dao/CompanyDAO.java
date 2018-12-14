@@ -33,14 +33,19 @@ public class CompanyDAO {
 	private static final String DELETEACOMPANY = "DELETE FROM company WHERE id = :id;";
 	private static final String DELETECOMPUTERS = "DELETE FROM computer WHERE company_id = :id;";
 
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	@Autowired
 	private RowMapper<Company> rowMapperCompany;
-	@Autowired
-	MapSqlParameterSource params;
+	private MapSqlParameterSource params;
+	
+    @Autowired
+    public CompanyDAO(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+    		RowMapper<Company> rowMapperCompany, MapSqlParameterSource params) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.rowMapperCompany = rowMapperCompany;
+        this.params = params;
+    }
 
 
 	public List<Company> getList() {

@@ -10,8 +10,12 @@ import com.excilys.formation.model.Company;
 
 public class MapperRawCompany implements RowMapper<Company> {
 	
+	private MapperCompany mapperCompany;
+	
 	@Autowired
-	MapperCompany mapperCompany;
+	public MapperRawCompany(MapperCompany mapperCompany) {
+		this.mapperCompany = mapperCompany;
+	}
 	
 	@Override
 	public Company mapRow(ResultSet results, int rowNum) throws SQLException {

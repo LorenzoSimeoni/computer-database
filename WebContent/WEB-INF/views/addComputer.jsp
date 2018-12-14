@@ -24,14 +24,15 @@
 				<div class="row">
 					<div class="col-xs-8 col-xs-offset-2 box">
 						<h1><spring:message code="lang.addComputer" /></h1>
-						<form:form method="POST" modelAttribute="computerDTO" action="addComputer">
+						<form:form method="POST" modelAttribute="computerDTO" action="/computer-database/">
 							<fieldset>
 								<div class="form-group">
-									<form:label path="computerName">
+									<form:label path="name">
 										<spring:message code="lang.computerName" />
 									</form:label> 
 									<form:input path="name" type="text" class="form-control required" id="computerName"
 										name="computerName" placeholder="Computer name"/>
+									<form:errors path="name" cssClass="error" />
 								</div>
 								<div class="form-group">
 									<form:label path="introduced">

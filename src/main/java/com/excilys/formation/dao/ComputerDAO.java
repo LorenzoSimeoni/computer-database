@@ -27,14 +27,20 @@ public class ComputerDAO {
 
 	private final static Logger LOGGER = LogManager.getLogger(ComputerDAO.class.getName());
 	
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	@Autowired
 	private RowMapper<Computer> rowMapper;
-	@Autowired
-	MapSqlParameterSource params;
+	private MapSqlParameterSource params;
+	
+    @Autowired
+    public ComputerDAO(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+    		RowMapper<Computer> rowMapper, MapSqlParameterSource params) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.rowMapper = rowMapper;
+        this.params = params;
+    }
+
 
 	private static final String LISTCOMPUTER = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id;";
@@ -57,10 +63,6 @@ public class ComputerDAO {
 	private static final String SHOWORDERBY = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY ";
 	private static final String LIMIT = " LIMIT :limit, :offset;";
-
-	private ComputerDAO() {
-	}
-
 
 	public List<Computer> getList() {
 		List<Computer> list = new ArrayList<Computer>();
