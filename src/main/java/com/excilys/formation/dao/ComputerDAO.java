@@ -29,15 +29,15 @@ public class ComputerDAO {
 	
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	@Autowired
 	private RowMapper<Computer> rowMapper;
-	MapSqlParameterSource params;
+	private MapSqlParameterSource params;
 	
     @Autowired
     public ComputerDAO(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-    		RowMapper<Computer> rowMapper, MapSqlParameterSource params) {
+    		MapSqlParameterSource params) {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-        this.rowMapper = rowMapper;
         this.params = params;
     }
 

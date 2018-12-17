@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.excilys.formation.dao.OrderByComputer;
 import com.excilys.formation.dao.OrderByMode;
 import com.excilys.formation.dto.ComputerDTO;
+import com.excilys.formation.exception.NbElementException;
 import com.excilys.formation.exception.NotPermittedComputerException;
+import com.excilys.formation.exception.PageNumberException;
 import com.excilys.formation.mapper.MapperComputer;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
@@ -52,15 +55,23 @@ public class ComputerController {
 	private boolean columnCompanyName = false;
 	private Page pagination = new Page();
 	private String search = "";
+	
+	
 
 	@GetMapping(value = "/", params="nbElement")
-	public ModelAndView changeNbElementsPage(@RequestParam int nbElement) {
+	public ModelAndView changeNbElementsPage(@RequestParam int nbElement) throws NbElementException {
+		if(nbElement<=0) {
+			throw new NbElementException();
+		} 
 		pagination.setOffset(nbElement);
 		pagination.resetNumerotation();
 		return constructPage();
 	}
 	@GetMapping(value = "/", params="numPage")
-	public ModelAndView changeNumPage(@RequestParam int numPage) {
+	public ModelAndView changeNumPage(@RequestParam int numPage) throws PageNumberException {
+		if(numPage > pagination.getMAX()) {
+			throw new PageNumberException();
+		}
 		pagination.changePage(numPage);
 		return constructPage();
 	}
@@ -209,14 +220,16 @@ public class ComputerController {
 	@PostMapping(value="/updateComputer")
 	public String postEditComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
 			BindingResult bindingResult) {
-		Computer computer = mapperComputer.mapper(computerDTO);
-		try {
-			validator.checkComputer(computer);
-			computerService.insertComputer(computer);
-		} catch (NotPermittedComputerException e) {
-			LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+		if(!bindingResult.hasErrors()) {
+			Computer computer = mapperComputer.mapper(computerDTO);
+			try {
+				validator.checkComputer(computer);
+				computerService.insertComputer(computer);
+			} catch (NotPermittedComputerException e) {
+				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+			}			
 		}
-		return ViewName.ADDCOMPUTER.toString(); 
+		return ViewName.EDITCOMPUTER.toString(); 
 	}
 
 	@GetMapping(value = "/addComputer")
@@ -232,18 +245,46 @@ public class ComputerController {
 	@PostMapping(value = "/addComputer")
 	public String postAddComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
 			BindingResult bindingResult) {
-		Computer computer = mapperComputer.mapper(computerDTO);
-		try {
-			validator.checkComputer(computer);
-			computerService.insertComputer(computer);
-		} catch (NotPermittedComputerException e) {
-			LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
-		}
-		return ViewName.ADDCOMPUTER.toString(); 
+		if(!bindingResult.hasErrors()) {
+			Computer computer = mapperComputer.mapper(computerDTO);
+			try {
+				validator.checkComputer(computer);
+				computerService.insertComputer(computer);
+			} catch (NotPermittedComputerException e) {
+				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+			}
+		} 
+		return ViewName.ADDCOMPUTER.toString();
 	}
 	
-	@GetMapping(value = "/*")
-	public String errorPage() {
-		return "404";
-	}
+    @GetMapping(value = "errors")
+    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+         
+        ModelAndView errorPage = new ModelAndView();
+        int httpErrorCode = getErrorCode(httpRequest);
+ 
+        switch (httpErrorCode) {
+            case 403: {
+                errorPage.setViewName(ViewName.FORBIDDEN.toString());
+                break;
+            }
+            case 404: {
+                errorPage.setViewName(ViewName.NOTFOUND.toString());
+                break;
+            }
+            case 500: {
+                errorPage.setViewName(ViewName.INTERNALSERVERERROR.toString());
+                break;
+            }
+            default:
+            	errorPage.setViewName(ViewName.NOTFOUND.toString());
+            	break;
+        }        
+        return errorPage;
+    }
+     
+    private int getErrorCode(HttpServletRequest httpRequest) {
+        return (Integer) httpRequest
+          .getAttribute("javax.servlet.error.status_code");
+    }
 }
