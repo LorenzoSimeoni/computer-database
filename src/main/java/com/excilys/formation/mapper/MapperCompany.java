@@ -25,7 +25,7 @@ public class MapperCompany {
 	 * @throws SQLException
 	 */
 	public Company mapper(ResultSet results) throws SQLException {
-		Company company = new Company.CompanyBuilder(results.getLong(1)).setName(results.getString(2)).build();
+		Company company = new Company(results.getLong(1),results.getString(2));
 		
 		return company;
 	}

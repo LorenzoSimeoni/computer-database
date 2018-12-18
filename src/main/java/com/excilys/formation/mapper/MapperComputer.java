@@ -37,7 +37,7 @@ public class MapperComputer {
 	 * @throws SQLException
 	 */
 	public Computer mapper(ResultSet results) throws SQLException {
-		Company company = new Company.CompanyBuilder(results.getLong(5)).setName(results.getString(6)).build();
+		Company company = new Company(results.getLong(5),results.getString(6));
 		
 		String introduced = results.getString(3);
 		LocalDateTime introducedDateAndTime=null;
@@ -51,13 +51,13 @@ public class MapperComputer {
 			discontinued = discontinued.replace(' ', 'T');
 			discontinuedDateAndTime = LocalDateTime.parse(discontinued);
 		}
-		
-		Computer computer = new Computer.ComputerBuilder(results.getString(2))
-				.setID(results.getInt(1))
-				.setIntroduced(introducedDateAndTime)
-				.setDiscontinued(discontinuedDateAndTime)
-				.setCompanyId(company)
-				.build();
+			
+		Computer computer = new Computer();
+		computer.setId(results.getInt(1));
+		computer.setName(results.getString(2));
+		computer.setIntroduced(introducedDateAndTime);
+		computer.setDiscontinued(discontinuedDateAndTime);
+		computer.setCompany(company);		
 			
 		return computer;
 	}
@@ -71,7 +71,7 @@ public class MapperComputer {
 	 * @return Computer object
 	 */
 	public Computer mapper(long id, String name, String introduced, String discontinued, String companyId) {
-		Company company;
+		Company company = new Company();;
 		Computer computerUpdated = null;
 		String nameComputer = name;
 		long companyID;
@@ -95,25 +95,24 @@ public class MapperComputer {
 			}
 			if(companyId != null && companyId.equals("")) {
 				companyID = computer.getCompany().getId();
-				company = new Company.CompanyBuilder(companyID).build();
+				company.setId(companyID);
 			} else {
 				if(companyId != null && Controller.testStringIsALong(companyId)) {
 					companyID = Long.parseLong(companyId);
-					company = new Company.CompanyBuilder(companyID).build();						
+					company.setId(companyID);					
 				} else {
 					LOGGER.info("You didn't give a Long for CompanyID, initiate to null");
-					company = new Company.CompanyBuilder().build();
 				}
 			}
-			computerUpdated = new Computer.ComputerBuilder(nameComputer)
-					.setID(id)
-					.setIntroduced(localIntroduced)
-					.setDiscontinued(localDiscontinued)
-					.setCompanyId(company)
-					.build();			
+			computerUpdated = new Computer();
+			computer.setId(id);
+			computer.setName(nameComputer);
+			computer.setIntroduced(localIntroduced);
+			computer.setDiscontinued(localDiscontinued);
+			computer.setCompany(company);		
 		} 
 		else {
-			computerUpdated = new Computer.ComputerBuilder().build();			
+			computerUpdated = new Computer();			
 		}
 		return computerUpdated;
 	}
@@ -140,16 +139,16 @@ public class MapperComputer {
 		}
 		if(companyId != null && Controller.testStringIsALong(companyId)) {
 			long companyIdTransform = Long.parseLong(companyId);
-			company = new Company.CompanyBuilder(companyIdTransform).build();
+			company = new Company(companyIdTransform);
 		} else {
-			company = new Company.CompanyBuilder().build();
+			company = new Company();
 		}
 		
-		computer = new Computer.ComputerBuilder(name)
-				.setIntroduced(localIntroduced)
-				.setDiscontinued(localDiscontinued)
-				.setCompanyId(company)
-				.build();			  
+		computer = new Computer();
+		computer.setName(name);
+		computer.setIntroduced(localIntroduced);
+		computer.setDiscontinued(localDiscontinued);
+		computer.setCompany(company);			  
 		return computer;
 	}
 	

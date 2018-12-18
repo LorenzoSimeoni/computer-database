@@ -42,10 +42,6 @@ public class ComputerService {
 		return computerDao.getDetailsByID(id);
 	}
 	
-	public List<Computer> showComputerDetailsByCompanyID(long id) {
-		return computerDao.getDetailsByCompanyID(id);
-	}
-	
 	public List<Computer> getListOrderBy(OrderByComputer column, OrderByMode mode, Page page) {
 		return computerDao.getListOrderBy(column, mode, page);
 	}

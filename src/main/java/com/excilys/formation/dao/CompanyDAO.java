@@ -1,17 +1,14 @@
 package com.excilys.formation.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,75 +24,70 @@ import com.excilys.formation.model.Page;
 public class CompanyDAO {
 
 	private final static Logger LOGGER = LogManager.getLogger(CompanyDAO.class.getName());
-	private static final String LISTCOMPANY = "SELECT id, name FROM company;";
-	private static final String LISTCOMPANYDETAILSBYID = "SELECT id, name FROM company WHERE id = :id;";
-	private static final String SHOWCOMPANYPAGE = "SELECT id, name FROM company LIMIT :limit, :offset";
-	private static final String DELETEACOMPANY = "DELETE FROM company WHERE id = :id;";
-	private static final String DELETECOMPUTERS = "DELETE FROM computer WHERE company_id = :id;";
-
-	private JdbcTemplate jdbcTemplate;
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	private RowMapper<Company> rowMapperCompany;
-	private MapSqlParameterSource params;
+	private static final String LISTCOMPANY = "FROM Company";
+	private static final String LISTCOMPANYDETAILSBYID = "FROM Company WHERE id = :id";
+	private static final String DELETEACOMPANY = "DELETE FROM Company WHERE id = :id";
+	private static final String DELETECOMPUTERS = "DELETE FROM Computer WHERE company_id = :id";
+    
+	@Autowired
+	private SessionFactory sessionFactory;
 	
-    @Autowired
-    public CompanyDAO(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-    		RowMapper<Company> rowMapperCompany, MapSqlParameterSource params) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-        this.rowMapperCompany = rowMapperCompany;
-        this.params = params;
-    }
-
-
-	public List<Company> getList() {
-		List<Company> list = new ArrayList<Company>();
-		try {
-			list = jdbcTemplate.query(LISTCOMPANY, rowMapperCompany);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request LISTCOMPANY", e);
-		}
-		return list;
+	public void save(Company company) {
+		Session session = this.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.persist(company);
+		tx.commit();
+		session.close();
 	}
 
+	public List<Company> getList() {
+        Session session = sessionFactory.openSession();
+        List<Company> list = session.createQuery(LISTCOMPANY,Company.class)
+        		.getResultList();
+        session.close();
+		return list;
+	}
+	
 	public Optional<Company> getDetailsById(long id) {
-		Company company = null;
-		params.addValue("id", id);
-		try {
-			company = namedParameterJdbcTemplate.queryForObject(LISTCOMPANYDETAILSBYID, params, rowMapperCompany);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request LISTCOMPANYDETAILSBYID", e);
-		}
+		Session session = sessionFactory.openSession();
+		Company company = session.createQuery(LISTCOMPANYDETAILSBYID,Company.class)
+				.setParameter("id", id)
+				.getSingleResult();
+		session.close();
 		return Optional.ofNullable(company);
 	}
 
+
 	public List<Company> getListPage(Page page) {
-		List<Company> list = new ArrayList<Company>();
-		params.addValue("limit", page.getLimit());
-		params.addValue("offset", page.getOffset());
-		try {
-			list = namedParameterJdbcTemplate.query(SHOWCOMPANYPAGE, params, rowMapperCompany);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request SHOWCOMPANYPAGE", e);
-		}
+		Session session = sessionFactory.openSession();
+		List<Company> list = session.createQuery(LISTCOMPANY,Company.class)
+				.setFirstResult(page.getLimit())
+				.setMaxResults(page.getOffset())
+				.getResultList();
+		session.close();
 		return list;
 	}
-
+	
 	@Transactional(rollbackFor = Exception.class)
 	public int delete(long id) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int numberOfDeletedElement = 0;
-		params.addValue("id", id);
+		
 		try {
-			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETECOMPUTERS, params);
+			numberOfDeletedElement = session.createQuery(DELETECOMPUTERS)
+					.setParameter("id", id)
+					.executeUpdate();
 			LOGGER.info(numberOfDeletedElement + " elements are now deleted");
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request delete", e);
-		}
-		try {
-			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETEACOMPANY, params);
+			numberOfDeletedElement = session.createQuery(DELETEACOMPANY)
+					.setParameter("id", id)
+					.executeUpdate();
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request delete", e);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+		} finally {
+			session.close();
 		}
 		return numberOfDeletedElement;
 	}

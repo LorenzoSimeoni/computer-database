@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.excilys.formation.model.Computer;
 
+
 public class ComputerDTO {
 	private long id;
 	
@@ -27,8 +28,13 @@ public class ComputerDTO {
 		} else {
 			this.discontinued = null;
 		}
-		this.companyName = computer.getCompany().getName();
-		this.companyId = Long.toString(computer.getCompany().getId());
+		if(computer.getCompany()!=null) {
+			this.companyName = computer.getCompany().getName();
+			this.companyId = Long.toString(computer.getCompany().getId());			
+		} else {
+			this.companyName = "";
+			this.companyId = "";
+		}
 	}
 	
 	public ComputerDTO() {

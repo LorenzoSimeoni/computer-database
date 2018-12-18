@@ -61,10 +61,10 @@
 										<c:forEach items="${listCompany}" var="company">
 											<c:choose>
 												<c:when test="${company.id == computerDTO.companyId}">
-													<option selected="${computerDTO.companyId}">${computerDTO.companyId}</option>
+													<option selected="${computerDTO.companyId}">${computerDTO.companyId}. ${company.name}</option>
 												</c:when>
 												<c:otherwise>
-													<option value="${company.id}">${company.id}</option>
+													<option value="${company.id}">${company.id}. ${company.name}</option>
 												</c:otherwise>
 											</c:choose>
 										</c:forEach>

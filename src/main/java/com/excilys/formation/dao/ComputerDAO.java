@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,14 +44,14 @@ public class ComputerDAO {
     }
 
 
-	private static final String LISTCOMPUTER = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id;";
-	private static final String SHOWCOMPUTERDETAILS = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
-			+ " FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE name = :name;";
-	private static final String SHOWCOMPUTERDETAILSBYID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
-			+ " FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = :id;";
-	private static final String SHOWCOMPUTERBYCOMPANYID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
-			+ " FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company_id = :id;";
+	private static final String LISTCOMPUTER = "FROM Computer";
+	private static final String SHOWCOMPUTERDETAILS = "FROM Computer WHERE name = :name";
+	private static final String SHOWCOMPUTERDETAILSBYID = "FROM Computer WHERE id = :id";
+	private static final String SEARCHCOMPUTERANDCOMPANY = "FROM Computer WHERE Computer.name LIKE :nameComputer OR Company.name LIKE :nameCompany ORDER BY ";
+	private static final String SHOWORDERBY = "FROM Computer ORDER BY ";
+
+	
+	
 	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(:name,:introduced,:discontinued,:companyId);";
 	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = :name,introduced = :introduced, discontinued = :discontinued, company_id = :companyId WHERE id = :id;";
 	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = :id;";
@@ -58,22 +60,71 @@ public class ComputerDAO {
 	private static final String COUNTCOMPUTER = "SELECT COUNT(computer.name) FROM computer;";
 	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(computer.name) FROM computer LEFT JOIN company ON computer.company_id = company.id"
 			+ " WHERE computer.name LIKE :nameComputer OR company.name LIKE :nameCompany;";
-	private static final String SEARCHCOMPUTERANDCOMPANY = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.name LIKE :nameComputer OR company.name LIKE :nameCompany ORDER BY ";
-	private static final String SHOWORDERBY = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY ";
-	private static final String LIMIT = " LIMIT :limit, :offset;";
 
+
+	@Autowired
+	private SessionFactory sessionFactory;
+	
 	public List<Computer> getList() {
-		List<Computer> list = new ArrayList<Computer>();
-		try {
-			list = jdbcTemplate.query(LISTCOMPUTER, rowMapper);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request getList", e);
-		}
+        Session session = sessionFactory.openSession();
+        List<Computer> list = session.createQuery(LISTCOMPUTER, Computer.class)
+        		.getResultList();
+        session.close();
+		return list;
+	}
+	
+	/**
+	 * Used to show the details of computer(s) using their name as key
+	 * 
+	 * @param name used as a key to search in Computer database
+	 * @return a list filled with the Computer object found with the key
+	 */
+	public List<Computer> getDetailsByName(String name) {
+		Session session = sessionFactory.openSession();
+		List<Computer> list = session.createQuery(SHOWCOMPUTERDETAILS, Computer.class)
+				.setParameter("name", name)
+				.getResultList();
+		session.close();
+		return list;
+	}
+	
+	/**
+	 * Used to show the details of computer(s) using their ID as key
+	 * 
+	 * @param ID used as a key to search in Computer database
+	 * @return a list filled with the Computer object found with the key
+	 */
+	public Optional<Computer> getDetailsByID(long id) {
+		Session session = sessionFactory.openSession();
+		Computer computer = session.createQuery(SHOWCOMPUTERDETAILSBYID, Computer.class)
+				.setParameter("id", id)
+				.getSingleResult();
+		session.close();
+		return Optional.ofNullable(computer);
+	}
+	
+	public List<Computer> getListOrderBy(OrderByComputer column, OrderByMode mode, Page page) {
+		String order = SHOWORDERBY + column + " " + mode;
+		Session session = sessionFactory.openSession();
+		List<Computer> list = session.createQuery(order, Computer.class)
+				.setFirstResult(page.getLimit())
+				.setMaxResults(page.getOffset())
+				.getResultList();
 		return list;
 	}
 
+	public List<Computer> getComputerOrderByLike(OrderByComputer column, OrderByMode mode, String name, Page page) {
+		String order = SEARCHCOMPUTERANDCOMPANY + column + " " + mode;
+		Session session = sessionFactory.openSession();
+		List<Computer> list = session.createQuery(order, Computer.class)
+				.setParameter("nameComputer", '%' + name + '%')
+				.setParameter("nameCompany", '%' + name + '%')
+				.setFirstResult(page.getLimit())
+				.setMaxResults(page.getOffset())
+				.getResultList();
+		return list;
+	}
+	
 	public int countComputer() {
 		int count = 0;
 		try {
@@ -108,78 +159,7 @@ public class ComputerDAO {
 		return list;
 	}
 
-	public List<Computer> getListOrderBy(OrderByComputer column, OrderByMode mode, Page page) {
-		List<Computer> list = new ArrayList<Computer>();
-		String order = SHOWORDERBY + column + " " + mode + LIMIT;
-		params.addValue("limit", page.getLimit());
-		params.addValue("offset", page.getOffset());
-		try {
-			list = namedParameterJdbcTemplate.query(order, params, rowMapper);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request getListOrderBy", e);
-		}
-		return list;
-	}
 
-	public List<Computer> getComputerOrderByLike(OrderByComputer column, OrderByMode mode, String name, Page page) {
-		List<Computer> list = new ArrayList<Computer>();
-		String order = SEARCHCOMPUTERANDCOMPANY + column + " " + mode + LIMIT;
-		params.addValue("limit", page.getLimit());
-		params.addValue("offset", page.getOffset());
-		params.addValue("nameComputer", '%' + name + '%');
-		params.addValue("nameCompany", '%' + name + '%');
-		try {
-			list = namedParameterJdbcTemplate.query(order, params, rowMapper);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request getComputerOrderByLike", e);
-		}
-		return list;
-	}
-
-	/**
-	 * Used to show the details of computer(s) using their name as key
-	 * 
-	 * @param name used as a key to search in Computer database
-	 * @return a list filled with the Computer object found with the key
-	 */
-	public List<Computer> getDetailsByName(String name) {
-		List<Computer> list = new ArrayList<Computer>();
-		params.addValue("name", name);
-		try {
-			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERDETAILS, params, rowMapper);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request GetDetailsByID", e);
-		}
-		return list;
-	}
-
-	/**
-	 * Used to show the details of computer(s) using their ID as key
-	 * 
-	 * @param ID used as a key to search in Computer database
-	 * @return a list filled with the Computer object found with the key
-	 */
-	public Optional<Computer> getDetailsByID(long id) {
-		Computer computer = null;
-		params.addValue("id", id);
-		try {
-			computer = namedParameterJdbcTemplate.queryForObject(SHOWCOMPUTERDETAILSBYID, params, rowMapper);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request GetDetailsByID", e);
-		}
-		return Optional.ofNullable(computer);
-	}
-
-	public List<Computer> getDetailsByCompanyID(long id) {
-		List<Computer> list = new ArrayList<Computer>();
-		params.addValue("id", id);
-		try {
-			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERBYCOMPANYID, params, rowMapper);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request GetDetailsByCompanyID", e);
-		}
-		return list;
-	}
 
 	/**
 	 * Insert a new computer in the database

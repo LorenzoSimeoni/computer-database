@@ -58,7 +58,7 @@
 										class="form-control" id="companyId" name="companyId">
 										<option value=""></option>
 										<c:forEach items="${listCompany}" var="company">
-											<option value="${company.id}">${company.id}</option>
+											<option value="${company.id}">${company.id}. ${company.name}</option>
 										</c:forEach>
 									</form:select>
 								</div>

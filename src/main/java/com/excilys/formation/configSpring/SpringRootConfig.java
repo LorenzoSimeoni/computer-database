@@ -15,6 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+
 import com.excilys.formation.mapper.MapperRawCompany;
 import com.excilys.formation.mapper.MapperRawComputer;
 import com.excilys.formation.model.Company;
@@ -53,6 +55,47 @@ public class SpringRootConfig {
 		ds = new HikariDataSource(config);
 		return ds;
 	}
+	 
+	Properties hibernateProperties() {
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		properties.setProperty("hibernate.show_sql", "true");
+		return properties;
+	}
+	
+	@Bean
+	public LocalSessionFactoryBean sessionFactory(DataSource dataSource)
+	{
+		LocalSessionFactoryBean session = new LocalSessionFactoryBean();
+		session.setDataSource(dataSource);
+		session.setHibernateProperties(hibernateProperties());        
+		session.setPackagesToScan(new String[]{"com.excilys.formation.model"});
+	    return session;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@Bean
 	public JdbcTemplate jdbcTemplate(DataSource dataSource) {

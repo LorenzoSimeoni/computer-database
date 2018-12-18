@@ -30,8 +30,14 @@ public class ComputerCLI {
 	 */
 	public void showComputer() {
 		List<Computer> listResults = computerService.showComputer();
-		for(Computer computer : listResults){
-			System.out.println(computer.toString());
+		
+		if (listResults.isEmpty()) {
+			System.out.println("oplplplp");
+		} else {
+			for(Computer computer : listResults){
+				System.out.println(computer.toString());
+			}
+			
 		}
 	}
 	

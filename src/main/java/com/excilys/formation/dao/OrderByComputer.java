@@ -1,11 +1,11 @@
 package com.excilys.formation.dao;
 
 public enum OrderByComputer {
-	ID("computer.id"), 
-	NAME("computer.name"), 
-	INTRODUCED("computer.introduced"), 
-	DISCONTINUED("computer.discontinued"),
-	COMPANY("computer.company_id");
+	ID("id"), 
+	NAME("name"), 
+	INTRODUCED("introduced"), 
+	DISCONTINUED("discontinued"),
+	COMPANY("company_id");
 
 	private String property;
 
