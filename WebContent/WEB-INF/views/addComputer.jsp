@@ -14,7 +14,7 @@
 	<body>
 		<header class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
-				<a class="navbar-brand" href="/computer-databases/"> Application
+				<a class="navbar-brand" href="/computer-databases/Computer"> Application
 					- Computer Database </a>
 			</div>
 		</header>
@@ -24,7 +24,7 @@
 				<div class="row">
 					<div class="col-xs-8 col-xs-offset-2 box">
 						<h1><spring:message code="lang.addComputer" /></h1>
-						<form:form method="POST" modelAttribute="computerDTO" action="/computer-database/">
+						<form:form method="POST" modelAttribute="computerDTO" action="">
 							<fieldset>
 								<div class="form-group">
 									<form:label path="name">
@@ -65,7 +65,7 @@
 							</fieldset>
 							<div class="actions pull-right">
 								<input type="submit" value="<spring:message code="lang.add" />" class="btn btn-primary">
-								<spring:message code="lang.or" /> <a href="/computer-databases/" class="btn btn-default">
+								<spring:message code="lang.or" /> <a href="/computer-databases/Computer" class="btn btn-default">
 								<spring:message code="lang.cancel" /></a>
 							</div>
 						</form:form>

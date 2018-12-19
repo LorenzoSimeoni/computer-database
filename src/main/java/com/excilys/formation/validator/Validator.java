@@ -31,7 +31,7 @@ public class Validator {
 		if (nameIsNull(computer)) {
 			throw new NameException();
 		}
-		if (!companyIdExist(computer.getCompany().getId())) {
+		if (!companyExist(computer.getCompany())) {
 			throw new CompanyIDException();
 		}
 		if (discontinuedNotNullWhileIntroducedIs(computer)) {
@@ -65,14 +65,15 @@ public class Validator {
 		return false;
 	}
 	
-	private boolean companyIdExist(long id) {
-		if(id == 0) {
-			return true;
-		}
-		Optional<Company> company = companyServices.showDetailsById(id);
-		if(!company.isPresent()) {
-			LOGGER.info("You gived a wrong CompanyID, it doesn't exist !");
-			return false;			
+	private boolean companyExist(Company company) {
+		if(company!=null) {
+			Optional<Company> optCompany = companyServices.showDetailsById(company.getId());
+			if(optCompany.isPresent()) {
+				return true;			
+			} else {
+				LOGGER.info("You gived a wrong CompanyID, it doesn't exist !");
+				return false;
+			}
 		}
 		return true;
 	}

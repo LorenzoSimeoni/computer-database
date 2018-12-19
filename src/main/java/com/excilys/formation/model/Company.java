@@ -22,10 +22,7 @@ public class Company {
 	@Column(name="name")
 	private String name;
 	
-	public Company() {
-		this.id = 0;
-		this.name = "No Company";
-	}
+	public Company() {}
 	
 	public Company(long id, String name) {
 		this.id = id;

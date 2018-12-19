@@ -11,16 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-import com.excilys.formation.mapper.MapperRawCompany;
-import com.excilys.formation.mapper.MapperRawComputer;
-import com.excilys.formation.model.Company;
-import com.excilys.formation.model.Computer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -72,60 +64,4 @@ public class SpringRootConfig {
 		session.setPackagesToScan(new String[]{"com.excilys.formation.model"});
 	    return session;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	@Bean
-	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return jdbcTemplate;
-	}
-	
-	@Bean
-	public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		return namedParameterJdbcTemplate;
-	}
-	
-	@Bean
-	public RowMapper<Company> rowMapperCompanyTemplate(){
-		RowMapper<Company> rowMapper = new MapperRawCompany();	
-		return 	rowMapper;
-	}
-	
-	@Bean
-	public RowMapper<Computer> rowMapperComputerTemplate(){
-		RowMapper<Computer> rowMapper = new MapperRawComputer();	
-		return 	rowMapper;
-	}
-	
-	@Bean
-	public MapSqlParameterSource mapSqlParameterSource(){
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		return params;
-	}
-
-
 }

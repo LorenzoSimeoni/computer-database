@@ -14,7 +14,7 @@
 	<body>
 		<header class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
-				<a class="navbar-brand" href="/computer-databases/"> Application
+				<a class="navbar-brand" href="/computer-databases/Computer"> Application
 					- Computer Database </a>
 			</div>
 		</header>
@@ -24,7 +24,7 @@
 					<div class="col-xs-8 col-xs-offset-2 box">
 						<div class="label label-default pull-right">id: ${ id }</div>
 						<h1><spring:message code="lang.editComputer" /></h1>
-						<form:form method="POST" modelAttribute="computerDTO" action="/computer-database/">
+						<form:form method="POST" modelAttribute="computerDTO" action="">
 							<input type="hidden" value="${ id }" id="id" name="id" />
 							<fieldset>
 								<div class="form-group">
@@ -73,7 +73,7 @@
 							</fieldset>
 							<div class="actions pull-right">
 								<input type="submit" value="<spring:message code="lang.edit" />" class="btn btn-primary">
-								<spring:message code="lang.or" /> <a href="/computer-databases/" class="btn btn-default">
+								<spring:message code="lang.or" /> <a href="/computer-databases/Computer" class="btn btn-default">
 								<spring:message code="lang.cancel" /></a>
 							</div>
 						</form:form>

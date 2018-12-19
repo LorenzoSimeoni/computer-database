@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,6 +35,7 @@ import com.excilys.formation.service.ComputerService;
 import com.excilys.formation.validator.Validator;
 
 @Controller
+@RequestMapping(value="/Computer")
 public class ComputerController {
 	
 	private final static Logger LOGGER = LogManager.getLogger(ComputerController.class.getName());
@@ -58,7 +60,7 @@ public class ComputerController {
 	
 	
 
-	@GetMapping(value = "/", params="nbElement")
+	@GetMapping(params="nbElement")
 	public ModelAndView changeNbElementsPage(@RequestParam int nbElement) throws NbElementException {
 		if(nbElement<=0) {
 			throw new NbElementException();
@@ -67,7 +69,7 @@ public class ComputerController {
 		pagination.resetNumerotation();
 		return constructPage();
 	}
-	@GetMapping(value = "/", params="numPage")
+	@GetMapping(params="numPage")
 	public ModelAndView changeNumPage(@RequestParam int numPage) throws PageNumberException {
 		if(numPage > pagination.getMAX()) {
 			throw new PageNumberException();
@@ -75,13 +77,13 @@ public class ComputerController {
 		pagination.changePage(numPage);
 		return constructPage();
 	}
-	@GetMapping(value = "/", params="search")
+	@GetMapping(params="search")
 	public ModelAndView search(@RequestParam String search) {
 		this.search = search;
 		pagination.resetNumerotation();
 		return constructPage();
 	}
-	@GetMapping(value = "/", params= {"order"})
+	@GetMapping(params= {"order"})
 	public ModelAndView orderByColumnComputeName(@RequestParam String order) {
 		this.order = order;
 		switch (this.order) {
@@ -149,9 +151,7 @@ public class ComputerController {
 		return constructPage();
 	}
 
-	
-	
-	@GetMapping(value = "/")
+	@GetMapping
 	public ModelAndView getDashboardPage() {
 		resetAll();
 		return constructPage();
@@ -171,7 +171,7 @@ public class ComputerController {
 		OrderByMode orderByMode = OrderByMode.myValueOf(mode);
 		List<Computer> listComputer = new ArrayList<>();
 		List<ComputerDTO> listComputerDTO = new ArrayList<>();
-		int countComputer = 0;
+		long countComputer = 0;
 		if (search.equals("")) {
 			countComputer = computerService.countComputer();
 			listComputer = computerService.getListOrderBy(orderColumn, orderByMode, pagination);
@@ -182,7 +182,7 @@ public class ComputerController {
 		listComputer.stream().forEach(i -> {
 			listComputerDTO.add(new ComputerDTO(i));
 		});
-		pagination.setMAX(countComputer/pagination.getOffset()+1);
+		pagination.setMAX((int)countComputer/pagination.getOffset()+1);
 		pagination.checkMax();
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(ViewName.DASHBOARD.toString());
@@ -196,43 +196,49 @@ public class ComputerController {
 		return mv;
 	}
 	
-	@PostMapping(value = "/")
+	@PostMapping
     public String postDashboardPage(@RequestParam(defaultValue = "") String cb) {
 		List<String> deleted = Arrays.asList(cb);
 		deleted.stream().forEach(id -> computerService.deleteComputer(Long.parseLong(id)));
 		return ViewName.DASHBOARD.toString();
 	}
 
-	@GetMapping(value = "/updateComputer")
+	@GetMapping(value = "/update")
     public ModelAndView getUpdateComputer(@RequestParam(defaultValue = "0") long id) {
 		Optional<Computer> computerOpt = computerService.showComputerDetailsByID(id);
-		Computer computer = computerOpt.get();
-		List<Company> listCompany = companyService.show();
-		
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName(ViewName.EDITCOMPUTER.toString());
-        mv.addObject("computerDTO", new ComputerDTO(computer));
-        mv.getModel().put("id", id);
-        mv.getModel().put("listCompany", listCompany);
-        return mv;
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName(ViewName.EDITCOMPUTER.toString());
+		if(computerOpt.isPresent()) {
+			Computer computer = computerOpt.get();
+			List<Company> listCompany = companyService.show();
+			
+			mv.addObject("computerDTO", new ComputerDTO(computer));
+			mv.getModel().put("id", id);
+			mv.getModel().put("listCompany", listCompany);
+			return mv;
+		}
+		return mv;
     }
 	
-	@PostMapping(value="/updateComputer")
-	public String postEditComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
+	@PostMapping(value="/update")
+	public ModelAndView postEditComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
 			BindingResult bindingResult) {
 		if(!bindingResult.hasErrors()) {
 			Computer computer = mapperComputer.mapper(computerDTO);
 			try {
 				validator.checkComputer(computer);
-				computerService.insertComputer(computer);
+				computerService.updateComputer(computer);
 			} catch (NotPermittedComputerException e) {
-				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
+				LOGGER.info(" COMPUTER NOT UPDATED "+e.getErrorMsg(),e);
 			}			
 		}
-		return ViewName.EDITCOMPUTER.toString(); 
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName(ViewName.EDITCOMPUTER.toString());
+		mv.getModel().put("id", computerDTO.getId());
+		return mv; 
 	}
 
-	@GetMapping(value = "/addComputer")
+	@GetMapping(value = "/add")
     public ModelAndView getAddComputer() {
 		List<Company> listCompany = companyService.show();
         ModelAndView mv = new ModelAndView();
@@ -242,11 +248,12 @@ public class ComputerController {
         return mv;
     }
 	
-	@PostMapping(value = "/addComputer")
+	@PostMapping(value = "/add")
 	public String postAddComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
 			BindingResult bindingResult) {
 		if(!bindingResult.hasErrors()) {
 			Computer computer = mapperComputer.mapper(computerDTO);
+			System.out.println(computer.toString());
 			try {
 				validator.checkComputer(computer);
 				computerService.insertComputer(computer);

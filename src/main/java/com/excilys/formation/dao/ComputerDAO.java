@@ -1,6 +1,5 @@
 package com.excilys.formation.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,12 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.model.Computer;
@@ -28,38 +23,17 @@ import com.excilys.formation.model.Page;
 public class ComputerDAO {
 
 	private final static Logger LOGGER = LogManager.getLogger(ComputerDAO.class.getName());
-	
-	private JdbcTemplate jdbcTemplate;
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	@Autowired
-	private RowMapper<Computer> rowMapper;
-	private MapSqlParameterSource params;
-	
-    @Autowired
-    public ComputerDAO(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-    		MapSqlParameterSource params) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-        this.params = params;
-    }
-
 
 	private static final String LISTCOMPUTER = "FROM Computer";
 	private static final String SHOWCOMPUTERDETAILS = "FROM Computer WHERE name = :name";
 	private static final String SHOWCOMPUTERDETAILSBYID = "FROM Computer WHERE id = :id";
 	private static final String SEARCHCOMPUTERANDCOMPANY = "FROM Computer WHERE Computer.name LIKE :nameComputer OR Company.name LIKE :nameCompany ORDER BY ";
 	private static final String SHOWORDERBY = "FROM Computer ORDER BY ";
+	private static final String COUNTCOMPUTER = "SELECT COUNT(computer) FROM Computer computer";
+	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(computer) FROM Computer WHERE Computer.name LIKE :nameComputer OR Company.name LIKE :nameCompany";
+	private static final String DELETEACOMPUTER = "DELETE FROM Computer WHERE id = :id";
+	private static final String UPDATEACOMPUTER = "UPDATE Computer SET name = :name, introduced = :introduced, discontinued = :discontinued, company_id = :companyId WHERE id = :id";
 
-	
-	
-	private static final String CREATECOMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(:name,:introduced,:discontinued,:companyId);";
-	private static final String UPDATEACOMPUTER = "UPDATE computer SET name = :name,introduced = :introduced, discontinued = :discontinued, company_id = :companyId WHERE id = :id;";
-	private static final String DELETEACOMPUTER = "DELETE FROM computer WHERE id = :id;";
-	private static final String SHOWCOMPUTERPAGE = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
-			+ " FROM computer LEFT JOIN company ON computer.company_id = company.id LIMIT :limit, :offset;";
-	private static final String COUNTCOMPUTER = "SELECT COUNT(computer.name) FROM computer;";
-	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(computer.name) FROM computer LEFT JOIN company ON computer.company_id = company.id"
-			+ " WHERE computer.name LIKE :nameComputer OR company.name LIKE :nameCompany;";
 
 
 	@Autowired
@@ -110,6 +84,7 @@ public class ComputerDAO {
 				.setFirstResult(page.getLimit())
 				.setMaxResults(page.getOffset())
 				.getResultList();
+		session.close();
 		return list;
 	}
 
@@ -122,68 +97,64 @@ public class ComputerDAO {
 				.setFirstResult(page.getLimit())
 				.setMaxResults(page.getOffset())
 				.getResultList();
+		session.close();
 		return list;
 	}
 	
-	public int countComputer() {
-		int count = 0;
-		try {
-			count = jdbcTemplate.queryForObject(COUNTCOMPUTER, Integer.class);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request countComputer", e);
-		}
+	public long countComputer() {
+		long count = 0;
+		Session session = sessionFactory.openSession();
+		count = session.createQuery(COUNTCOMPUTER,Long.class)
+				.getSingleResult();
+		session.close();
 		return count;
 	}
 
-	public int countComputerLike(String name) {
-		int count = 0;
-		params.addValue("nameComputer", '%' + name + '%');
-		params.addValue("nameCompany", '%' + name + '%');
-		try {
-			count = namedParameterJdbcTemplate.queryForObject(COUNTSEARCHCOMPUTER, params, Integer.class);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request countComputer", e);
-		}
+	public long countComputerLike(String name) {
+		long count = 0;
+		Session session = sessionFactory.openSession();
+		count = session.createQuery(COUNTSEARCHCOMPUTER,Long.class)
+				.setParameter("nameComputer", '%' + name + '%')
+				.setParameter("nameCompany", '%' + name + '%')
+				.getSingleResult();
+		session.close();
 		return count;
 	}
 
 	public List<Computer> getListPage(Page page) {
-		List<Computer> list = new ArrayList<Computer>();
-		params.addValue("limit", page.getLimit());
-		params.addValue("offset", page.getOffset());
-		try {
-			list = namedParameterJdbcTemplate.query(SHOWCOMPUTERPAGE, params, rowMapper);
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request getListPage", e);
-		}
+		Session session = sessionFactory.openSession();
+		List<Computer> list = session.createQuery(LISTCOMPUTER, Computer.class)
+				.setFirstResult(page.getLimit())
+				.setMaxResults(page.getOffset())
+				.getResultList();
+		session.close();
 		return list;
 	}
-
-
-
+	
 	/**
-	 * Insert a new computer in the database
+	 * Delete a computer using his ID
 	 * 
-	 * @param computer object created with the parameters give by the user
+	 * @param id the ID of the computer we want to delete
 	 */
-	public void create(Computer computer) {
-		int numberOfCreatedElement;
-		params.addValue("name", computer.getName());
-		params.addValue("introduced", computer.getIntroduced());
-		params.addValue("discontinued", computer.getDiscontinued());
-		if (computer.getCompany().getId() == 0) {
-			params.addValue("companyId", null);	
-		} else {
-			params.addValue("companyId", computer.getCompany().getId());			
-		}
+	public int delete(long id) {
+		int numberOfDeletedElement = 0;
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
 		try {
-			numberOfCreatedElement = namedParameterJdbcTemplate.update(CREATECOMPUTER, params);
-			LOGGER.info(numberOfCreatedElement + " elements with ID : " + computer.getId() + " are now created");
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request create", e);
+			numberOfDeletedElement = session.createQuery(DELETEACOMPUTER)
+					.setParameter("id", id)
+					.executeUpdate();
+			LOGGER.info(numberOfDeletedElement + " elements are now deleted");
+			transaction.commit();
+		} catch (Exception e) {
+			LOGGER.info("ERROR DELETING COMPUTER",e);
+			transaction.rollback();
+		} finally {
+			session.close();			
 		}
+		return numberOfDeletedElement;
 	}
-
+	
 	/**
 	 * Update a computer using his ID
 	 * 
@@ -192,38 +163,53 @@ public class ComputerDAO {
 	 */
 	public Computer update(Computer computer) {
 		int numberOfUpdatedElement = 0;
-		params.addValue("name", computer.getName());
-		params.addValue("introduced", computer.getIntroduced());
-		params.addValue("discontinued", computer.getDiscontinued());
-		if (computer.getCompany().getId() == 0) {
-			params.addValue("companyId", null);	
-		} else {
-			params.addValue("companyId", computer.getCompany().getId());			
-		}
-		params.addValue("id", computer.getId());
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
 		try {
-			numberOfUpdatedElement = namedParameterJdbcTemplate.update(UPDATEACOMPUTER, params);
+			if(computer.getCompany()==null) {
+				numberOfUpdatedElement = session.createQuery(UPDATEACOMPUTER)
+						.setParameter("id", computer.getId())
+						.setParameter("name", computer.getName())
+						.setParameter("introduced", computer.getIntroduced())
+						.setParameter("discontinued", computer.getDiscontinued())
+						.setParameter("companyId", null)
+						.executeUpdate();	
+			} else {
+				numberOfUpdatedElement = session.createQuery(UPDATEACOMPUTER)
+						.setParameter("id", computer.getId())
+						.setParameter("name", computer.getName())
+						.setParameter("introduced", computer.getIntroduced())
+						.setParameter("discontinued", computer.getDiscontinued())
+						.setParameter("companyId", computer.getCompany().getId())
+						.executeUpdate();				
+			}
 			LOGGER.info(numberOfUpdatedElement + " elements with ID : " + computer.getId() + " are now updated");
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request update", e);
+			transaction.commit();			
+		} catch (Exception e) {
+			LOGGER.info("ERROR UPDATING COMPUTER",e);
+			transaction.rollback();
+		} finally {
+			session.close();			
 		}
 		return computer;
 	}
 
 	/**
-	 * Delete a computer using his ID
+	 * Insert a new computer in the database
 	 * 
-	 * @param id the ID of the computer we want to delete
+	 * @param computer object created with the parameters give by the user
 	 */
-	public int delete(long id) {
-		int numberOfDeletedElement = 0;
-		params.addValue("id",id);
+	public void create(Computer computer) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
 		try {
-			numberOfDeletedElement = namedParameterJdbcTemplate.update(DELETEACOMPUTER,params);
-			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
-		} catch (DataAccessException e) {
-			LOGGER.error("Can't execute the request delete", e);
+			session.save(computer);
+			transaction.commit();			
+		} catch (Exception e) {
+			LOGGER.info("ERROR CREATING COMPUTER",e);
+			transaction.rollback();
+		} finally {
+			session.close();			
 		}
-		return numberOfDeletedElement;
 	}
 }

@@ -10,7 +10,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Page;
@@ -68,7 +67,6 @@ public class CompanyDAO {
 		return list;
 	}
 	
-	@Transactional(rollbackFor = Exception.class)
 	public int delete(long id) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
@@ -85,6 +83,7 @@ public class CompanyDAO {
 			LOGGER.info(numberOfDeletedElement + " elements with ID : " + id + " are now deleted");
 			transaction.commit();
 		} catch (Exception e) {
+			LOGGER.info("ERROR DELETING COMPANY",e);
 			transaction.rollback();
 		} finally {
 			session.close();

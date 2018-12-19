@@ -6,30 +6,20 @@ package com.excilys.formation.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.formation.checker.Controller;
 import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
-import com.excilys.formation.service.ComputerService;
 
 /**
  * @author excilys
  *
  */
 @Component
-public class MapperComputer {
-	private final static Logger LOGGER = LogManager.getLogger(MapperComputer.class.getName());
-	
-	@Autowired
-	private ComputerService computerService;
-	
+public class MapperComputer {	
 	/**
 	 * Construct a computer object from a ResultSet (Select)
 	 * @param results contains what we found in database 
@@ -71,50 +61,29 @@ public class MapperComputer {
 	 * @return Computer object
 	 */
 	public Computer mapper(long id, String name, String introduced, String discontinued, String companyId) {
-		Company company = new Company();;
-		Computer computerUpdated = null;
-		String nameComputer = name;
-		long companyID;
-		Optional<Computer> computerOptional = computerService.showComputerDetailsByID(id);
-		if(computerOptional.isPresent()) {
-			Computer computer = computerOptional.get();
-			LocalDateTime localIntroduced = null;
-			LocalDateTime localDiscontinued = null;
-			if(name.equals("")) {
-				nameComputer = computer.getName();
-			} 
-			if(introduced != null && introduced.equals("")) {
-				localIntroduced = computer.getIntroduced();
-			} else if(introduced != null && Controller.testStringIsADate(introduced)) {
-					localIntroduced = LocalDateTime.parse(introduced);
-			}
-			if(discontinued != null && discontinued.equals("")) {
-				localDiscontinued = computer.getDiscontinued();
-			} else if(discontinued != null && Controller.testStringIsADate(discontinued)) {
-					localDiscontinued = LocalDateTime.parse(discontinued);
-			}
-			if(companyId != null && companyId.equals("")) {
-				companyID = computer.getCompany().getId();
-				company.setId(companyID);
-			} else {
-				if(companyId != null && Controller.testStringIsALong(companyId)) {
-					companyID = Long.parseLong(companyId);
-					company.setId(companyID);					
-				} else {
-					LOGGER.info("You didn't give a Long for CompanyID, initiate to null");
-				}
-			}
-			computerUpdated = new Computer();
-			computer.setId(id);
-			computer.setName(nameComputer);
-			computer.setIntroduced(localIntroduced);
-			computer.setDiscontinued(localDiscontinued);
-			computer.setCompany(company);		
-		} 
-		else {
-			computerUpdated = new Computer();			
+		Computer computer;
+		
+		Company company = null;
+		LocalDateTime localIntroduced = null;
+		LocalDateTime localDiscontinued = null;
+		if(introduced != null && Controller.testStringIsADate(introduced)) {
+			localIntroduced = LocalDateTime.parse(introduced);
 		}
-		return computerUpdated;
+		if(discontinued != null && Controller.testStringIsADate(discontinued)) {
+			localDiscontinued = LocalDateTime.parse(discontinued);
+		}
+		if(companyId != null && Controller.testStringIsALong(companyId)) {
+			long companyIdTransform = Long.parseLong(companyId);
+			company = new Company(companyIdTransform);
+		}
+		
+		computer = new Computer();
+		computer.setId(id);
+		computer.setName(name);
+		computer.setIntroduced(localIntroduced);
+		computer.setDiscontinued(localDiscontinued);
+		computer.setCompany(company);			  
+		return computer;
 	}
 	
 	/**
@@ -140,8 +109,6 @@ public class MapperComputer {
 		if(companyId != null && Controller.testStringIsALong(companyId)) {
 			long companyIdTransform = Long.parseLong(companyId);
 			company = new Company(companyIdTransform);
-		} else {
-			company = new Company();
 		}
 		
 		computer = new Computer();
@@ -167,7 +134,7 @@ public class MapperComputer {
 		if(computerDTO.getCompanyId().equals("")) {
 			computerDTO.setCompanyId(null);
 		} 
-		Computer computer = mapper(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(),computerDTO.getCompanyId());
+		Computer computer = mapper(computerDTO.getId(), computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(),computerDTO.getCompanyId());
 		return computer;
 	}
 }

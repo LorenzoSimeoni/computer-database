@@ -58,11 +58,11 @@ public class ComputerService {
 		computerDao.update(computer);
 	}
 	
-	public int countComputer() {
+	public long countComputer() {
 		return computerDao.countComputer();
 	}
 	
-	public int countComputerLike(String name) {
+	public long countComputerLike(String name) {
 		return computerDao.countComputerLike(name);
 	}
 }

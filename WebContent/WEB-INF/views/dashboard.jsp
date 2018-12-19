@@ -16,7 +16,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="/computer-databases/"> Application
+			<a class="navbar-brand" href=""> Application
 				- Computer Database </a>
 		</div>
 	</header>
@@ -37,7 +37,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">
+					<a class="btn btn-success" id="addComputer" href="Computer/add">
 						<spring:message code="lang.addComputer"/>
 					</a> 
 					<a class="btn btn-default" id="editComputer" href="#"
@@ -85,7 +85,7 @@
 							<tr>
 								<td class="editMode"><input type="checkbox" name="cb"
 									class="cb" value="${ computer.id }"></td>
-								<td><a href="updateComputer?id=${ computer.id }"><c:out
+								<td><a href="Computer/update?id=${ computer.id }"><c:out
 											value="${ computer.name }" /></a></td>
 								<td><c:out value="${ computer.introduced }" /></td>
 								<td><c:out value='${ computer.discontinued }' /></td>
