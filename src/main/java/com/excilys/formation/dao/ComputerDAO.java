@@ -27,14 +27,12 @@ public class ComputerDAO {
 	private static final String LISTCOMPUTER = "FROM Computer";
 	private static final String SHOWCOMPUTERDETAILS = "FROM Computer WHERE name = :name";
 	private static final String SHOWCOMPUTERDETAILSBYID = "FROM Computer WHERE id = :id";
-	private static final String SEARCHCOMPUTERANDCOMPANY = "FROM Computer WHERE Computer.name LIKE :nameComputer OR Company.name LIKE :nameCompany ORDER BY ";
+	private static final String SEARCHCOMPUTERANDCOMPANY = "FROM Computer computer WHERE computer.name LIKE :nameComputer OR computer.company.name LIKE :nameCompany ORDER BY ";
 	private static final String SHOWORDERBY = "FROM Computer ORDER BY ";
 	private static final String COUNTCOMPUTER = "SELECT COUNT(computer) FROM Computer computer";
-	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(computer) FROM Computer WHERE Computer.name LIKE :nameComputer OR Company.name LIKE :nameCompany";
+	private static final String COUNTSEARCHCOMPUTER = "SELECT COUNT(computer) FROM Computer computer WHERE computer.name LIKE :nameComputer OR computer.company.name LIKE :nameCompany";
 	private static final String DELETEACOMPUTER = "DELETE FROM Computer WHERE id = :id";
 	private static final String UPDATEACOMPUTER = "UPDATE Computer SET name = :name, introduced = :introduced, discontinued = :discontinued, company_id = :companyId WHERE id = :id";
-
-
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -166,23 +164,13 @@ public class ComputerDAO {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			if(computer.getCompany()==null) {
-				numberOfUpdatedElement = session.createQuery(UPDATEACOMPUTER)
-						.setParameter("id", computer.getId())
-						.setParameter("name", computer.getName())
-						.setParameter("introduced", computer.getIntroduced())
-						.setParameter("discontinued", computer.getDiscontinued())
-						.setParameter("companyId", null)
-						.executeUpdate();	
-			} else {
-				numberOfUpdatedElement = session.createQuery(UPDATEACOMPUTER)
-						.setParameter("id", computer.getId())
-						.setParameter("name", computer.getName())
-						.setParameter("introduced", computer.getIntroduced())
-						.setParameter("discontinued", computer.getDiscontinued())
-						.setParameter("companyId", computer.getCompany().getId())
-						.executeUpdate();				
-			}
+			numberOfUpdatedElement = session.createQuery(UPDATEACOMPUTER)
+					.setParameter("id", computer.getId())
+					.setParameter("name", computer.getName())
+					.setParameter("introduced", computer.getIntroduced())
+					.setParameter("discontinued", computer.getDiscontinued())
+					.setParameter("companyId", computer.getCompany() == null ? null : computer.getCompany().getId())
+					.executeUpdate();				
 			LOGGER.info(numberOfUpdatedElement + " elements with ID : " + computer.getId() + " are now updated");
 			transaction.commit();			
 		} catch (Exception e) {
