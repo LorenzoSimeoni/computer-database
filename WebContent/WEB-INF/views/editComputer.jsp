@@ -1,15 +1,16 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 	<head>
 	<title>Computer Database</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
-	<link href="static/css/main.css" rel="stylesheet" media="screen">
+	<!-- Bootstrap -->
+	<link href="<spring:url value="/static/css/bootstrap.min.css" />" rel="stylesheet" media="screen">
+	<link href="<spring:url value="/static/css/font-awesome.css" />" rel="stylesheet" media="screen">
+	<link href="<spring:url value="/static/css/main.css" />" rel="stylesheet" media="screen">
 	</head>
 	<body>
 		<header class="navbar navbar-inverse navbar-fixed-top">
@@ -92,7 +93,7 @@
 			</div>
 		</div>
 	</footer>
-<script src="static/js/jquery.min.js"></script>
+<script src="<spring:url value="/static/js/jquery.min.js" />"></script>
 <script type="text/javascript" charset="utf-8">
 $('form').submit(function (event) {
     var name = $.trim($('#computerName').val());
