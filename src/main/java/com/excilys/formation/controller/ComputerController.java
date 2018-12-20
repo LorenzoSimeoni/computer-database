@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -38,22 +39,25 @@ import com.excilys.formation.validator.Validator;
 public class ComputerController {
 	
 	private final static Logger LOGGER = LogManager.getLogger(ComputerController.class.getName());
-
+	
 	@Autowired
+	public ComputerController(ComputerService computerService, CompanyService companyService, MapperComputer mapperComputer, Validator validator) {
+		this.computerService = computerService;
+		this.companyService = companyService;
+		this.mapperComputer = mapperComputer;
+		this.validator = validator;
+	}
 	private ComputerService computerService;
-	@Autowired
 	private CompanyService companyService;
-	@Autowired
 	private MapperComputer mapperComputer;
-	@Autowired
 	private Validator validator;
 	
 	private String order = "";
 	private String mode = "";
-	private boolean columnComputerName = false;
-	private boolean columnIntroduced = false;
-	private boolean columnDiscontinued = false;
-	private boolean columnCompanyName = false;
+	private boolean columnComputerName;
+	private boolean columnIntroduced;
+	private boolean columnDiscontinued;
+	private boolean columnCompanyName;
 	private Page pagination = new Page();
 	private String search = "";
 	
@@ -169,7 +173,6 @@ public class ComputerController {
 		OrderByComputer orderColumn = OrderByComputer.myValueOf(order);
 		OrderByMode orderByMode = OrderByMode.myValueOf(mode);
 		List<Computer> listComputer = new ArrayList<>();
-		List<ComputerDTO> listComputerDTO = new ArrayList<>();
 		long countComputer = 0;
 		if (search.equals("")) {
 			countComputer = computerService.countComputer();
@@ -178,9 +181,9 @@ public class ComputerController {
 			countComputer = computerService.countComputerLike(search);
 			listComputer = computerService.getComputerOrderByLike(orderColumn, orderByMode, search, pagination);
 		}
-		listComputer.stream().forEach(i -> {
-			listComputerDTO.add(new ComputerDTO(i));
-		});
+		List<ComputerDTO> listComputerDTO = listComputer.stream()
+				.map(i -> new ComputerDTO(i))
+				.collect(Collectors.toList());
 		pagination.setMAX((int)countComputer/pagination.getOffset()+1);
 		pagination.checkMax();
 		ModelAndView mv = new ModelAndView();
@@ -196,14 +199,14 @@ public class ComputerController {
 	}
 	
 	@PostMapping
-    public String postDashboardPage(@RequestParam(defaultValue = "") String cb) {
+    public String delete(@RequestParam(defaultValue = "") String cb) {
 		List<String> deleted = Arrays.asList(cb);
 		deleted.stream().forEach(id -> computerService.deleteComputer(Long.parseLong(id)));
 		return ViewName.DASHBOARD.toString();
 	}
 
 	@GetMapping(value = "/update")
-    public ModelAndView getUpdateComputer(@RequestParam(defaultValue = "0") long id) {
+    public ModelAndView goToUpdateForm(@RequestParam(defaultValue = "0") long id) {
 		Optional<Computer> computerOpt = computerService.showComputerDetailsByID(id);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(ViewName.EDITCOMPUTER.toString());
@@ -220,7 +223,7 @@ public class ComputerController {
     }
 	
 	@PostMapping(value="/update")
-	public ModelAndView postEditComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
+	public ModelAndView update(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
 			BindingResult bindingResult) {
 		if(!bindingResult.hasErrors()) {
 			Computer computer = mapperComputer.mapper(computerDTO);
@@ -238,7 +241,7 @@ public class ComputerController {
 	}
 
 	@GetMapping(value = "/add")
-    public ModelAndView getAddComputer() {
+    public ModelAndView goToAddForm() {
 		List<Company> listCompany = companyService.show();
         ModelAndView mv = new ModelAndView();
         mv.setViewName(ViewName.ADDCOMPUTER.toString());
@@ -248,7 +251,7 @@ public class ComputerController {
     }
 	
 	@PostMapping(value = "/add")
-	public String postAddComputer(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
+	public String add(@Valid @ModelAttribute("computerDTO")ComputerDTO computerDTO,
 			BindingResult bindingResult) {
 		if(!bindingResult.hasErrors()) {
 			Computer computer = mapperComputer.mapper(computerDTO);
