@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(value = {CoreConfig.class, BindingConfig.class})
+@Import(value = {BindingConfig.class, ServiceConfig.class})
 @ComponentScan(basePackages = { "com.excilys.formation.controller" })
 public class WebAppConfig {
 

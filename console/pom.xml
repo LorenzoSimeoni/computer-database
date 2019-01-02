@@ -13,8 +13,6 @@
 	<packaging>jar</packaging>
 
 	<name>console</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,11 +24,6 @@
 		<dependency>
 			<groupId>com.excilys.formation</groupId>
 			<artifactId>binding</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.excilys.formation</groupId>
-			<artifactId>core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
