@@ -4,10 +4,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.excilys.formation</groupId>
 	<artifactId>computer-databases</artifactId>
+	<groupId>com.excilys.formation</groupId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
+	<name>computer-databases</name>
 
 	<modules>
 		<module>core</module>
@@ -50,7 +51,7 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
 				<version>${spring.test}</version>
-				<!-- <scope>test</scope> -->
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.zaxxer</groupId>
@@ -67,7 +68,7 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
-				<!-- <scope>test</scope> -->
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>mysql</groupId>
@@ -78,7 +79,7 @@
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
 				<version>${mockito.core.version}</version>
-				<!-- <scope>test</scope> -->
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax</groupId>
@@ -127,27 +128,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<plugins>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.2.1</version>
-				<configuration>
-					<warSourceDirectory>WebContent</warSourceDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 	<reporting>
 		<plugins>
