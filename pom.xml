@@ -38,10 +38,28 @@
 		<hibernate.hql.parser.version>1.5.0.Final</hibernate.hql.parser.version>
 		<hibernate.core.version>5.4.0.Final</hibernate.core.version>
 		<spring.orm.version>5.1.3.RELEASE</spring.orm.version>
+		<spring.security.core>5.1.2.RELEASE</spring.security.core>
+		<spring.security.web>5.1.2.RELEASE</spring.security.web>
+		<spring.security.config>5.1.2.RELEASE</spring.security.config>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.security.config}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security.web}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring.security.core}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
