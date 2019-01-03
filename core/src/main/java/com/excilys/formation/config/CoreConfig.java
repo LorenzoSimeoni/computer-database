@@ -4,10 +4,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = { "com.excilys.formation.checker", 
-		"com.excilys.formation.exception", 
-		"com.excilys.formation.model", 
-		"com.excilys.formation.validator" })
+@ComponentScan(basePackages = { 
+		"com.excilys.formation.model" })
 public class CoreConfig {
 
 }

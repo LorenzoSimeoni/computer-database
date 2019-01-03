@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import(value = {PersistenceConfig.class})
-@ComponentScan(basePackages = { "com.excilys.formation.service", "com.excilys.formation.validator" })
+@ComponentScan(basePackages = { "com.excilys.formation.service",
+		"com.excilys.formation.validator" })
 public class ServiceConfig {
 
 }

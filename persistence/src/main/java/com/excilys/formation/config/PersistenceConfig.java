@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,32 +21,29 @@ import com.zaxxer.hikari.HikariDataSource;
 @Import(value = {CoreConfig.class})
 @ComponentScan(basePackages = { "com.excilys.formation.dao"})
 public class PersistenceConfig {
+	private final static Logger LOGGER = LogManager.getLogger(PersistenceConfig.class.getName());
 
 	@Bean
 	public DataSource mysqlDataSource() {
 		InputStream input = null;
 		HikariDataSource ds = null;
 		HikariConfig config = null;
-//		try {
-//			input = ClassLoader.getSystemClassLoader().getResourceAsStream("hikari.properties");
-//			Properties properties = new Properties();
-//			properties.load(input);
-			config = new HikariConfig();
-			config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/computer-database-db");
-			config.setUsername("admincdb");
-			config.setPassword("qwerty1234");
-			config.setDriverClassName("com.mysql.jdbc.Driver");
-//		} catch (IOException e) {
-//			LOGGER.info("FILES NOT FOUND", e);
-//		} finally {
-//			if (input != null) {
-//				try {
-//					input.close();
-//				} catch (final IOException e) {
-//					LOGGER.error("File db.properties fails to close", e);
-//				}
-//			}
-//		}
+		try {
+			input = this.getClass().getClassLoader().getResourceAsStream("hikari.properties");
+			Properties properties = new Properties();
+			properties.load(input);
+			config = new HikariConfig(properties);
+		} catch (IOException e) {
+			LOGGER.info("FILES NOT FOUND", e);
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (final IOException e) {
+					LOGGER.error("File db.properties fails to close", e);
+				}
+			}
+		}
 		ds = new HikariDataSource(config);
 		return ds;
 	}
@@ -52,6 +51,8 @@ public class PersistenceConfig {
 	Properties hibernateProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		properties.setProperty("show_sql", "true");
 		properties.setProperty("hibernate.show_sql", "true");
 		return properties;
 	}
