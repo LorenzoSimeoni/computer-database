@@ -202,7 +202,7 @@ public class ComputerController {
     public String delete(@RequestParam(defaultValue = "") String cb) {
 		List<String> deleted = Arrays.asList(cb);
 		deleted.stream().forEach(id -> computerService.deleteComputer(Long.parseLong(id)));
-		return ViewName.DASHBOARD.toString();
+		return "redirect:/"+ViewName.DASHBOARD.toString();
 	}
 
 	@GetMapping(value = "/update")

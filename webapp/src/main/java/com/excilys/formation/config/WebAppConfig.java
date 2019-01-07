@@ -48,7 +48,9 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+		.csrf().disable()
 		.authorizeRequests()
+			.antMatchers("/").permitAll()
 			.antMatchers("/Computer/").hasRole("USER")
 			.antMatchers("/Computer/update").hasRole("ADMIN")
 			.antMatchers("/Computer/add").hasRole("ADMIN")
@@ -56,7 +58,9 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.formLogin()
 		.and()
-		.httpBasic();
+		.httpBasic()
+		.and()
+		.logout().permitAll();
 	}
 
 }

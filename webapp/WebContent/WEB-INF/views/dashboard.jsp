@@ -17,6 +17,9 @@
 		<div class="container">
 			<a class="navbar-brand" href="Computer"> Application
 				- Computer Database </a>
+			<div class="pull-right" role="group">
+				<a class="navbar-brand" href="logout"> Logout </a>
+			</div>
 		</div>
 	</header>
 
