@@ -3,6 +3,8 @@ package com.excilys.formation.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,9 +29,14 @@ public class UsersService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
     	Optional<Users> user = usersDAO.findUserByUsername(username);
+    	UserBuilder builder = null;
     	if(!user.isPresent()) {
     		throw new UsernameNotFoundException(username);    		
+    	} else {
+    		builder = User.withUsername(username);
+            builder.password(user.get().getPassword());
+            builder.roles(user.get().getRole().getName());
     	}
-        return new MyUserPrincipal(user.get());
+        return builder.build();
     }
 }

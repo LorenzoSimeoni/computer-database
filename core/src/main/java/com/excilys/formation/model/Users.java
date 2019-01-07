@@ -54,11 +54,11 @@ public class Users {
 		this.name = name;
 	}
 
-	public String getMdp() {
+	public String getPassword() {
 		return mdp;
 	}
 
-	public void setMdp(String mdp) {
+	public void setPassword(String mdp) {
 		this.mdp = mdp;
 	}
 
