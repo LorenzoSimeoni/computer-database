@@ -70,7 +70,7 @@ public class ComputerDAO {
 		Session session = sessionFactory.openSession();
 		Computer computer = session.createQuery(SHOWCOMPUTERDETAILSBYID, Computer.class)
 				.setParameter("id", id)
-				.getSingleResult();
+				.uniqueResult();
 		session.close();
 		return Optional.ofNullable(computer);
 	}

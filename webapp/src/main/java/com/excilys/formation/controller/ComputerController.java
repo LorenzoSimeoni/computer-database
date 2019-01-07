@@ -209,11 +209,12 @@ public class ComputerController {
     public ModelAndView goToUpdateForm(@RequestParam(defaultValue = "0") long id) {
 		Optional<Computer> computerOpt = computerService.showComputerDetailsByID(id);
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName(ViewName.EDITCOMPUTER.toString());
+		mv.setViewName("redirect:/Computer");
 		if(computerOpt.isPresent()) {
 			Computer computer = computerOpt.get();
 			List<Company> listCompany = companyService.show();
 			
+			mv.setViewName(ViewName.EDITCOMPUTER.toString());
 			mv.addObject("computerDTO", new ComputerDTO(computer));
 			mv.getModel().put("id", id);
 			mv.getModel().put("listCompany", listCompany);

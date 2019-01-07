@@ -28,7 +28,7 @@ public class Users {
 	@Column(name="id")
 	private long id;
 	
-	@Column(name="loginName")
+	@Column(name="loginName", nullable = false)
 	private String name;
 	
 	@Column(name="passwordHash")

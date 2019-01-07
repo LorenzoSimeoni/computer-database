@@ -12,7 +12,8 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	public static void main(String ... args) {
+	static int aStatistic = 1;
+	public static void main(String []args) {
 		FeatureCLI aCli = new FeatureCLI();
 		aCli.features();
 	}
