@@ -51,7 +51,7 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter {
 		.csrf().disable()
 		.authorizeRequests()
 			.antMatchers("/").permitAll()
-			.antMatchers("/Computer/").hasRole("USER")
+			.antMatchers("/Computer/").hasRole("USER,ADMIN")
 			.antMatchers("/Computer/update").hasRole("ADMIN")
 			.antMatchers("/Computer/add").hasRole("ADMIN")
 		.anyRequest().authenticated()	

@@ -256,10 +256,9 @@ public class ComputerController {
 			BindingResult bindingResult) {
 		if(!bindingResult.hasErrors()) {
 			Computer computer = mapperComputer.mapper(computerDTO);
-			System.out.println(computer.toString());
 			try {
 				validator.checkComputer(computer);
-				computerService.insertComputer(computer);
+				computerService.createComputer(computer);
 			} catch (NotPermittedComputerException e) {
 				LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
 			}

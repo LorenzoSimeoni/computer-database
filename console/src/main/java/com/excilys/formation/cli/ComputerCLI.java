@@ -98,7 +98,7 @@ public class ComputerCLI {
 		Computer computer = mapperComputer.mapper(name, introduced, discontinued,companyID);
 		try {
 			validator.checkComputer(computer);
-			computerService.insertComputer(computer);
+			computerService.createComputer(computer);
 		} catch (NotPermittedComputerException e) {
 			LOGGER.info(" COMPUTER NOT CREATED "+e.getErrorMsg(),e);
 		}

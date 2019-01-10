@@ -32,7 +32,7 @@
 		<spring.jdbc>5.1.3.RELEASE</spring.jdbc>
 		<spring.test>5.1.3.RELEASE</spring.test>
 		<spring.webmvc>5.1.3.RELEASE</spring.webmvc>
-		<jackson-databind.version>2.9.5</jackson-databind.version>
+		<jackson-databind.version>2.9.8</jackson-databind.version>
 		<javax.validation.api.version>1.1.0.Final</javax.validation.api.version>
 		<hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
 		<hibernate.hql.parser.version>1.5.0.Final</hibernate.hql.parser.version>
@@ -41,6 +41,9 @@
 		<spring.security.core>5.1.2.RELEASE</spring.security.core>
 		<spring.security.web>5.1.2.RELEASE</spring.security.web>
 		<spring.security.config>5.1.2.RELEASE</spring.security.config>
+		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<jackson.core>2.9.8</jackson.core>
+		<jboss.logging>3.3.2.Final</jboss.logging>
 	</properties>
 
 	<dependencyManagement>
@@ -143,6 +146,21 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
 				<version>${spring.orm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${jaxb-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.core}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging</artifactId>
+				<version>${jboss.logging}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

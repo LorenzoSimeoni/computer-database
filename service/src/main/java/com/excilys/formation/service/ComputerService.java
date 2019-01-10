@@ -50,8 +50,8 @@ public class ComputerService {
 		return computerDao.delete(id);
 	}
 	
-	public void insertComputer(Computer computer) {
-		computerDao.create(computer);
+	public long createComputer(Computer computer) {
+		return computerDao.create(computer);
 	}
 	
 	public void updateComputer(Computer computer) {

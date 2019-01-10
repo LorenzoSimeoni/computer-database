@@ -187,7 +187,7 @@ public class ComputerDAO {
 	 * 
 	 * @param computer object created with the parameters give by the user
 	 */
-	public void create(Computer computer) {
+	public long create(Computer computer) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
@@ -196,8 +196,10 @@ public class ComputerDAO {
 		} catch (Exception e) {
 			LOGGER.info("ERROR CREATING COMPUTER",e);
 			transaction.rollback();
+			return 0;
 		} finally {
 			session.close();			
 		}
+		return 1;
 	}
 }
