@@ -44,6 +44,8 @@
 		<jaxb-api.version>2.3.1</jaxb-api.version>
 		<jackson.core>2.9.8</jackson.core>
 		<jboss.logging>3.3.2.Final</jboss.logging>
+		<jersey.client>2.25.1</jersey.client>
+		<jersey.media.json.jackson>2.25.1</jersey.media.json.jackson>
 	</properties>
 
 	<dependencyManagement>
@@ -161,6 +163,21 @@
 				<groupId>org.jboss.logging</groupId>
 				<artifactId>jboss-logging</artifactId>
 				<version>${jboss.logging}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersey.client}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersey.media.json.jackson}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>2.9.8</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

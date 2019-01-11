@@ -121,17 +121,17 @@ public class MapperComputer {
 	
 	public Computer mapper(ComputerDTO computerDTO) {
 		
-		if(computerDTO.getIntroduced().equals("")) {
+		if("".equals(computerDTO.getIntroduced())) {
 			computerDTO.setIntroduced(null);
 		} else {
 			computerDTO.setIntroduced(computerDTO.getIntroduced()+"T00:00:00");
 		}
-		if(computerDTO.getDiscontinued().equals("")) {
+		if("".equals(computerDTO.getDiscontinued())) {
 			computerDTO.setDiscontinued(null);
 		} else {
 			computerDTO.setDiscontinued(computerDTO.getDiscontinued()+"T00:00:00");
 		}
-		if(computerDTO.getCompanyId().equals("")) {
+		if("".equals(computerDTO.getCompanyId())) {
 			computerDTO.setCompanyId(null);
 		} 
 		Computer computer = mapper(computerDTO.getId(), computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(),computerDTO.getCompanyId());
