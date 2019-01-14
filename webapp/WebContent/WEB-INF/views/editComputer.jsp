@@ -70,11 +70,12 @@
 											</c:choose>
 										</c:forEach>
 									</form:select>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 								</div>
 							</fieldset>
 							<div class="actions pull-right">
 								<input type="submit" value="<spring:message code="lang.edit" />" class="btn btn-primary">
-								<spring:message code="lang.or" /> <a href="/computer-databases/Computer" class="btn btn-default">
+								<spring:message code="lang.or" /> <a href="/webapp/Computer" class="btn btn-default">
 								<spring:message code="lang.cancel" /></a>
 							</div>
 						</form:form>

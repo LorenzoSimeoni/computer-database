@@ -8,7 +8,7 @@
   </Appenders>
   <Loggers>
     <Logger name="computer-database" level="info"/>
-    <Root level="debug">
+    <Root level="infos">
       <AppenderRef ref="STDOUT"/>
     </Root>
   </Loggers>

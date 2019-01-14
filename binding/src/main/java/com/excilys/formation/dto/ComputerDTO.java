@@ -37,6 +37,21 @@ public class ComputerDTO {
 		}
 	}
 	
+	public ComputerDTO(String name, String introduced, String discontinued, String companyId) {
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyId = companyId;
+	}
+	
+	public ComputerDTO(long id, String name, String introduced, String discontinued, String companyId) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyId = companyId;
+	}
+	
 	public ComputerDTO() {
 		this.id = 0;
 		this.name = "";

@@ -50,8 +50,9 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm" action="" method="POST">
 			<input type="hidden" name="selection" value="">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
 			<div class="container" style="margin-top: 10px;">
 				<table class="table table-striped table-bordered">
@@ -62,7 +63,7 @@
 
 							<th class="editMode" style="width: 60px; height: 22px;"><input
 								type="checkbox" id="selectall" /> <span
-								style="vertical-align: top;"> - <a href="#"
+								style="vertical-align: top;"> - <a href="/webapp/Computer"
 									id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
 										class="fa fa-trash"></i>
 								</a>

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -54,14 +55,14 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.csrf().disable()
+		http            
 		.authorizeRequests()
-			.antMatchers("/Computer/update").hasRole("ADMIN")
-			.antMatchers("/Computer/add").hasRole("ADMIN")
-			.antMatchers("/Computer/").hasRole("USER,ADMIN")
-			.antMatchers("/").permitAll()
-		.anyRequest().authenticated()	
+			.antMatchers(HttpMethod.GET,"/").permitAll()
+			.antMatchers(HttpMethod.POST, "/Computer-rest/create-rest", "/Computer").hasRole("ADMIN")
+			.antMatchers(HttpMethod.PUT, "/Computer-rest/update-rest/**").hasRole("ADMIN")
+			.antMatchers(HttpMethod.DELETE, "/Computer-rest/**").hasRole("ADMIN")
+			.antMatchers("/Computer/update/**", "/Computer/add").hasRole("ADMIN")
+		.anyRequest().authenticated()
 		.and()
 		.formLogin()
 		.and()
