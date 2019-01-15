@@ -28,8 +28,12 @@ public class CompanyDAO {
 	private static final String DELETEACOMPANY = "DELETE FROM Company WHERE id = :id";
 	private static final String DELETECOMPUTERS = "DELETE FROM Computer WHERE company_id = :id";
     
-	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	public CompanyDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 	
 	public void save(Company company) {
 		Session session = this.sessionFactory.openSession();

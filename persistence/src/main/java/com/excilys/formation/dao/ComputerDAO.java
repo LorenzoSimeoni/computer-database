@@ -34,8 +34,12 @@ public class ComputerDAO {
 	private static final String DELETEACOMPUTER = "DELETE FROM Computer WHERE id = :id";
 	private static final String UPDATEACOMPUTER = "UPDATE Computer SET name = :name, introduced = :introduced, discontinued = :discontinued, company_id = :companyId WHERE id = :id";
 
-	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	public ComputerDAO(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 	
 	public List<Computer> getList() {
         Session session = sessionFactory.openSession();

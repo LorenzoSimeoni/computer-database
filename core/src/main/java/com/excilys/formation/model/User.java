@@ -11,11 +11,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 	
-	public Users() {}
+	public User() {}
 	
-	public Users(long id, String name, String mdp, Role role) {
+	public User(long id, String name, String mdp, Role role) {
 		super();
 		this.id = id;
 		this.name = name;

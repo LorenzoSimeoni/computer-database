@@ -24,7 +24,7 @@ import com.excilys.formation.exception.WebExceptions;
 import com.excilys.formation.mapper.MapperComputer;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.service.ComputerService;
-import com.excilys.formation.validator.Validator;
+import com.excilys.formation.validator.ValidatorComputer;
 
 @RestController
 @RequestMapping(value="/Computer-rest")
@@ -34,10 +34,10 @@ public class RestComputerController {
 	
 	private ComputerService computerService;
 	private MapperComputer mapperComputer;
-	private Validator validator;
+	private ValidatorComputer validator;
 	
 	@Autowired
-	public RestComputerController(ComputerService computerService, MapperComputer mapperComputer, Validator validator) {
+	public RestComputerController(ComputerService computerService, MapperComputer mapperComputer, ValidatorComputer validator) {
 		this.computerService = computerService;
 		this.mapperComputer = mapperComputer;
 		this.validator = validator;

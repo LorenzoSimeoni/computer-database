@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import com.excilys.formation.service.UsersService;
+import com.excilys.formation.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +26,7 @@ import com.excilys.formation.service.UsersService;
 public class WebAppConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	private UsersService userDetailsService;
+	private UserService userDetailsService;
 	
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
@@ -61,6 +61,7 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.authorizeRequests()
 			.antMatchers(HttpMethod.GET,"/").permitAll()
+			.antMatchers(HttpMethod.POST,"/registration").permitAll()
 			.antMatchers(HttpMethod.POST, "/Computer-rest/create-rest", "/Computer").hasRole("ADMIN")
 			.antMatchers(HttpMethod.PUT, "/Computer-rest/update-rest/**").hasRole("ADMIN")
 			.antMatchers(HttpMethod.DELETE, "/Computer-rest/**").hasRole("ADMIN")

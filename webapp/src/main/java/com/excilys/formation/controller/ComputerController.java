@@ -32,7 +32,7 @@ import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.Page;
 import com.excilys.formation.service.CompanyService;
 import com.excilys.formation.service.ComputerService;
-import com.excilys.formation.validator.Validator;
+import com.excilys.formation.validator.ValidatorComputer;
 
 @Controller
 @RequestMapping(value="/Computer")
@@ -41,7 +41,7 @@ public class ComputerController {
 	private final static Logger LOGGER = LogManager.getLogger(ComputerController.class.getName());
 	
 	@Autowired
-	public ComputerController(ComputerService computerService, CompanyService companyService, MapperComputer mapperComputer, Validator validator) {
+	public ComputerController(ComputerService computerService, CompanyService companyService, MapperComputer mapperComputer, ValidatorComputer validator) {
 		this.computerService = computerService;
 		this.companyService = companyService;
 		this.mapperComputer = mapperComputer;
@@ -50,7 +50,7 @@ public class ComputerController {
 	private ComputerService computerService;
 	private CompanyService companyService;
 	private MapperComputer mapperComputer;
-	private Validator validator;
+	private ValidatorComputer validator;
 	
 	private String order = "";
 	private String mode = "";
